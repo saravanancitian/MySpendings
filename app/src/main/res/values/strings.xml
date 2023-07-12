@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">MySpendings</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="record_fragment">Record Fragment</string>
+    <string name="spending_fragment">Spending fragment</string>
+    <string name="title">My Spendings</string>
+    <string name="lbl_Amount">Amount</string>
+    <string name="lbl_Paidto">Paid To:</string>
+    <string name="lbl_whendt">When:</string>
+    <string name="btn_lbl_save">Save</string>
+    <string name="btnadd">Add</string>
+</resources>
