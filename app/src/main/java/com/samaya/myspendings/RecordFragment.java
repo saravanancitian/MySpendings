@@ -17,18 +17,20 @@ import android.widget.Toast;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.timepicker.MaterialTimePicker;
 import com.samaya.myspendings.db.entity.Spendings;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.text.ParseException;
+import java.util.TimeZone;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link RecordFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RecordFragment extends Fragment  implements MaterialPickerOnPositiveButtonClickListener {
+public class RecordFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -40,11 +42,12 @@ public class RecordFragment extends Fragment  implements MaterialPickerOnPositiv
     EditText editAmt;
     EditText editPaidto;
     EditText editWhendt;
+    EditText editWhentime;
 
     Button btnSave;
-    ImageButton btnCalendar;
 
     MaterialDatePicker materialDatePicker;
+    MaterialTimePicker materialTimePicker;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -90,6 +93,7 @@ public class RecordFragment extends Fragment  implements MaterialPickerOnPositiv
         editAmt = (EditText)  view.findViewById(R.id.edit_amt);
         editPaidto = (EditText) view.findViewById(R.id.edit_Paidto);
         editWhendt = (EditText) view.findViewById(R.id.edit_whendt);
+        editWhentime = (EditText) view.findViewById(R.id.edit_whentime);
         btnSave = (Button) view.findViewById(R.id.btn_save);
         btnSave.setOnClickListener(new View.OnClickListener(){
 
@@ -113,9 +117,26 @@ public class RecordFragment extends Fragment  implements MaterialPickerOnPositiv
         MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
         materialDateBuilder.setTitleText("SELECT A DATE");
         materialDatePicker = materialDateBuilder.build();
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+            @Override
+            public void onPositiveButtonClick(Long selection) {
+                Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                calendar.setTimeInMillis(selection);
+                String formattedDate  = Utils.sdf.format(calendar.getTime());
+                editWhendt.setText(formattedDate);
+            }
+        });
 
-        btnCalendar = (ImageButton) view.findViewById(R.id.btn_calendar);
-        btnCalendar.setOnClickListener(new View.OnClickListener(){
+        materialTimePicker = (new MaterialTimePicker.Builder()).setTitleText("Select a time").build();
+        materialTimePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String time = String.valueOf(materialTimePicker.getHour()) + ":"+ String.valueOf(materialTimePicker.getMinute());
+                 editWhentime.setText(time);
+
+            }
+        });
+        editWhendt.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
@@ -123,13 +144,15 @@ public class RecordFragment extends Fragment  implements MaterialPickerOnPositiv
 
             }
         });
+
+        editWhentime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                materialTimePicker.show(getActivity().getSupportFragmentManager(), "MATERIAL_TIME_PICKER");
+            }
+        });
         return view;
     }
 
 
-    @Override
-    public void onPositiveButtonClick(Object selection) {
-        Toast.makeText(getActivity(), materialDatePicker.getHeaderText(), Toast.LENGTH_LONG);
-        editWhendt.setText(materialDatePicker.getHeaderText());
-    }
 }

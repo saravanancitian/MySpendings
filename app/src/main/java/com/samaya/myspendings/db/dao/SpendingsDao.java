@@ -23,6 +23,6 @@ public interface SpendingsDao {
     @Delete
     void deleteSpending(Spendings spending);
 
-    @Query("SELECT * FROM spendings ORDER BY whendt desc")
+    @Query("SELECT * FROM spendings ORDER BY whendt asc")
     LiveData<List<Spendings>> getAllSpendings();
 }
