@@ -1,5 +1,6 @@
 package com.samaya.myspendings;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,10 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.samaya.myspendings.db.entity.Spendings;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.text.ParseException;
 
@@ -21,13 +28,13 @@ import java.text.ParseException;
  * Use the {@link RecordFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RecordFragment extends Fragment {
+public class RecordFragment extends Fragment  implements MaterialPickerOnPositiveButtonClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    final Calendar newCalendar = Calendar.getInstance();
     private SpendingsViewModel viewModel;
 
     EditText editAmt;
@@ -35,8 +42,9 @@ public class RecordFragment extends Fragment {
     EditText editWhendt;
 
     Button btnSave;
+    ImageButton btnCalendar;
 
-
+    MaterialDatePicker materialDatePicker;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -102,6 +110,26 @@ public class RecordFragment extends Fragment {
                         .commit();
             }
         });
+        MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
+        materialDateBuilder.setTitleText("SELECT A DATE");
+        materialDatePicker = materialDateBuilder.build();
+
+        btnCalendar = (ImageButton) view.findViewById(R.id.btn_calendar);
+        btnCalendar.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                materialDatePicker.show(getActivity().getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
+
+            }
+        });
         return view;
+    }
+
+
+    @Override
+    public void onPositiveButtonClick(Object selection) {
+        Toast.makeText(getActivity(), materialDatePicker.getHeaderText(), Toast.LENGTH_LONG);
+        editWhendt.setText(materialDatePicker.getHeaderText());
     }
 }

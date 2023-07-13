@@ -61,6 +61,7 @@
         android:ems="10"
         android:fontFamily="sans-serif-black"
         android:inputType="textAutoComplete" />
+
     <TextView
         android:id="@+id/txt_lbl_whendt"
         style="@style/Widget.AppCompat.TextView"
@@ -71,15 +72,26 @@
         android:text="@string/lbl_whendt"
         android:textSize="18sp"
         android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/edit_whendt"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:fontFamily="sans-serif-black"
-        android:inputType="datetime" />
-
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/edit_whendt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="sans-serif-black"
+            android:inputType="datetime"
+            android:layout_alignParentLeft="true"
+            />
+        <ImageButton
+            android:id="@+id/btn_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_my_calendar"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
     <Button
         android:id="@+id/btn_save"
         android:layout_width="match_parent"
