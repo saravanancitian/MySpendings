@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.samaya.myspendings.db.entity.Spendings;
@@ -35,6 +37,7 @@ public class SpendingsFragment extends Fragment {
     private String mParam2;
 
     protected RecyclerView mRecyclerView;
+    protected TextView mEmptyView;
     protected SpendingsAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
@@ -86,6 +89,8 @@ public class SpendingsFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        mEmptyView = (TextView) rootView.findViewById(R.id.txt_empty);
+
         FloatingActionButton fab = rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,10 +102,20 @@ public class SpendingsFragment extends Fragment {
             }
         });
 
-        viewModel.getAllspendings().observe(getViewLifecycleOwner(), new Observer<List<Spendings>>() {
+        LiveData<List<Spendings>> allSpending =  viewModel.getAllspendings();
+        if(allSpending == null || allSpending.getValue() == null || allSpending.getValue().isEmpty()){
+            mEmptyView.setVisibility(View.VISIBLE);
+        }else{
+            mEmptyView.setVisibility(View.GONE);
+        }
+
+        allSpending.observe(getViewLifecycleOwner(), new Observer<List<Spendings>>() {
             @Override
             public void onChanged(@Nullable final List<Spendings> spendings) {
                 // Update the cached copy of the words in the adapter.
+                if(mEmptyView.getVisibility() == View.VISIBLE) {
+                    mEmptyView.setVisibility(View.GONE);
+                }
                 mAdapter.setSpendingsList(spendings);
             }
         });

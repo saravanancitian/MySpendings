@@ -19,12 +19,43 @@
         android:textAlignment="center"
         android:textSize="22sp"
         android:textStyle="bold|italic" />
+    <RelativeLayout
+        android:id="@+id/llayour_total"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_title"
+        android:layout_margin="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total: "
+            android:layout_alignParentLeft="true"
+            android:id="@+id/txt_lbl_total"
+
+            />
+        <TextView
+            android:id="@+id/disp_txt_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Total Spdnding"
+            android:layout_toEndOf="@+id/txt_lbl_total"
+            />
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/txt_title"
+        android:layout_below="@+id/llayour_total"
+        />
+    <TextView
+        android:id="@+id/txt_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Add Your spendings"
+        android:layout_below="@+id/llayour_total"
+        android:visibility="gone"
         />
 
 
