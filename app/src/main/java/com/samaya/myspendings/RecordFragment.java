@@ -88,13 +88,19 @@ public class RecordFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_record, container, false);
         editAmt = (EditText)  view.findViewById(R.id.edit_amt);
         editPaidto = (EditText) view.findViewById(R.id.edit_Paidto);
+
         editWhendt = (EditText) view.findViewById(R.id.edit_whendt);
+        editWhendt.setText(Utils.sdf.format(Calendar.getInstance().getTime()));
         editWhentime = (EditText) view.findViewById(R.id.edit_whentime);
+        editWhentime.setText(Utils.stf.format(Calendar.getInstance().getTime()));
         btnSave = (Button) view.findViewById(R.id.btn_save);
+
         btnSave.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -131,9 +137,7 @@ public class RecordFragment extends Fragment {
         materialTimePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String time = String.valueOf(materialTimePicker.getHour()) + ":"+ String.valueOf(materialTimePicker.getMinute());
-                 editWhentime.setText(time);
-
+                 editWhentime.setText(Utils.stf.format(materialTimePicker.getHour() * 60 +  materialTimePicker.getMinute()) );
             }
         });
         editWhendt.setOnClickListener(new View.OnClickListener(){
