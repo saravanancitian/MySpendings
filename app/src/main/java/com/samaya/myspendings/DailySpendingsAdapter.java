@@ -12,13 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.samaya.myspendings.db.entity.Spendings;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class SpendingsAdapter extends RecyclerView.Adapter<SpendingsAdapter.ViewHolder> {
-
-
-
+public class DailySpendingsAdapter extends RecyclerView.Adapter<DailySpendingsAdapter.ViewHolder> {
 
     private List<Spendings> spendingsList;
 
@@ -29,14 +25,14 @@ public class SpendingsAdapter extends RecyclerView.Adapter<SpendingsAdapter.View
 
     private final LayoutInflater mInflater;
 
-    public SpendingsAdapter(LayoutInflater mInflater) {
+    public DailySpendingsAdapter(LayoutInflater mInflater) {
         this.mInflater = mInflater;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.listitem, parent, false);
+        View itemView = mInflater.inflate(R.layout.dailylistitem, parent, false);
         return new ViewHolder(itemView);
     }
 

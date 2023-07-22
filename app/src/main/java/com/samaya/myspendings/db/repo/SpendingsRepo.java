@@ -19,7 +19,6 @@ import java.util.concurrent.Executors;
 public class SpendingsRepo {
 
     private SpendingsDao dao;
-    LiveData<List<Spendings>> allSpendings;
 
     ExecutorService executor = Executors.newSingleThreadExecutor();
     Handler handler = new Handler(Looper.getMainLooper());
@@ -58,6 +57,10 @@ public class SpendingsRepo {
 
     public  LiveData<List<Spendings>> getAllSpendings(){
         return dao.getAllSpendings();
+    }
+
+    public  LiveData<Integer> getTotalSpendings(){
+        return dao.getTotalSpendings();
     }
 
 

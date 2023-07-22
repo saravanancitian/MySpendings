@@ -25,4 +25,7 @@ public interface SpendingsDao {
 
     @Query("SELECT * FROM spendings ORDER BY whendt asc")
     LiveData<List<Spendings>> getAllSpendings();
+
+    @Query("SELECT sum(sp.amount) FROM spendings as sp")
+    LiveData<Integer> getTotalSpendings();
 }

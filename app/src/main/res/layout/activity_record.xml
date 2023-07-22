@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
-    tools:context=".RecordFragment">
+    tools:context=".RecordActivity">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

@@ -35,7 +35,7 @@ public class SpendingsFragment extends Fragment {
     private String mParam2;
 
     protected RecyclerView mRecyclerView;
-    protected SpendingsAdapter mAdapter;
+    protected DailySpendingsAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
     private SpendingsViewModel viewModel;
@@ -81,21 +81,12 @@ public class SpendingsFragment extends Fragment {
         View rootView =  inflater.inflate(R.layout.fragment_spendings, container, false);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
-        mAdapter = new SpendingsAdapter(inflater);
+        mAdapter = new DailySpendingsAdapter(inflater);
         mRecyclerView.setAdapter(mAdapter);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        FloatingActionButton fab = rootView.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .setReorderingAllowed(true)
-                        .replace(R.id.fragment_container_view, RecordFragment.class, null)
-                        .commit();
-            }
-        });
+
 
         viewModel.getAllspendings().observe(getViewLifecycleOwner(), new Observer<List<Spendings>>() {
             @Override
