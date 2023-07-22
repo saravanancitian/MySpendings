@@ -33,4 +33,5 @@ public class SpendingsViewModel  extends AndroidViewModel {
     void insert(Spendings spending){
         repo.insert(spending);
     }
+    void delete(Spendings spending){ repo.delete(spending);}
 }

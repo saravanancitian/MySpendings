@@ -23,7 +23,7 @@ public interface SpendingsDao {
     @Delete
     void deleteSpending(Spendings spending);
 
-    @Query("SELECT * FROM spendings ORDER BY whendt asc")
+    @Query("SELECT * FROM spendings ORDER BY whendt desc")
     LiveData<List<Spendings>> getAllSpendings();
 
     @Query("SELECT sum(sp.amount) FROM spendings as sp")

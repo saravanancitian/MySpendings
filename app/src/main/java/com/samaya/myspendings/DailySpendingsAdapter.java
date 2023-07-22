@@ -45,6 +45,13 @@ public class DailySpendingsAdapter extends RecyclerView.Adapter<DailySpendingsAd
             holder.itmTxtPaidto.setText(spending.paidto);
         }
     }
+    public void removeItem(int position){
+        spendingsList.remove(position);
+        notifyDataSetChanged();
+    }
+    public Spendings getItem(int position){
+        return spendingsList.get(position);
+    }
 
     @Override
     public int getItemCount() {

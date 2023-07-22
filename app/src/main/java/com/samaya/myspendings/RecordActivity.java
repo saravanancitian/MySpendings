@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -14,6 +17,7 @@ import com.google.android.material.timepicker.MaterialTimePicker;
 import com.samaya.myspendings.db.entity.Spendings;
 
 import java.text.ParseException;
+import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -52,15 +56,22 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Spendings spending = new Spendings();
-                spending.amount = Float.parseFloat(editAmt.getText().toString());
-                spending.paidto = editPaidto.getText().toString();
-                try {
-                    spending.whenDt = (Date) Utils.sdf.parse(editWhendt.getText().toString());
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
+                if(TextUtils.isEmpty(editAmt.getText().toString()) || TextUtils.isEmpty(editPaidto.getText().toString()) ||
+                        TextUtils.isEmpty(editWhendt.getText().toString()) || TextUtils.isEmpty(editWhentime.getText().toString())){
+                    Toast.makeText(getBaseContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        spending.amount = Float.parseFloat(editAmt.getText().toString());
+                        spending.paidto = editPaidto.getText().toString();
+                        spending.whenDt = (Date) Utils.sdtf.parse(editWhendt.getText().toString() + " "+ editWhentime.getText().toString());
+                        viewModel.insert(spending);
+
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    } finally {
+                        finish();
+                    }
                 }
-                viewModel.insert(spending);
-                finish();
             }
         });
         MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
@@ -80,7 +91,10 @@ public class RecordActivity extends AppCompatActivity {
         materialTimePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editWhentime.setText(Utils.stf.format(materialTimePicker.getHour() * 60 +  materialTimePicker.getMinute()) );
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.HOUR_OF_DAY, materialTimePicker.getHour());
+                cal.set(Calendar.MINUTE, materialTimePicker.getMinute());
+                 editWhentime.setText(Utils.stf.format(cal.getTime()));
             }
         });
         editWhendt.setOnClickListener(new View.OnClickListener(){

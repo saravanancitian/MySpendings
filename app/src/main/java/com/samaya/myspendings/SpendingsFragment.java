@@ -2,10 +2,12 @@ package com.samaya.myspendings;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -81,12 +83,25 @@ public class SpendingsFragment extends Fragment {
         View rootView =  inflater.inflate(R.layout.fragment_spendings, container, false);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                viewModel.delete(mAdapter.getItem(position));
+                mAdapter.removeItem(position);
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
         mAdapter = new DailySpendingsAdapter(inflater);
         mRecyclerView.setAdapter(mAdapter);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-
 
         viewModel.getAllspendings().observe(getViewLifecycleOwner(), new Observer<List<Spendings>>() {
             @Override
