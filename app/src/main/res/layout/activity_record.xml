@@ -11,7 +11,6 @@
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/txt_title"
-        style="@style/Widget.AppCompat.TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -101,6 +100,28 @@
             android:focusable="false"
             />
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
+        android:id="@+id/txt_lbl_remark"
+        style="@style/Widget.AppCompat.TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/remark_txt"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+    <EditText
+        android:id="@+id/edit_remark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="sans-serif"
+        android:lines="10"
+        android:minLines="4"
+        android:maxLines="15"
+
+        />
     <Button
         android:id="@+id/btn_save"
         android:layout_width="match_parent"

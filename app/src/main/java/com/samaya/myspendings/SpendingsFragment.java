@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.samaya.myspendings.db.entity.Spendings;
@@ -41,6 +43,8 @@ public class SpendingsFragment extends Fragment {
     protected RecyclerView.LayoutManager mLayoutManager;
 
     private SpendingsViewModel viewModel;
+
+    private TextView txtEmpty;
 
 
     public SpendingsFragment() {
@@ -83,6 +87,7 @@ public class SpendingsFragment extends Fragment {
         View rootView =  inflater.inflate(R.layout.fragment_spendings, container, false);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
+        txtEmpty = (TextView) rootView.findViewById(R.id.txt_emtpy);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
             @Override
@@ -103,7 +108,27 @@ public class SpendingsFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        viewModel.getAllspendings().observe(getViewLifecycleOwner(), new Observer<List<Spendings>>() {
+        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                if(mAdapter.getItemCount() > 0){
+                    if(txtEmpty.getVisibility() == View.VISIBLE){
+                        txtEmpty.setVisibility(View.GONE);
+                    }
+                } else {
+                    txtEmpty.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        LiveData<List<Spendings>> spendings = viewModel.getAllspendings();
+        if(spendings.getValue() == null || spendings.getValue().isEmpty()){
+            txtEmpty.setVisibility(View.VISIBLE);
+        }
+
+        spendings.observe(getViewLifecycleOwner(), new Observer<List<Spendings>>() {
             @Override
             public void onChanged(@Nullable final List<Spendings> spendings) {
                 // Update the cached copy of the words in the adapter.

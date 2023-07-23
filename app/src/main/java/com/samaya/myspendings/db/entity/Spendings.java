@@ -11,7 +11,7 @@ public class Spendings {
     @PrimaryKey(autoGenerate = true)
     public int ID;
 
-    @ColumnInfo(name = "title")
+    @ColumnInfo(name = "paidto")
     public String paidto;
 
     @ColumnInfo(name = "amount")
@@ -20,7 +20,7 @@ public class Spendings {
     @ColumnInfo(name = "whendt")
     public Date whenDt;
 
-    @ColumnInfo(name = "forwhat")
+    @ColumnInfo(name = "remark")
     public String remark;
 
 }

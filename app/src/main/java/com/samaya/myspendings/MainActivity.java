@@ -36,7 +36,11 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onChanged(@Nullable final Integer totalSpendings) {
                 // Update the cached copy of the words in the adapter.
-                txtTotalSpendings.setText(String.valueOf(totalSpendings));
+                if(totalSpendings != null && totalSpendings > 0) {
+                    txtTotalSpendings.setText(String.valueOf(totalSpendings));
+                } else {
+                    txtTotalSpendings.setText("");
+                }
             }
         });
         fab.setOnClickListener(new View.OnClickListener() {

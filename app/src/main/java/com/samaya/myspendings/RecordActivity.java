@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +34,8 @@ public class RecordActivity extends AppCompatActivity {
     EditText editWhendt;
     EditText editWhentime;
 
+    EditText editRemark;
+
     Button btnSave;
 
     MaterialDatePicker materialDatePicker;
@@ -49,6 +53,31 @@ public class RecordActivity extends AppCompatActivity {
         editWhendt.setText(Utils.sdf.format(Calendar.getInstance().getTime()));
         editWhentime = (EditText) findViewById(R.id.edit_whentime);
         editWhentime.setText(Utils.stf.format(Calendar.getInstance().getTime()));
+        editRemark = (EditText) findViewById(R.id.edit_remark);
+
+        editPaidto.addTextChangedListener(new TextWatcher() {
+
+            boolean canEdit;
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(TextUtils.isEmpty(editRemark.getText())){
+                    canEdit = true;
+                }
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(canEdit) {
+                    editRemark.setText(charSequence);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         btnSave = (Button) findViewById(R.id.btn_save);
 
         btnSave.setOnClickListener(new View.OnClickListener(){
@@ -64,6 +93,7 @@ public class RecordActivity extends AppCompatActivity {
                         spending.amount = Float.parseFloat(editAmt.getText().toString());
                         spending.paidto = editPaidto.getText().toString();
                         spending.whenDt = (Date) Utils.sdtf.parse(editWhendt.getText().toString() + " "+ editWhentime.getText().toString());
+                        spending.remark = editRemark.getText().toString();
                         viewModel.insert(spending);
 
                     } catch (Exception e) {
