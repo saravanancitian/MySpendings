@@ -13,8 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.samaya.myspendings.db.entity.Spendings;
 
@@ -29,14 +31,14 @@ public class RecordActivity extends AppCompatActivity {
     final Calendar newCalendar = Calendar.getInstance();
     private SpendingsViewModel viewModel;
 
-    EditText editAmt;
-    EditText editPaidto;
-    EditText editWhendt;
-    EditText editWhentime;
+    TextInputEditText editAmt;
+    TextInputEditText editPaidto;
+    TextInputEditText editWhendt;
+    TextInputEditText editWhentime;
 
-    EditText editRemark;
+    TextInputEditText editRemark;
 
-    Button btnSave;
+    MaterialButton btnSave;
 
     MaterialDatePicker materialDatePicker;
     MaterialTimePicker materialTimePicker;
@@ -46,14 +48,14 @@ public class RecordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
         viewModel = (new ViewModelProvider(this).get(SpendingsViewModel.class));
-        editAmt = (EditText)  findViewById(R.id.edit_amt);
-        editPaidto = (EditText) findViewById(R.id.edit_Paidto);
+        editAmt = (TextInputEditText)  findViewById(R.id.edit_amt);
+        editPaidto = (TextInputEditText) findViewById(R.id.edit_Paidto);
 
-        editWhendt = (EditText) findViewById(R.id.edit_whendt);
+        editWhendt = (TextInputEditText) findViewById(R.id.edit_whendt);
         editWhendt.setText(Utils.sdf.format(Calendar.getInstance().getTime()));
-        editWhentime = (EditText) findViewById(R.id.edit_whentime);
+        editWhentime = (TextInputEditText) findViewById(R.id.edit_whentime);
         editWhentime.setText(Utils.stf.format(Calendar.getInstance().getTime()));
-        editRemark = (EditText) findViewById(R.id.edit_remark);
+        editRemark = (TextInputEditText) findViewById(R.id.edit_remark);
 
         editPaidto.addTextChangedListener(new TextWatcher() {
 
@@ -78,7 +80,7 @@ public class RecordActivity extends AppCompatActivity {
 
             }
         });
-        btnSave = (Button) findViewById(R.id.btn_save);
+        btnSave = (MaterialButton) findViewById(R.id.btn_save);
 
         btnSave.setOnClickListener(new View.OnClickListener(){
 

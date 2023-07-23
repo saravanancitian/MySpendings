@@ -12,4 +12,6 @@
     <string name="btnadd">Add</string>
     <string name="emtytext">Please Add items using (+) Add button</string>
     <string name="remark_txt">Remark:</string>
+    <string name="txt_date">Date</string>
+    <string name="txt_time">Time</string>
 </resources>

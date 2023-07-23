@@ -9,7 +9,8 @@
     tools:context=".RecordActivity">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/txt_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,114 +24,127 @@
         android:textSize="22sp"
         android:textStyle="bold|italic" />
 
-    <TextView
-        android:id="@+id/txt_lbl_Amount"
-        style="@style/Widget.AppCompat.TextView"
+
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:text="@string/lbl_Amount"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:hint="@string/lbl_Amount">
 
-    <EditText
-        android:id="@+id/edit_amt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:fontFamily="sans-serif-black"
-        android:inputType="numberDecimal" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_amt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:fontFamily="sans-serif-black"
+            />
 
-    <TextView
-        android:id="@+id/txt_lbl_Paidto"
-        style="@style/Widget.AppCompat.TextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:text="@string/lbl_Paidto"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/edit_Paidto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:fontFamily="sans-serif-black"
-        android:inputType="textAutoComplete" />
 
-    <TextView
-        android:id="@+id/txt_lbl_whendt"
-        style="@style/Widget.AppCompat.TextView"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:text="@string/lbl_whendt"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:hint="@string/lbl_Paidto">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_Paidto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="sans-serif-black"
+            android:inputType="textAutoComplete"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <EditText
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:weightSum="2">
+
+        <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/txt_date"
+        android:layout_weight="1"
+       >
+
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_whendt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:fontFamily="sans-serif-black"
             android:inputType="datetime"
             android:focusable="false"
+            android:layout_weight="1"
+            />
 
-            />
-        <TextView
+    </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="/"
-            />
-        <EditText
-            android:id="@+id/edit_whentime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="sans-serif-black"
-            android:inputType="datetime"
-            android:focusable="false"
-            />
+            android:hint="@string/txt_time"
+            android:layout_weight="1" >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_whentime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="sans-serif-black"
+                android:inputType="datetime"
+                android:focusable="false"
+                android:layout_weight="1"
+
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <TextView
-        android:id="@+id/txt_lbl_remark"
-        style="@style/Widget.AppCompat.TextView"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:text="@string/remark_txt"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-    <EditText
-        android:id="@+id/edit_remark"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:fontFamily="sans-serif"
-        android:lines="10"
-        android:minLines="4"
-        android:maxLines="15"
+        android:hint="@string/remark_txt"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        />
-    <Button
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_remark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="sans-serif"
+            android:lines="10"
+            android:minLines="4"
+            android:maxLines="15"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:text="@string/btn_lbl_save" />
+        android:text="@string/btn_lbl_save"
+        android:textSize="20sp" />
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>
