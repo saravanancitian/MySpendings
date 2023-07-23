@@ -14,4 +14,8 @@
     <string name="remark_txt">Remark:</string>
     <string name="txt_date">Date</string>
     <string name="txt_time">Time</string>
+    <string name="str_daily">Daily</string>
+    <string name="str_monthly">Monthly</string>
+    <string name="str_yearly">Yearly</string>
+    <string name="lbl_total_spendings">Total Spendings</string>
 </resources>

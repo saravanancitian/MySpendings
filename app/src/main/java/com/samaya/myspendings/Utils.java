@@ -4,11 +4,11 @@ import java.text.SimpleDateFormat;
 
 public class Utils {
     static SimpleDateFormat sdf
-            = new SimpleDateFormat("MM/dd/yyyy");
+            = new SimpleDateFormat("dd-MMM-yyyy");
     static SimpleDateFormat stf
             = new SimpleDateFormat("HH:mm");
 
     static SimpleDateFormat sdtf
-            = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+            = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
 
 }

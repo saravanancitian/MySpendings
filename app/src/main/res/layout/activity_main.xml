@@ -20,43 +20,70 @@
         android:textSize="22sp"
         android:textStyle="bold|italic" />
 
-
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/ll_total"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="3dp"
-        android:paddingBottom="3dp"
-        android:layout_below="@+id/txt_title">
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:hint="@string/lbl_total_spendings"
+        android:enabled="false"
+        android:layout_below="@+id/txt_title"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:text="Total: "
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginRight="2dp"/>
-
-        <com.google.android.material.textview.MaterialTextView
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txt_totalspendings"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="sans-serif-black"
+            android:inputType="numberDecimal"
+            android:focusable="false"
             android:layout_weight="1"
             android:textSize="18sp"
-            android:hint="Total Spendings"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tablayout"
+        android:layout_below="@+id/ll_total"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="Tab"
+        app:tabMode="fixed">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabdaily"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_daily"
+            />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabmonthly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_monthly"
+            />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabyearly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_yearly"
+            />
 
 
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </com.google.android.material.tabs.TabLayout>
 
     <androidx.fragment.app.FragmentContainerView
+        android:layout_below="@+id/tablayout"
+
         android:id="@+id/fragment_container_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/ll_total"
         />
 
 

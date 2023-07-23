@@ -8,6 +8,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.samaya.myspendings.db.entity.Spendings;
+import com.samaya.myspendings.db.entity.MonthlySpending;
 
 import java.util.List;
 
@@ -28,4 +29,7 @@ public interface SpendingsDao {
 
     @Query("SELECT sum(sp.amount) FROM spendings as sp")
     LiveData<Integer> getTotalSpendings();
+
+    @Query("SELECT sum(sp.amount) as amount , STRFTIME(\"%m-%Y\", sp.whendt) as month FROM spendings as sp group by STRFTIME(\"%m-%Y\", sp.whendt)")
+    LiveData<List<MonthlySpending>> getMonthlyTotal();
 }

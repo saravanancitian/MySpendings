@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 import com.samaya.myspendings.db.entity.Spendings;
 
@@ -24,14 +27,56 @@ public class MainActivity extends AppCompatActivity{
 
     private SpendingsViewModel viewModel;
 
+    private SpendingsFragment dailySpendingFragment;
+    private SpendingsFragment monthlySpendingFragment;
+//    private SpendingsFragment yearlSpendingFragment;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         viewModel = (new ViewModelProvider(this).get(SpendingsViewModel.class));
 
+        dailySpendingFragment = SpendingsFragment.newInstance(SpendingsFragment.FRAGMENT_TYPE_DAILY);
+        monthlySpendingFragment = SpendingsFragment.newInstance(SpendingsFragment.FRAGMENT_TYPE_MONTHLY);
+
         FloatingActionButton fab = findViewById(R.id.fab);
-        MaterialTextView txtTotalSpendings = findViewById(R.id.txt_totalspendings);
+        TextInputEditText txtTotalSpendings = findViewById(R.id.txt_totalspendings);
+        TabLayout tabLayout = findViewById(R.id.tablayout);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getId() == R.id.tabdaily){
+                    getSupportFragmentManager().beginTransaction()
+                            .setReorderingAllowed(true)
+                            .add(R.id.fragment_container_view, dailySpendingFragment, null)
+                            .commit();
+                } else  if(tab.getId() == R.id.tabmonthly){
+                    Log.d("Spending", "-----------------monthly------------");
+
+                    getSupportFragmentManager().beginTransaction()
+                            .setReorderingAllowed(true)
+                            .add(R.id.fragment_container_view, monthlySpendingFragment, null)
+                            .commit();
+                } else  if(tab.getId() == R.id.tabyearly){
+//                    getSupportFragmentManager().beginTransaction()
+//                            .setReorderingAllowed(true)
+//                            .add(R.id.fragment_container_view, dailySpendingFragment, null)
+//                            .commit();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         viewModel.getTotalspendings().observe(this, new Observer<Integer>() {
             @Override
@@ -56,29 +101,11 @@ public class MainActivity extends AppCompatActivity{
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.fragment_container_view, SpendingsFragment.class, null)
+                    .add(R.id.fragment_container_view, dailySpendingFragment, null)
                     .commit();
         }
 
     }
 
-//    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//
-//        if(item.getItemId() == R.id.recorditm){
-//            getSupportFragmentManager().beginTransaction()
-//                    .setReorderingAllowed(true)
-//                    .replace(R.id.fragment_container_view, RecordFragment.class, null)
-//                    .commit();
-//            return true;
-//        } else if(item.getItemId() == R.id.spendingitm){
-//            getSupportFragmentManager().beginTransaction()
-//                    .setReorderingAllowed(true)
-//                    .replace(R.id.fragment_container_view, SpendingsFragment.class, null)
-//                    .commit();
-//            return true;
-//
-//        }
-//        return false;
-//    }
+
 }

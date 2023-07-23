@@ -1,5 +1,6 @@
 package com.samaya.myspendings;
 
+import android.graphics.Canvas;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,8 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.samaya.myspendings.db.entity.Spendings;
+import com.samaya.myspendings.db.entity.MonthlySpending;
 
 import java.util.List;
 
@@ -29,17 +30,19 @@ import java.util.List;
  */
 public class SpendingsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    public static final int FRAGMENT_TYPE_DAILY = 1;
+    public static final int FRAGMENT_TYPE_MONTHLY = 2;
+    public static final int FRAGMENT_TYPE_YEARlY = 3;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
+    private static final String ARG_FRAGMENT_TYPE = "param1";
+
+    private int fragmentType;
 
     protected RecyclerView mRecyclerView;
-    protected DailySpendingsAdapter mAdapter;
+    protected DailySpendingsAdapter dailySpendingAdapter;
+
+    protected MonthlySpendingsAdapter monthlySpendingsAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
     private SpendingsViewModel viewModel;
@@ -51,20 +54,12 @@ public class SpendingsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SpendingsFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
-    public static SpendingsFragment newInstance(String param1, String param2) {
+    public static SpendingsFragment newInstance(int fragmenttype) {
         SpendingsFragment fragment = new SpendingsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_FRAGMENT_TYPE, fragmenttype);
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,8 +68,7 @@ public class SpendingsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            fragmentType = getArguments().getInt(ARG_FRAGMENT_TYPE);
         }
         viewModel = (new ViewModelProvider(this).get(SpendingsViewModel.class));
 
@@ -87,6 +81,9 @@ public class SpendingsFragment extends Fragment {
         View rootView =  inflater.inflate(R.layout.fragment_spendings, container, false);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
         txtEmpty = (TextView) rootView.findViewById(R.id.txt_emtpy);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
@@ -98,43 +95,94 @@ public class SpendingsFragment extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-                viewModel.delete(mAdapter.getItem(position));
-                mAdapter.removeItem(position);
+                viewModel.delete(dailySpendingAdapter.getItem(position));
+                dailySpendingAdapter.removeItem(position);
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+//                View itemView = viewHolder.itemView;
+//                int itemHeight = itemView.getBottom() - itemView.getTop();
+//                Drawable background  = new ColorDrawable();
+//                ((ColorDrawable) background).setColor(Color.RED);
+//                background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+//                background.draw(c);
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         });
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
-        mAdapter = new DailySpendingsAdapter(inflater);
-        mRecyclerView.setAdapter(mAdapter);
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        switch (fragmentType){
+            case FRAGMENT_TYPE_DAILY:{
+                dailySpendingAdapter = new DailySpendingsAdapter(inflater);
+                mRecyclerView.setAdapter(dailySpendingAdapter);
 
-        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-
-            @Override
-            public void onChanged() {
-                super.onChanged();
-                if(mAdapter.getItemCount() > 0){
-                    if(txtEmpty.getVisibility() == View.VISIBLE){
-                        txtEmpty.setVisibility(View.GONE);
+                dailySpendingAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                    @Override
+                    public void onChanged() {
+                        super.onChanged();
+                        if(dailySpendingAdapter.getItemCount() > 0){
+                            if(txtEmpty.getVisibility() == View.VISIBLE){
+                                txtEmpty.setVisibility(View.GONE);
+                            }
+                        } else {
+                            txtEmpty.setVisibility(View.VISIBLE);
+                        }
                     }
-                } else {
+                });
+
+                LiveData<List<Spendings>> spendings = viewModel.getAllspendings();
+                if(spendings.getValue() == null || spendings.getValue().isEmpty()){
                     txtEmpty.setVisibility(View.VISIBLE);
                 }
-            }
-        });
 
-        LiveData<List<Spendings>> spendings = viewModel.getAllspendings();
-        if(spendings.getValue() == null || spendings.getValue().isEmpty()){
-            txtEmpty.setVisibility(View.VISIBLE);
+                spendings.observe(getViewLifecycleOwner(), new Observer<List<Spendings>>() {
+                    @Override
+                    public void onChanged(@Nullable final List<Spendings> spendings) {
+                        // Update the cached copy of the words in the adapter.
+                        dailySpendingAdapter.setSpendingsList(spendings);
+                    }
+                });
+
+            }break;
+            case FRAGMENT_TYPE_MONTHLY:{
+                monthlySpendingsAdapter = new MonthlySpendingsAdapter(inflater);
+                mRecyclerView.setAdapter(monthlySpendingsAdapter);
+                monthlySpendingsAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                    @Override
+                    public void onChanged() {
+                        super.onChanged();
+                        if(monthlySpendingsAdapter.getItemCount() > 0){
+                            if(txtEmpty.getVisibility() == View.VISIBLE){
+                                txtEmpty.setVisibility(View.GONE);
+                            }
+                        } else {
+                            txtEmpty.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+
+                LiveData<List<MonthlySpending>> spendings = viewModel.getMonthlySpendings();
+                if(spendings.getValue() == null || spendings.getValue().isEmpty()){
+                    txtEmpty.setVisibility(View.VISIBLE);
+                }
+
+                spendings.observe(getViewLifecycleOwner(), new Observer<List<MonthlySpending>>() {
+                    @Override
+                    public void onChanged(@Nullable final List<MonthlySpending> spendings) {
+                        // Update the cached copy of the words in the adapter.
+                        monthlySpendingsAdapter.setMonthlySpendingsList(spendings);
+                    }
+                });
+
+            }break;
+            case FRAGMENT_TYPE_YEARlY:{}break;
         }
 
-        spendings.observe(getViewLifecycleOwner(), new Observer<List<Spendings>>() {
-            @Override
-            public void onChanged(@Nullable final List<Spendings> spendings) {
-                // Update the cached copy of the words in the adapter.
-                mAdapter.setSpendingsList(spendings);
-            }
-        });
+
+
+
+
+
         return rootView;
     }
 }
