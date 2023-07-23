@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.textview.MaterialTextView;
 import com.samaya.myspendings.db.entity.Spendings;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity{
         viewModel = (new ViewModelProvider(this).get(SpendingsViewModel.class));
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        TextView txtTotalSpendings = findViewById(R.id.txt_totalspendings);
+        MaterialTextView txtTotalSpendings = findViewById(R.id.txt_totalspendings);
 
         viewModel.getTotalspendings().observe(this, new Observer<Integer>() {
             @Override
