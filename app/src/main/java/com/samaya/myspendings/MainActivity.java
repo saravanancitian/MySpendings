@@ -47,23 +47,29 @@ public class MainActivity extends AppCompatActivity{
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if(tab.getId() == R.id.tabdaily){
-                    getSupportFragmentManager().beginTransaction()
-                            .setReorderingAllowed(true)
-                            .add(R.id.fragment_container_view, dailySpendingFragment, null)
-                            .commit();
-                } else  if(tab.getId() == R.id.tabmonthly){
-                    Log.d("Spending", "-----------------monthly------------");
 
-                    getSupportFragmentManager().beginTransaction()
-                            .setReorderingAllowed(true)
-                            .add(R.id.fragment_container_view, monthlySpendingFragment, null)
-                            .commit();
-                } else  if(tab.getId() == R.id.tabyearly){
-//                    getSupportFragmentManager().beginTransaction()
+                Log.d("Spending", "-----------------tabselected------------"+tab.getId() +" pos " + tab.getPosition());
+                Log.d("Spending", "tabdaily"+ R.id.tabdaily +" tabmonthly "+ R.id.tabmonthly);
+
+                switch(tab.getPosition()){
+                    case 0:{
+                        getSupportFragmentManager().beginTransaction()
+                                .setReorderingAllowed(true)
+                                .replace(R.id.fragment_container_view, dailySpendingFragment, null)
+                                .commit();
+                    }break;
+                    case 1:{
+                        getSupportFragmentManager().beginTransaction()
+                                .setReorderingAllowed(true)
+                                .replace(R.id.fragment_container_view, monthlySpendingFragment, null)
+                                .commit();
+                    }break;
+                    case 2:{
+                        //                    getSupportFragmentManager().beginTransaction()
 //                            .setReorderingAllowed(true)
 //                            .add(R.id.fragment_container_view, dailySpendingFragment, null)
 //                            .commit();
+                    }break;
                 }
             }
 
