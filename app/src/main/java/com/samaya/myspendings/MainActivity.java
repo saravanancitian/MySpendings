@@ -1,29 +1,16 @@
 package com.samaya.myspendings;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textview.MaterialTextView;
-import com.samaya.myspendings.db.entity.Spendings;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -40,6 +27,7 @@ public class MainActivity extends AppCompatActivity{
         viewPager = findViewById(R.id.pager);
         pagerAdapter = new FragmentAdapter(getSupportFragmentManager(), getLifecycle());
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setUserInputEnabled(false);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         TextInputEditText txtTotalSpendings = findViewById(R.id.txt_totalspendings);
@@ -65,23 +53,17 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        viewModel.getTotalspendings().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(@Nullable final Integer totalSpendings) {
-                // Update the cached copy of the words in the adapter.
-                if(totalSpendings != null && totalSpendings > 0) {
-                    txtTotalSpendings.setText(String.valueOf(totalSpendings));
-                } else {
-                    txtTotalSpendings.setText("");
-                }
+        viewModel.getTotalspendings().observe(this, totalSpendings -> {
+            // Update the cached copy of the words in the adapter.
+            if(totalSpendings != null && totalSpendings > 0) {
+                txtTotalSpendings.setText(String.valueOf(totalSpendings));
+            } else {
+                txtTotalSpendings.setText("");
             }
         });
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //start RecordActivity
-                startActivity(new Intent(MainActivity.this, RecordActivity.class));
-            }
+        fab.setOnClickListener(view -> {
+            //start RecordActivity
+            startActivity(new Intent(MainActivity.this, RecordActivity.class));
         });
     }
 
