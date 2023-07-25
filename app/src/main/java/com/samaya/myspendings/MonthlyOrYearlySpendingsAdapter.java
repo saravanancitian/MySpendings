@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.samaya.myspendings.db.entity.MonthlyOrYearlySpending;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 public class MonthlyOrYearlySpendingsAdapter extends RecyclerView.Adapter<MonthlyOrYearlySpendingsAdapter.ViewHolder> {
@@ -35,7 +37,7 @@ public class MonthlyOrYearlySpendingsAdapter extends RecyclerView.Adapter<Monthl
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.monthlylistitem, parent, false);
+        View itemView = mInflater.inflate(R.layout.monthlyoryearlylistitem, parent, false);
         return new ViewHolder(itemView);
     }
 
@@ -44,7 +46,19 @@ public class MonthlyOrYearlySpendingsAdapter extends RecyclerView.Adapter<Monthl
         if(spendingsList != null){
             MonthlyOrYearlySpending spending = spendingsList.get(position);
             holder.itmTxtAmt.setText(String.valueOf(spending.amount));
-            holder.itmTxtDate.setText(spending.monthoryear);
+            if(type == TYPE_MONTHLY){
+                String monthvalstr[] = spending.monthoryear.split("-");
+                int monthval = Integer.parseInt(monthvalstr[0]);
+                int yearval = Integer.parseInt(monthvalstr[1]);
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.MONTH, monthval -1);
+                cal.set(Calendar.YEAR, yearval);
+                String month = new SimpleDateFormat("MMM").format(cal.getTime());
+                holder.itmTxtDate.setText(month+ " "+ monthvalstr[1]);
+            } else{
+                holder.itmTxtDate.setText(spending.monthoryear);
+            }
+
         }
     }
     @Override
@@ -62,7 +76,7 @@ public class MonthlyOrYearlySpendingsAdapter extends RecyclerView.Adapter<Monthl
             super(itemView);
 
             itmTxtAmt = itemView.findViewById(R.id.itm_txt_month_amt);
-            itmTxtDate = itemView.findViewById(R.id.itm_txt_month);
+            itmTxtDate = itemView.findViewById(R.id.itm_txt_month_year);
         }
     }
 }

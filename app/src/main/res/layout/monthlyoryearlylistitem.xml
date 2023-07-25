@@ -10,35 +10,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:weightSum="1">
 
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/itm_txt_month"
+            android:id="@+id/itm_txt_month_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@id/itm_txt_amt"
-            android:layout_alignParentRight="true"
-            android:text="10/10/2023">
-
-        </com.google.android.material.textview.MaterialTextView>
-
+            android:layout_weight="0.5"
+            android:textStyle="bold"
+       />
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/itm_txt_month_amt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="100.00"
             android:textSize="16sp"
-            android:textStyle="bold">
-
-        </com.google.android.material.textview.MaterialTextView>
-
-
-
-
-
-
-
+            android:layout_weight="0.5"
+            android:textStyle="bold"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </com.google.android.material.card.MaterialCardView>
