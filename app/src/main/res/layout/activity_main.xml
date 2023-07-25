@@ -52,48 +52,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:contentDescription="Tab"
-        app:tabMode="fixed">
+        app:tabMode="fixed"/>
 
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabdaily"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/str_daily"
-            />
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabmonthly"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/str_monthly"
-            />
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabyearly"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/str_yearly"
-            />
-
-
-    </com.google.android.material.tabs.TabLayout>
-
-    <androidx.fragment.app.FragmentContainerView
+    <androidx.viewpager2.widget.ViewPager2
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_below="@+id/tablayout"
-        android:id="@+id/fragment_container_view"
+        android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/fragment_container_view"
-        android:layout_alignLeft="@id/fragment_container_view"
-        android:layout_alignEnd="@id/fragment_container_view"
-        android:layout_alignBottom="@id/fragment_container_view"
+        android:layout_above="@id/pager"
+        android:layout_alignLeft="@id/pager"
+        android:layout_alignEnd="@id/pager"
+        android:layout_alignBottom="@id/pager"
         android:layout_alignParentRight="false"
         android:layout_gravity="end|bottom"
         android:layout_marginStart="16dp"

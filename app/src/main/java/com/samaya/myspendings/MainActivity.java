@@ -1,36 +1,22 @@
 package com.samaya.myspendings;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textview.MaterialTextView;
-import com.samaya.myspendings.db.entity.Spendings;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
 
     private SpendingsViewModel viewModel;
-
-    private SpendingsFragment dailySpendingFragment;
-    private SpendingsFragment monthlySpendingFragment;
-//    private SpendingsFragment yearlSpendingFragment;
-
+    private ViewPager2 viewPager;
+    private FragmentStateAdapter pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,39 +24,22 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         viewModel = (new ViewModelProvider(this).get(SpendingsViewModel.class));
 
-        dailySpendingFragment = SpendingsFragment.newInstance(SpendingsFragment.FRAGMENT_TYPE_DAILY);
-        monthlySpendingFragment = SpendingsFragment.newInstance(SpendingsFragment.FRAGMENT_TYPE_MONTHLY);
+        viewPager = findViewById(R.id.pager);
+        pagerAdapter = new FragmentAdapter(getSupportFragmentManager(), getLifecycle());
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.setUserInputEnabled(false);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         TextInputEditText txtTotalSpendings = findViewById(R.id.txt_totalspendings);
         TabLayout tabLayout = findViewById(R.id.tablayout);
+        tabLayout.addTab(tabLayout.newTab().setText("Daily"));
+        tabLayout.addTab(tabLayout.newTab().setText("Monthly"));
+        tabLayout.addTab(tabLayout.newTab().setText("Yearls=y"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
-                Log.d("Spending", "-----------------tabselected------------"+tab.getId() +" pos " + tab.getPosition());
-                Log.d("Spending", "tabdaily"+ R.id.tabdaily +" tabmonthly "+ R.id.tabmonthly);
-
-                switch(tab.getPosition()){
-                    case 0:{
-                        getSupportFragmentManager().beginTransaction()
-                                .setReorderingAllowed(true)
-                                .replace(R.id.fragment_container_view, dailySpendingFragment, null)
-                                .commit();
-                    }break;
-                    case 1:{
-                        getSupportFragmentManager().beginTransaction()
-                                .setReorderingAllowed(true)
-                                .replace(R.id.fragment_container_view, monthlySpendingFragment, null)
-                                .commit();
-                    }break;
-                    case 2:{
-                        //                    getSupportFragmentManager().beginTransaction()
-//                            .setReorderingAllowed(true)
-//                            .add(R.id.fragment_container_view, dailySpendingFragment, null)
-//                            .commit();
-                    }break;
-                }
+                viewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -84,34 +53,31 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        viewModel.getTotalspendings().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(@Nullable final Integer totalSpendings) {
-                // Update the cached copy of the words in the adapter.
-                if(totalSpendings != null && totalSpendings > 0) {
-                    txtTotalSpendings.setText(String.valueOf(totalSpendings));
-                } else {
-                    txtTotalSpendings.setText("");
-                }
+        viewModel.getTotalspendings().observe(this, totalSpendings -> {
+            // Update the cached copy of the words in the adapter.
+            if(totalSpendings != null && totalSpendings > 0) {
+                txtTotalSpendings.setText(String.valueOf(totalSpendings));
+            } else {
+                txtTotalSpendings.setText("");
             }
         });
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //start RecordActivity
-                startActivity(new Intent(MainActivity.this, RecordActivity.class));
-            }
+        fab.setOnClickListener(view -> {
+            //start RecordActivity
+            startActivity(new Intent(MainActivity.this, RecordActivity.class));
         });
-
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.fragment_container_view, dailySpendingFragment, null)
-                    .commit();
-        }
-
     }
 
+
+    @Override
+    public void onBackPressed() {
+        if (viewPager.getCurrentItem() == 0) {
+            // If the user is currently looking at the first step, allow the system to handle the
+            // Back button. This calls finish() on this activity and pops the back stack.
+            super.onBackPressed();
+        } else {
+            // Otherwise, select the previous step.
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+        }
+    }
 
 }
