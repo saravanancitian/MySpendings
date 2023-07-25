@@ -41,7 +41,7 @@ public class DailySpendingsAdapter extends RecyclerView.Adapter<DailySpendingsAd
         if(spendingsList != null){
             Spendings spending = spendingsList.get(position);
             holder.itmTxtAmt.setText(String.valueOf(spending.amount));
-            holder.itmTxtDate.setText(sdf.format(spending.whenDt));
+            holder.itmTxtDate.setText(sdf.format(spending.whendt));
             holder.itmTxtPaidto.setText(spending.paidto);
         }
     }

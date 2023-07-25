@@ -18,7 +18,7 @@ public class Spendings {
     public Float amount;
 
     @ColumnInfo(name = "whendt")
-    public Date whenDt;
+    public Date whendt;
 
     @ColumnInfo(name = "remark")
     public String remark;

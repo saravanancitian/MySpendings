@@ -84,7 +84,7 @@ public class RecordActivity extends AppCompatActivity {
                 try {
                     spending.amount = Float.parseFloat(editAmt.getText().toString());
                     spending.paidto = editPaidto.getText().toString();
-                    spending.whenDt = Utils.sdtf.parse(editWhendt.getText().toString() + " "+ editWhentime.getText().toString());
+                    spending.whendt = Utils.sdtf.parse(editWhendt.getText().toString() + " "+ editWhentime.getText().toString());
                     spending.remark = editRemark.getText().toString();
                     viewModel.insert(spending);
 

@@ -11,6 +11,7 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.samaya.myspendings.db.dao.SpendingsDao;
+import com.samaya.myspendings.db.entity.MonthlySpending;
 import com.samaya.myspendings.db.entity.Spendings;
 
 @Database(entities = {Spendings.class}, version = 1)
