@@ -8,8 +8,8 @@ import androidx.lifecycle.LiveData;
 
 import com.samaya.myspendings.db.AppDatabase;
 import com.samaya.myspendings.db.dao.SpendingsDao;
+import com.samaya.myspendings.db.entity.MonthlyOrYearlySpending;
 import com.samaya.myspendings.db.entity.Spendings;
-import com.samaya.myspendings.db.entity.MonthlySpending;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -61,7 +61,8 @@ public class SpendingsRepo {
     public  LiveData<Integer> getTotalSpendings(){
         return dao.getTotalSpendings();
     }
-    public LiveData<List<MonthlySpending>> getMonthlyTotal() { return dao.getMonthlyTotal();  }
+    public LiveData<List<MonthlyOrYearlySpending>> getMonthlyTotal() { return dao.getMonthlyTotal();  }
 
+    public LiveData<List<MonthlyOrYearlySpending>> getYearlyTotal() { return dao.getYearlyTotal();  }
 
 }

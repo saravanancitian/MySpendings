@@ -11,11 +11,10 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.samaya.myspendings.db.dao.SpendingsDao;
-import com.samaya.myspendings.db.entity.MonthlySpending;
 import com.samaya.myspendings.db.entity.Spendings;
 
 @Database(entities = {Spendings.class}, version = 1)
-@TypeConverters({Converters.class})
+@TypeConverters({DateConverters.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase database;
     public abstract SpendingsDao spendingsDao();
