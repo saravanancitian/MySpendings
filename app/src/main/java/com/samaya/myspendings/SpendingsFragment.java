@@ -18,8 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.samaya.myspendings.db.entity.MonthlyOrYearlySpending;
 import com.samaya.myspendings.db.entity.Spendings;
-import com.samaya.myspendings.db.entity.MonthlySpending;
 
 import java.util.List;
 
@@ -42,7 +42,8 @@ public class SpendingsFragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected DailySpendingsAdapter dailySpendingAdapter;
 
-    protected MonthlySpendingsAdapter monthlySpendingsAdapter;
+    protected MonthlyOrYearlySpendingsAdapter monthlySpendingsAdapter;
+    protected MonthlyOrYearlySpendingsAdapter yearlySpendingsAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
     private SpendingsViewModel viewModel;
@@ -145,7 +146,7 @@ public class SpendingsFragment extends Fragment {
 
             }break;
             case FRAGMENT_TYPE_MONTHLY:{
-                monthlySpendingsAdapter = new MonthlySpendingsAdapter(inflater);
+                monthlySpendingsAdapter = new MonthlyOrYearlySpendingsAdapter(MonthlyOrYearlySpendingsAdapter.TYPE_MONTHLY,inflater);
                 mRecyclerView.setAdapter(monthlySpendingsAdapter);
                 monthlySpendingsAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
                     @Override
@@ -161,28 +162,52 @@ public class SpendingsFragment extends Fragment {
                     }
                 });
 
-                LiveData<List<MonthlySpending>> spendings = viewModel.getMonthlySpendings();
+                LiveData<List<MonthlyOrYearlySpending>> spendings = viewModel.getMonthlySpendings();
                 if(spendings.getValue() == null || spendings.getValue().isEmpty()){
                     txtEmpty.setVisibility(View.VISIBLE);
                 }
 
-                spendings.observe(getViewLifecycleOwner(), new Observer<List<MonthlySpending>>() {
+                spendings.observe(getViewLifecycleOwner(), new Observer<List<MonthlyOrYearlySpending>>() {
                     @Override
-                    public void onChanged(@Nullable final List<MonthlySpending> spendings) {
+                    public void onChanged(@Nullable final List<MonthlyOrYearlySpending> spendings) {
                         // Update the cached copy of the words in the adapter.
                         monthlySpendingsAdapter.setMonthlySpendingsList(spendings);
                     }
                 });
 
             }break;
-            case FRAGMENT_TYPE_YEARlY:{}break;
+            case FRAGMENT_TYPE_YEARlY:{
+                yearlySpendingsAdapter = new MonthlyOrYearlySpendingsAdapter(MonthlyOrYearlySpendingsAdapter.TYPE_YEARLY,inflater);
+                mRecyclerView.setAdapter(yearlySpendingsAdapter);
+                yearlySpendingsAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                    @Override
+                    public void onChanged() {
+                        super.onChanged();
+                        if(yearlySpendingsAdapter.getItemCount() > 0){
+                            if(txtEmpty.getVisibility() == View.VISIBLE){
+                                txtEmpty.setVisibility(View.GONE);
+                            }
+                        } else {
+                            txtEmpty.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+
+                LiveData<List<MonthlyOrYearlySpending>> spendings = viewModel.getYearlySpendings();
+                if(spendings.getValue() == null || spendings.getValue().isEmpty()){
+                    txtEmpty.setVisibility(View.VISIBLE);
+                }
+
+                spendings.observe(getViewLifecycleOwner(), new Observer<List<MonthlyOrYearlySpending>>() {
+                    @Override
+                    public void onChanged(@Nullable final List<MonthlyOrYearlySpending> spendings) {
+                        // Update the cached copy of the words in the adapter.
+                        yearlySpendingsAdapter.setMonthlySpendingsList(spendings);
+                    }
+                });
+
+            }break;
         }
-
-
-
-
-
-
         return rootView;
     }
 }

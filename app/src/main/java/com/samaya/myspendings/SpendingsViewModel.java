@@ -6,9 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.samaya.myspendings.db.entity.MonthlyOrYearlySpending;
 import com.samaya.myspendings.db.entity.Spendings;
 import com.samaya.myspendings.db.repo.SpendingsRepo;
-import com.samaya.myspendings.db.entity.MonthlySpending;
 
 import java.util.List;
 
@@ -16,13 +16,17 @@ public class SpendingsViewModel  extends AndroidViewModel {
     private SpendingsRepo repo;
     private LiveData<List<Spendings>> allspendings;
     private LiveData<Integer> totalSpendings;
-    private LiveData<List<MonthlySpending>> monthlySpendings;
+    private LiveData<List<MonthlyOrYearlySpending>> monthlySpendings;
+
+    private LiveData<List<MonthlyOrYearlySpending>> yearlySpendings;
+
     public SpendingsViewModel(@NonNull Application application) {
         super(application);
         repo = new SpendingsRepo(application);
         allspendings = repo.getAllSpendings();
         totalSpendings = repo.getTotalSpendings();
         monthlySpendings = repo.getMonthlyTotal();
+        yearlySpendings = repo.getYearlyTotal();
     }
 
     public LiveData<List<Spendings>> getAllspendings(){
@@ -33,7 +37,9 @@ public class SpendingsViewModel  extends AndroidViewModel {
         return totalSpendings;
     }
 
-    public  LiveData<List<MonthlySpending>> getMonthlySpendings(){return  monthlySpendings;}
+    public  LiveData<List<MonthlyOrYearlySpending>> getMonthlySpendings(){return  monthlySpendings;}
+
+    public  LiveData<List<MonthlyOrYearlySpending>> getYearlySpendings(){return  yearlySpendings;}
 
     void insert(Spendings spending){
         repo.insert(spending);

@@ -8,23 +8,28 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.samaya.myspendings.db.entity.MonthlySpending;
+import com.samaya.myspendings.db.entity.MonthlyOrYearlySpending;
 
 import java.util.List;
 
-public class MonthlySpendingsAdapter extends RecyclerView.Adapter<MonthlySpendingsAdapter.ViewHolder> {
+public class MonthlyOrYearlySpendingsAdapter extends RecyclerView.Adapter<MonthlyOrYearlySpendingsAdapter.ViewHolder> {
 
-    private List<MonthlySpending> spendingsList;
+    final static int TYPE_YEARLY = 1;
+    final static int TYPE_MONTHLY = 2;
+    int type;
 
-    public void setMonthlySpendingsList(List<MonthlySpending> spendingsList) {
+    private List<MonthlyOrYearlySpending> spendingsList;
+
+    public void setMonthlySpendingsList(List<MonthlyOrYearlySpending> spendingsList) {
         this.spendingsList = spendingsList;
         notifyDataSetChanged();
     }
 
     private final LayoutInflater mInflater;
 
-    public MonthlySpendingsAdapter(LayoutInflater mInflater) {
+    public MonthlyOrYearlySpendingsAdapter(int type,LayoutInflater mInflater) {
         this.mInflater = mInflater;
+        this.type = type;
     }
 
     @NonNull
@@ -37,9 +42,9 @@ public class MonthlySpendingsAdapter extends RecyclerView.Adapter<MonthlySpendin
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if(spendingsList != null){
-            MonthlySpending spending = spendingsList.get(position);
+            MonthlyOrYearlySpending spending = spendingsList.get(position);
             holder.itmTxtAmt.setText(String.valueOf(spending.amount));
-            holder.itmTxtDate.setText(spending.month);
+            holder.itmTxtDate.setText(spending.monthoryear);
         }
     }
     @Override
