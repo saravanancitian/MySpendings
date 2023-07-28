@@ -60,6 +60,11 @@ public class DailySpendingsAdapter extends RecyclerView.Adapter<DailySpendingsAd
         spendingsList.remove(position);
         notifyDataSetChanged();
     }
+
+    public void undoRemove(int position, Spendings spending){
+        spendingsList.add(position, spending);
+        notifyDataSetChanged();
+    }
     public Spendings getItem(int position){
         return spendingsList.get(position);
     }

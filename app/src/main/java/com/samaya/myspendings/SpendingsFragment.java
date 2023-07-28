@@ -14,11 +14,14 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.samaya.myspendings.db.entity.MonthlyOrYearlySpending;
 import com.samaya.myspendings.db.entity.Spendings;
 
@@ -106,8 +109,31 @@ public class SpendingsFragment extends Fragment {
                     @Override
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                         int position = viewHolder.getAdapterPosition();
-                        viewModel.delete(dailySpendingAdapter.getItem(position));
+                        Spendings spending  = dailySpendingAdapter.getItem(position);
+                        viewModel.purge();
+                        viewModel.setCandelete(spending);
                         dailySpendingAdapter.removeItem(position);
+                        Snackbar.make(getActivity().getCurrentFocus(), R.string.snack_txt_deleted, Snackbar.LENGTH_LONG)
+                                .setAction(R.string.snack_txt_undo, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Log.d("spending fragment", "-----------------fragement ");
+                                        viewModel.undoDelete(spending);
+                                        dailySpendingAdapter.undoRemove(position, spending);
+                                    }
+                                })
+                                .addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                                    @Override
+                                    public void onDismissed(Snackbar transientBottomBar, int event) {
+                                        super.onDismissed(transientBottomBar, event);
+                                        if(event == DISMISS_EVENT_TIMEOUT){
+                                            Log.d("spending fragment", "-----------------dismis timeout fragement ");
+                                            viewModel.delete(spending);
+                                        }
+                                    }
+                                })
+                                .show();
+
                     }
 
                     @Override

@@ -53,6 +53,14 @@ public class SpendingsRepo {
             }
         });
     }
+    public void purge(){
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.purge();
+            }
+        });
+    }
 
     public  LiveData<List<Spendings>> getAllSpendings(){
         return dao.getAllSpendings();

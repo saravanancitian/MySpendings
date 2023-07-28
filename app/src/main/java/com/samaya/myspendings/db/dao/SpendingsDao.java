@@ -24,15 +24,18 @@ public interface SpendingsDao {
     @Delete
     void deleteSpending(Spendings spending);
 
-    @Query("SELECT * FROM spendings ORDER BY whendt desc")
+    @Query("DELETE FROM spendings  where state = 2")
+    void purge();
+
+    @Query("SELECT * FROM spendings where state = 1 ORDER BY whendt desc ")
     LiveData<List<Spendings>> getAllSpendings();
 
-    @Query("SELECT sum(sp.amount) FROM spendings as sp")
+    @Query("SELECT sum(sp.amount) FROM spendings as sp where sp.state = 1")
     LiveData<Integer> getTotalSpendings();
 
-    @Query("SELECT sum(sp.amount) as amount , strftime('%m-%Y', sp.whendt) as monthoryear FROM spendings as sp group by monthoryear")
+    @Query("SELECT sum(sp.amount) as amount , strftime('%m-%Y', sp.whendt) as monthoryear FROM spendings as sp  where sp.state = 1 group by monthoryear")
     LiveData<List<MonthlyOrYearlySpending>> getMonthlyTotal();
 
-    @Query("SELECT sum(sp.amount) as amount , strftime('%Y', sp.whendt) as monthoryear FROM spendings as sp group by monthoryear")
+    @Query("SELECT sum(sp.amount) as amount , strftime('%Y', sp.whendt) as monthoryear FROM spendings as sp where sp.state = 1 group by monthoryear")
     LiveData<List<MonthlyOrYearlySpending>> getYearlyTotal();
 }
