@@ -45,4 +45,5 @@ public class SpendingsViewModel  extends AndroidViewModel {
         repo.insert(spending);
     }
     void delete(Spendings spending){ repo.delete(spending);}
+    void update(Spendings spending){repo.update(spending);}
 }

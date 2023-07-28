@@ -140,14 +140,13 @@ public class SpendingsFragment extends Fragment {
                     @Override
                     public void onItemClick(View view, int position, Spendings spending) {
                         Intent intent = new Intent(getActivity(), RecordActivity.class);
-                        intent.putExtra("ops","update");
-                        intent.putExtra("id", spending.ID);
-                        intent.putExtra("amount", spending.amount);
+                        intent.putExtra("ops", "update");
+                        intent.putExtra("ID", spending.ID);
+                        intent.putExtra("amount",  spending.amount);
                         intent.putExtra("paidto", spending.paidto);
                         intent.putExtra("remark", spending.remark);
                         intent.putExtra("whendate", Utils.sdf.format(spending.whendt));
                         intent.putExtra("whentime", Utils.stf.format(spending.whendt));
-
                         startActivity(intent);
                     }
                 });
