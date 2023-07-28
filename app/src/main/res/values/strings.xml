@@ -18,4 +18,6 @@
     <string name="str_monthly">Monthly</string>
     <string name="str_yearly">Yearly</string>
     <string name="lbl_total_spendings">Total Spendings</string>
+    <string name="snack_txt_deleted">Record Deleted from the list</string>
+    <string name="snack_txt_undo">Undo</string>
 </resources>

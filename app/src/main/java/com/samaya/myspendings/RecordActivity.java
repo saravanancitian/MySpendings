@@ -1,5 +1,6 @@
 package com.samaya.myspendings;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -30,24 +31,55 @@ public class RecordActivity extends AppCompatActivity {
 
     TextInputEditText editRemark;
 
+    String ops = "insert";
+
     MaterialButton btnSave;
 
     MaterialDatePicker materialDatePicker;
     MaterialTimePicker materialTimePicker;
+    Integer updateID = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
         setContentView(R.layout.activity_record);
         viewModel = (new ViewModelProvider(this).get(SpendingsViewModel.class));
+
+
+
         editAmt = findViewById(R.id.edit_amt);
         editPaidto = findViewById(R.id.edit_Paidto);
-
         editWhendt = findViewById(R.id.edit_whendt);
-        editWhendt.setText(Utils.sdf.format(Calendar.getInstance().getTime()));
         editWhentime =  findViewById(R.id.edit_whentime);
-        editWhentime.setText(Utils.stf.format(Calendar.getInstance().getTime()));
         editRemark =  findViewById(R.id.edit_remark);
+
+        editWhendt.setText(Utils.sdf.format(Calendar.getInstance().getTime()));
+        editWhentime.setText(Utils.stf.format(Calendar.getInstance().getTime()));
+        btnSave = findViewById(R.id.btn_save);
+
+
+        ops = intent.getStringExtra("ops");
+        if(ops == null){
+            ops = "insert";
+        } else{
+            if(ops.equalsIgnoreCase("update")){
+                updateID = intent.getIntExtra("ID", -1);
+                Float amount =  intent.getFloatExtra("amount", 0);
+                String paidto = intent.getStringExtra("paidto");
+                String remark = intent.getStringExtra("remark");
+                String whendate = intent.getStringExtra("whendate");
+                String whentime = intent.getStringExtra("whentime");
+                editAmt.setText(String.valueOf(amount));
+                editPaidto.setText(paidto);
+                editRemark.setText(remark);
+                editWhendt.setText(whendate);
+                editWhentime.setText(whentime);
+            }
+        }
+
+
+
 
         editPaidto.addTextChangedListener(new TextWatcher() {
 
@@ -72,7 +104,8 @@ public class RecordActivity extends AppCompatActivity {
 
             }
         });
-        btnSave = findViewById(R.id.btn_save);
+
+
 
         btnSave.setOnClickListener(view -> {
             Spendings spending = new Spendings();
@@ -86,7 +119,16 @@ public class RecordActivity extends AppCompatActivity {
                     spending.paidto = editPaidto.getText().toString();
                     spending.whendt = Utils.sdtf.parse(editWhendt.getText().toString() + " "+ editWhentime.getText().toString());
                     spending.remark = editRemark.getText().toString();
-                    viewModel.insert(spending);
+                    if(ops.equalsIgnoreCase("update")){
+                        if(updateID != -1) {
+                            spending.ID = updateID;
+                            viewModel.update(spending);
+                        } else {
+                            throw new Exception("Error with update object");
+                        }
+                    } else {
+                        viewModel.insert(spending);
+                    }
 
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -115,6 +157,8 @@ public class RecordActivity extends AppCompatActivity {
         editWhendt.setOnClickListener(view -> materialDatePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER"));
 
         editWhentime.setOnClickListener(view -> materialTimePicker.show(getSupportFragmentManager(), "MATERIAL_TIME_PICKER"));
+
+
 
     }
 }

@@ -16,11 +16,21 @@ import java.util.List;
 
 public class DailySpendingsAdapter extends RecyclerView.Adapter<DailySpendingsAdapter.ViewHolder> {
 
+    public static interface OnItemClickListener{
+
+        public void onItemClick(View view, int position, Spendings spending);
+    }
+
+    OnItemClickListener listener;
     private List<Spendings> spendingsList;
 
     public void setSpendingsList(List<Spendings> spendingsList) {
         this.spendingsList = spendingsList;
         notifyDataSetChanged();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
     }
 
     private final LayoutInflater mInflater;
@@ -43,10 +53,16 @@ public class DailySpendingsAdapter extends RecyclerView.Adapter<DailySpendingsAd
             holder.itmTxtAmt.setText(String.valueOf(spending.amount));
             holder.itmTxtDate.setText(sdf.format(spending.whendt));
             holder.itmTxtPaidto.setText(spending.paidto);
+            holder.itemView.setOnClickListener(view -> DailySpendingsAdapter.this.listener.onItemClick(view, position, spending));
         }
     }
     public void removeItem(int position){
         spendingsList.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public void undoRemove(int position, Spendings spending){
+        spendingsList.add(position, spending);
         notifyDataSetChanged();
     }
     public Spendings getItem(int position){
@@ -60,6 +76,7 @@ public class DailySpendingsAdapter extends RecyclerView.Adapter<DailySpendingsAd
         }
         return 0;
     }
+
 
     public static class ViewHolder extends  RecyclerView.ViewHolder{
         private final TextView itmTxtAmt;

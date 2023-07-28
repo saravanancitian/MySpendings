@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity{
         TabLayout tabLayout = findViewById(R.id.tablayout);
         tabLayout.addTab(tabLayout.newTab().setText("Daily"));
         tabLayout.addTab(tabLayout.newTab().setText("Monthly"));
-        tabLayout.addTab(tabLayout.newTab().setText("Yearls=y"));
+        tabLayout.addTab(tabLayout.newTab().setText("Yearls"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
