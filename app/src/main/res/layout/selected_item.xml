@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/dia_ll_amt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+        android:weightSum="1">
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/dia_lbl_amt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Amount:"
+        android:layout_weight="0.5"/>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/dia_txt_amt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Amount Spend here"
+        android:layout_weight="0.5"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/dia_ll_paidto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+        android:weightSum="1">
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dia_lbl_paidto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paid To:"
+            android:layout_weight="0.5"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dia_txt_paidto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Paid to here"
+            android:layout_weight="0.5"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/dia_ll_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+        android:weightSum="1">
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dia_lbl_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date:"
+            android:layout_weight="0.5"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dia_txt_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Paid date here"
+            android:layout_weight="0.5"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/dia_ll_remark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="5dp"
+        android:weightSum="1">
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dia_lbl_remark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remark"
+            android:layout_weight="0.5"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dia_txt_remark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Paid date here"
+            android:layout_weight="0.5"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
