@@ -20,8 +20,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textview.MaterialTextView;
 import com.samaya.myspendings.db.entity.MonthlyOrYearlySpending;
 import com.samaya.myspendings.db.entity.Spendings;
 
@@ -113,7 +115,7 @@ public class SpendingsFragment extends Fragment {
                         viewModel.purge();
                         viewModel.setCandelete(spending);
                         dailySpendingAdapter.removeItem(position);
-                        Snackbar.make(getActivity().getCurrentFocus(), R.string.snack_txt_deleted, Snackbar.LENGTH_LONG)
+                        Snackbar.make(rootView, R.string.snack_txt_deleted, Snackbar.LENGTH_LONG)
                                 .setAction(R.string.snack_txt_undo, new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -165,15 +167,31 @@ public class SpendingsFragment extends Fragment {
                 dailySpendingAdapter.setOnItemClickListener(new DailySpendingsAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position, Spendings spending) {
-                        Intent intent = new Intent(getActivity(), RecordActivity.class);
-                        intent.putExtra("ops", "update");
-                        intent.putExtra("ID", spending.ID);
-                        intent.putExtra("amount",  spending.amount);
-                        intent.putExtra("paidto", spending.paidto);
-                        intent.putExtra("remark", spending.remark);
-                        intent.putExtra("whendate", Utils.sdf.format(spending.whendt));
-                        intent.putExtra("whentime", Utils.stf.format(spending.whendt));
-                        startActivity(intent);
+
+                        View dialogview = inflater.inflate(R.layout.selected_item, container);
+
+                        MaterialTextView tv = dialogview.findViewById(R.id.dia_txt_amt);
+                        tv.setText(String.valueOf(spending.amount));
+                        tv = dialogview.findViewById(R.id.dia_txt_paidto);
+                        tv.setText(spending.paidto);
+                        tv = dialogview.findViewById(R.id.dia_txt_date);
+                        tv.setText(Utils.sdtf.format(spending.whendt));
+                        tv = dialogview.findViewById(R.id.dia_txt_remark);
+                        tv.setText(spending.paidto);
+
+                        new MaterialAlertDialogBuilder(getActivity())
+                                .setView(dialogview)
+                                .setPositiveButton("Edit", (d, w)->{
+                                    Intent intent = new Intent(getActivity(), RecordActivity.class);
+                                    intent.putExtra("Spending", spending);
+                                    intent.putExtra("ops", "update");
+                                    startActivity(intent);
+                                })
+                                .setNegativeButton("Cancel", (d, w)->{
+
+                                })
+                                .create()
+                                .show();
                     }
                 });
 

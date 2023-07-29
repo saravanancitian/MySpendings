@@ -1,6 +1,7 @@
 package com.samaya.myspendings;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -37,7 +38,9 @@ public class RecordActivity extends AppCompatActivity {
 
     MaterialDatePicker materialDatePicker;
     MaterialTimePicker materialTimePicker;
-    Integer updateID = -1;
+
+
+    Spendings spendingsforupdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,17 +67,16 @@ public class RecordActivity extends AppCompatActivity {
             ops = "insert";
         } else{
             if(ops.equalsIgnoreCase("update")){
-                updateID = intent.getIntExtra("ID", -1);
-                Float amount =  intent.getFloatExtra("amount", 0);
-                String paidto = intent.getStringExtra("paidto");
-                String remark = intent.getStringExtra("remark");
-                String whendate = intent.getStringExtra("whendate");
-                String whentime = intent.getStringExtra("whentime");
-                editAmt.setText(String.valueOf(amount));
-                editPaidto.setText(paidto);
-                editRemark.setText(remark);
-                editWhendt.setText(whendate);
-                editWhentime.setText(whentime);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    spendingsforupdate = intent.getParcelableExtra("Spending", Spendings.class);
+                } else {
+                    spendingsforupdate = intent.getParcelableExtra("Spending");
+                }
+                editAmt.setText(String.valueOf(spendingsforupdate.amount));
+                editPaidto.setText(spendingsforupdate.paidto);
+                editRemark.setText(spendingsforupdate.remark);
+                editWhendt.setText(Utils.sdf.format(spendingsforupdate.whendt));
+                editWhentime.setText(Utils.stf.format(spendingsforupdate.whendt));
             }
         }
 
@@ -108,20 +110,19 @@ public class RecordActivity extends AppCompatActivity {
 
 
         btnSave.setOnClickListener(view -> {
-            Spendings spending = new Spendings();
             if(editAmt.getText() == null || TextUtils.isEmpty(editAmt.getText().toString()) || editPaidto.getText() == null || editPaidto.getText() == null || TextUtils.isEmpty(editPaidto.getText().toString()) ||
                     editWhendt.getText() == null || TextUtils.isEmpty(editWhendt.getText().toString()) || editWhentime.getText() == null ||TextUtils.isEmpty(editWhentime.getText().toString())
             || editRemark.getText() == null || TextUtils.isEmpty(editRemark.getText().toString())){
                 Toast.makeText(getBaseContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
             } else {
                 try {
+                    Spendings spending = new Spendings(spendingsforupdate);
                     spending.amount = Float.parseFloat(editAmt.getText().toString());
                     spending.paidto = editPaidto.getText().toString();
                     spending.whendt = Utils.sdtf.parse(editWhendt.getText().toString() + " "+ editWhentime.getText().toString());
                     spending.remark = editRemark.getText().toString();
-                    if(ops.equalsIgnoreCase("update")){
-                        if(updateID != -1) {
-                            spending.ID = updateID;
+                   if(ops.equalsIgnoreCase("update")){
+                        if(spendingsforupdate != null) {
                             viewModel.update(spending);
                         } else {
                             throw new Exception("Error with update object");
