@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.samaya.myspendings.db.entity.MonthlyOrYearlySpending;
+import com.samaya.myspendings.db.entity.DMYSpending;
 import com.samaya.myspendings.db.entity.Spendings;
 import com.samaya.myspendings.db.repo.SpendingsRepo;
 
@@ -17,9 +17,10 @@ public class SpendingsViewModel  extends AndroidViewModel {
     private SpendingsRepo repo;
     private LiveData<List<Spendings>> allspendings;
     private LiveData<Integer> totalSpendings;
-    private LiveData<List<MonthlyOrYearlySpending>> monthlySpendings;
+    private LiveData<List<DMYSpending>> monthlySpendings;
 
-    private LiveData<List<MonthlyOrYearlySpending>> yearlySpendings;
+    private LiveData<List<DMYSpending>> yearlySpendings;
+    private LiveData<List<DMYSpending>> dailySpendings;
 
     public SpendingsViewModel(@NonNull Application application) {
         super(application);
@@ -28,6 +29,7 @@ public class SpendingsViewModel  extends AndroidViewModel {
         totalSpendings = repo.getTotalSpendings();
         monthlySpendings = repo.getMonthlyTotal();
         yearlySpendings = repo.getYearlyTotal();
+        dailySpendings = repo.getDailyTotal();
     }
 
     public LiveData<List<Spendings>> getAllspendings(){
@@ -38,9 +40,11 @@ public class SpendingsViewModel  extends AndroidViewModel {
         return totalSpendings;
     }
 
-    public  LiveData<List<MonthlyOrYearlySpending>> getMonthlySpendings(){return  monthlySpendings;}
+    public  LiveData<List<DMYSpending>> getMonthlySpendings(){return  monthlySpendings;}
 
-    public  LiveData<List<MonthlyOrYearlySpending>> getYearlySpendings(){return  yearlySpendings;}
+    public  LiveData<List<DMYSpending>> getYearlySpendings(){return  yearlySpendings;}
+
+    public  LiveData<List<DMYSpending>> getDailySpendings(){return  dailySpendings;}
 
     void insert(Spendings spending){
         spending.createdDt = new Date(System.currentTimeMillis());

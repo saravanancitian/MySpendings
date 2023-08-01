@@ -8,28 +8,29 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.samaya.myspendings.db.entity.MonthlyOrYearlySpending;
+import com.samaya.myspendings.db.entity.DMYSpending;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
-public class MonthlyOrYearlySpendingsAdapter extends RecyclerView.Adapter<MonthlyOrYearlySpendingsAdapter.ViewHolder> {
+public class DMYSpendingsAdapter extends RecyclerView.Adapter<DMYSpendingsAdapter.ViewHolder> {
 
     final static int TYPE_YEARLY = 1;
     final static int TYPE_MONTHLY = 2;
+    final static int TYPE_DAILY = 3;
     int type;
 
-    private List<MonthlyOrYearlySpending> spendingsList;
+    private List<DMYSpending> spendingsList;
 
-    public void setMonthlySpendingsList(List<MonthlyOrYearlySpending> spendingsList) {
+    public void setMonthlySpendingsList(List<DMYSpending> spendingsList) {
         this.spendingsList = spendingsList;
         notifyDataSetChanged();
     }
 
     private final LayoutInflater mInflater;
 
-    public MonthlyOrYearlySpendingsAdapter(int type,LayoutInflater mInflater) {
+    public DMYSpendingsAdapter(int type, LayoutInflater mInflater) {
         this.mInflater = mInflater;
         this.type = type;
     }
@@ -44,10 +45,10 @@ public class MonthlyOrYearlySpendingsAdapter extends RecyclerView.Adapter<Monthl
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if(spendingsList != null){
-            MonthlyOrYearlySpending spending = spendingsList.get(position);
+            DMYSpending spending = spendingsList.get(position);
             holder.itmTxtAmt.setText(String.valueOf(spending.amount));
             if(type == TYPE_MONTHLY){
-                String monthvalstr[] = spending.monthoryear.split("-");
+                String monthvalstr[] = spending.dmyDate.split("-");
                 int monthval = Integer.parseInt(monthvalstr[0]);
                 int yearval = Integer.parseInt(monthvalstr[1]);
                 Calendar cal = Calendar.getInstance();
@@ -55,8 +56,18 @@ public class MonthlyOrYearlySpendingsAdapter extends RecyclerView.Adapter<Monthl
                 cal.set(Calendar.YEAR, yearval);
                 String month = new SimpleDateFormat("MMM").format(cal.getTime());
                 holder.itmTxtDate.setText(month+ " "+ monthvalstr[1]);
-            } else{
-                holder.itmTxtDate.setText(spending.monthoryear);
+            } else if(type == TYPE_YEARLY) {
+                holder.itmTxtDate.setText(spending.dmyDate);
+            } else if(type == TYPE_DAILY){
+                String monthvalstr[] = spending.dmyDate.split("-");
+                int dayval = Integer.parseInt(monthvalstr[0]);
+                int monthval = Integer.parseInt(monthvalstr[1]);
+                int yearval = Integer.parseInt(monthvalstr[2]);
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.MONTH, monthval -1);
+                cal.set(Calendar.YEAR, yearval);
+                cal.set(Calendar.DAY_OF_MONTH, dayval);
+                holder.itmTxtDate.setText(Utils.sdf.format(cal.getTime()));
             }
 
         }
