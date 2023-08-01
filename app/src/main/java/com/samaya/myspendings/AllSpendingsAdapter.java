@@ -14,7 +14,7 @@ import com.samaya.myspendings.db.entity.Spendings;
 
 import java.util.List;
 
-public class DailySpendingsAdapter extends RecyclerView.Adapter<DailySpendingsAdapter.ViewHolder> {
+public class AllSpendingsAdapter extends RecyclerView.Adapter<AllSpendingsAdapter.ViewHolder> {
 
     public static interface OnItemClickListener{
 
@@ -35,7 +35,7 @@ public class DailySpendingsAdapter extends RecyclerView.Adapter<DailySpendingsAd
 
     private final LayoutInflater mInflater;
 
-    public DailySpendingsAdapter(LayoutInflater mInflater) {
+    public AllSpendingsAdapter(LayoutInflater mInflater) {
         this.mInflater = mInflater;
     }
 
@@ -53,7 +53,7 @@ public class DailySpendingsAdapter extends RecyclerView.Adapter<DailySpendingsAd
             holder.itmTxtAmt.setText(String.valueOf(spending.amount));
             holder.itmTxtDate.setText(sdf.format(spending.whendt));
             holder.itmTxtPaidto.setText(spending.paidto);
-            holder.itemView.setOnClickListener(view -> DailySpendingsAdapter.this.listener.onItemClick(view, position, spending));
+            holder.itemView.setOnClickListener(view -> AllSpendingsAdapter.this.listener.onItemClick(view, position, spending));
         }
     }
     public void removeItem(int position){

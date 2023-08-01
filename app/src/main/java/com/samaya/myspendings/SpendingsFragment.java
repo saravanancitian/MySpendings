@@ -24,7 +24,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
-import com.samaya.myspendings.db.entity.MonthlyOrYearlySpending;
+import com.samaya.myspendings.db.entity.DMYSpending;
 import com.samaya.myspendings.db.entity.Spendings;
 
 import java.util.List;
@@ -36,9 +36,14 @@ import java.util.List;
  */
 public class SpendingsFragment extends Fragment {
 
-    public static final int FRAGMENT_TYPE_DAILY = 1;
-    public static final int FRAGMENT_TYPE_MONTHLY = 2;
-    public static final int FRAGMENT_TYPE_YEARlY = 3;
+    public static final int FRAGMENT_TYPE_ALL_SPENDINGS = 1;
+
+    public static final int FRAGMENT_TYPE_DAILY = 2;
+
+    public static final int FRAGMENT_TYPE_MONTHLY = 3;
+    public static final int FRAGMENT_TYPE_YEARlY = 4;
+
+    public static final int TOTAL_FRAGMENT_COUNT = 4;
     private static final String ARG_FRAGMENT_TYPE = "param1";
     private int fragmentType;
     private SpendingsViewModel viewModel;
@@ -83,15 +88,15 @@ public class SpendingsFragment extends Fragment {
         TextView txtEmpty = (TextView) rootView.findViewById(R.id.txt_emtpy);
 
         switch (fragmentType){
-            case FRAGMENT_TYPE_DAILY:{
+            case FRAGMENT_TYPE_ALL_SPENDINGS:{
 
-                DailySpendingsAdapter dailySpendingAdapter = new DailySpendingsAdapter(inflater);
-                mRecyclerView.setAdapter(dailySpendingAdapter);
-                dailySpendingAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                AllSpendingsAdapter allSpendingAdapter = new AllSpendingsAdapter(inflater);
+                mRecyclerView.setAdapter(allSpendingAdapter);
+                allSpendingAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
                     @Override
                     public void onChanged() {
                         super.onChanged();
-                        if(dailySpendingAdapter.getItemCount() > 0){
+                        if(allSpendingAdapter.getItemCount() > 0){
                             if(txtEmpty.getVisibility() == View.VISIBLE){
                                 txtEmpty.setVisibility(View.GONE);
                             }
@@ -111,17 +116,17 @@ public class SpendingsFragment extends Fragment {
                     @Override
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                         int position = viewHolder.getAdapterPosition();
-                        Spendings spending  = dailySpendingAdapter.getItem(position);
+                        Spendings spending  = allSpendingAdapter.getItem(position);
                         viewModel.purge();
                         viewModel.setCandelete(spending);
-                        dailySpendingAdapter.removeItem(position);
+                        allSpendingAdapter.removeItem(position);
                         Snackbar.make(rootView, R.string.snack_txt_deleted, Snackbar.LENGTH_LONG)
                                 .setAction(R.string.snack_txt_undo, new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                         Log.d("spending fragment", "-----------------fragement ");
                                         viewModel.undoDelete(spending);
-                                        dailySpendingAdapter.undoRemove(position, spending);
+                                        allSpendingAdapter.undoRemove(position, spending);
                                     }
                                 })
                                 .addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
@@ -160,11 +165,11 @@ public class SpendingsFragment extends Fragment {
                     @Override
                     public void onChanged(@Nullable final List<Spendings> spendings) {
                         // Update the cached copy of the words in the adapter.
-                        dailySpendingAdapter.setSpendingsList(spendings);
+                        allSpendingAdapter.setSpendingsList(spendings);
                     }
                 });
 
-                dailySpendingAdapter.setOnItemClickListener(new DailySpendingsAdapter.OnItemClickListener() {
+                allSpendingAdapter.setOnItemClickListener(new AllSpendingsAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position, Spendings spending) {
 
@@ -197,7 +202,7 @@ public class SpendingsFragment extends Fragment {
 
             }break;
             case FRAGMENT_TYPE_MONTHLY:{
-                MonthlyOrYearlySpendingsAdapter monthlySpendingsAdapter = new MonthlyOrYearlySpendingsAdapter(MonthlyOrYearlySpendingsAdapter.TYPE_MONTHLY,inflater);
+                DMYSpendingsAdapter monthlySpendingsAdapter = new DMYSpendingsAdapter(DMYSpendingsAdapter.TYPE_MONTHLY,inflater);
                 mRecyclerView.setAdapter(monthlySpendingsAdapter);
                 monthlySpendingsAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
                     @Override
@@ -213,14 +218,14 @@ public class SpendingsFragment extends Fragment {
                     }
                 });
 
-                LiveData<List<MonthlyOrYearlySpending>> spendings = viewModel.getMonthlySpendings();
+                LiveData<List<DMYSpending>> spendings = viewModel.getMonthlySpendings();
                 if(spendings.getValue() == null || spendings.getValue().isEmpty()){
                     txtEmpty.setVisibility(View.VISIBLE);
                 }
 
-                spendings.observe(getViewLifecycleOwner(), new Observer<List<MonthlyOrYearlySpending>>() {
+                spendings.observe(getViewLifecycleOwner(), new Observer<List<DMYSpending>>() {
                     @Override
-                    public void onChanged(@Nullable final List<MonthlyOrYearlySpending> spendings) {
+                    public void onChanged(@Nullable final List<DMYSpending> spendings) {
                         // Update the cached copy of the words in the adapter.
                         monthlySpendingsAdapter.setMonthlySpendingsList(spendings);
                     }
@@ -228,7 +233,7 @@ public class SpendingsFragment extends Fragment {
 
             }break;
             case FRAGMENT_TYPE_YEARlY:{
-                MonthlyOrYearlySpendingsAdapter yearlySpendingsAdapter = new MonthlyOrYearlySpendingsAdapter(MonthlyOrYearlySpendingsAdapter.TYPE_YEARLY,inflater);
+                DMYSpendingsAdapter yearlySpendingsAdapter = new DMYSpendingsAdapter(DMYSpendingsAdapter.TYPE_YEARLY,inflater);
                 mRecyclerView.setAdapter(yearlySpendingsAdapter);
                 yearlySpendingsAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
                     @Override
@@ -244,16 +249,48 @@ public class SpendingsFragment extends Fragment {
                     }
                 });
 
-                LiveData<List<MonthlyOrYearlySpending>> spendings = viewModel.getYearlySpendings();
+                LiveData<List<DMYSpending>> spendings = viewModel.getYearlySpendings();
                 if(spendings.getValue() == null || spendings.getValue().isEmpty()){
                     txtEmpty.setVisibility(View.VISIBLE);
                 }
 
-                spendings.observe(getViewLifecycleOwner(), new Observer<List<MonthlyOrYearlySpending>>() {
+                spendings.observe(getViewLifecycleOwner(), new Observer<List<DMYSpending>>() {
                     @Override
-                    public void onChanged(@Nullable final List<MonthlyOrYearlySpending> spendings) {
+                    public void onChanged(@Nullable final List<DMYSpending> spendings) {
                         // Update the cached copy of the words in the adapter.
                         yearlySpendingsAdapter.setMonthlySpendingsList(spendings);
+                    }
+                });
+
+            }break;
+
+            case FRAGMENT_TYPE_DAILY:{
+                DMYSpendingsAdapter dailySpendingsAdapter = new DMYSpendingsAdapter(DMYSpendingsAdapter.TYPE_DAILY,inflater);
+                mRecyclerView.setAdapter(dailySpendingsAdapter);
+                dailySpendingsAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                    @Override
+                    public void onChanged() {
+                        super.onChanged();
+                        if(dailySpendingsAdapter.getItemCount() > 0){
+                            if(txtEmpty.getVisibility() == View.VISIBLE){
+                                txtEmpty.setVisibility(View.GONE);
+                            }
+                        } else {
+                            txtEmpty.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+
+                LiveData<List<DMYSpending>> spendings = viewModel.getDailySpendings();
+                if(spendings.getValue() == null || spendings.getValue().isEmpty()){
+                    txtEmpty.setVisibility(View.VISIBLE);
+                }
+
+                spendings.observe(getViewLifecycleOwner(), new Observer<List<DMYSpending>>() {
+                    @Override
+                    public void onChanged(@Nullable final List<DMYSpending> spendings) {
+                        // Update the cached copy of the words in the adapter.
+                        dailySpendingsAdapter.setMonthlySpendingsList(spendings);
                     }
                 });
 

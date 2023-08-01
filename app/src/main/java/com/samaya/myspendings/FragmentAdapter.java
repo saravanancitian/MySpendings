@@ -17,12 +17,14 @@ public class FragmentAdapter  extends FragmentStateAdapter {
 
         switch (position){
             case 0:
+                return SpendingsFragment.newInstance(SpendingsFragment.FRAGMENT_TYPE_ALL_SPENDINGS);
+            case 1:
                 return SpendingsFragment.newInstance(SpendingsFragment.FRAGMENT_TYPE_DAILY);
 
-            case 1:
+            case 2:
                 return SpendingsFragment.newInstance(SpendingsFragment.FRAGMENT_TYPE_MONTHLY);
 
-            case 2:
+            case 3:
                 return SpendingsFragment.newInstance(SpendingsFragment.FRAGMENT_TYPE_YEARlY);
         }
         return null;
@@ -30,6 +32,6 @@ public class FragmentAdapter  extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 3;
+        return SpendingsFragment.TOTAL_FRAGMENT_COUNT;
     }
 }

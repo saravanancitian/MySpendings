@@ -1,7 +1,8 @@
 package com.samaya.myspendings.db.entity;
 
-public class MonthlyOrYearlySpending {
+public class DMYSpending {
 
     public Float amount;
-    public String monthoryear;
+    public String dmyDate;
 }
+
