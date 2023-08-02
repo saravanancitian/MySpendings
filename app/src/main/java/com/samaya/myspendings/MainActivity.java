@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity{
         FloatingActionButton fab = findViewById(R.id.fab);
         TextInputEditText txtTotalSpendings = findViewById(R.id.txt_totalspendings);
         TabLayout tabLayout = findViewById(R.id.tablayout);
+        tabLayout.addTab(tabLayout.newTab().setText("All Spendings"));
         tabLayout.addTab(tabLayout.newTab().setText("Daily"));
         tabLayout.addTab(tabLayout.newTab().setText("Monthly"));
         tabLayout.addTab(tabLayout.newTab().setText("Yearls"));

@@ -34,7 +34,7 @@ public class RecordActivity extends AppCompatActivity {
 
     String ops = "insert";
 
-    MaterialButton btnSave;
+    MaterialButton btnSave, btnCancel;
 
     MaterialDatePicker materialDatePicker;
     MaterialTimePicker materialTimePicker;
@@ -60,6 +60,8 @@ public class RecordActivity extends AppCompatActivity {
         editWhendt.setText(Utils.sdf.format(Calendar.getInstance().getTime()));
         editWhentime.setText(Utils.stf.format(Calendar.getInstance().getTime()));
         btnSave = findViewById(R.id.btn_save);
+        btnCancel = findViewById(R.id.btn_cancel);
+        btnCancel.setOnClickListener(view->finish());
 
 
         ops = intent.getStringExtra("ops");

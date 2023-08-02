@@ -7,8 +7,8 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.samaya.myspendings.db.entity.DMYSpending;
 import com.samaya.myspendings.db.entity.Spendings;
-import com.samaya.myspendings.db.entity.MonthlyOrYearlySpending;
 
 import java.util.List;
 
@@ -33,9 +33,12 @@ public interface SpendingsDao {
     @Query("SELECT sum(sp.amount) FROM spendings as sp where sp.state = 1")
     LiveData<Integer> getTotalSpendings();
 
-    @Query("SELECT sum(sp.amount) as amount , strftime('%m-%Y', sp.whendt) as monthoryear FROM spendings as sp  where sp.state = 1 group by monthoryear")
-    LiveData<List<MonthlyOrYearlySpending>> getMonthlyTotal();
+    @Query("SELECT sum(sp.amount) as amount , strftime('%m-%Y', sp.whendt) as dmyDate FROM spendings as sp  where sp.state = 1 group by dmyDate")
+    LiveData<List<DMYSpending>> getMonthlyTotal();
 
-    @Query("SELECT sum(sp.amount) as amount , strftime('%Y', sp.whendt) as monthoryear FROM spendings as sp where sp.state = 1 group by monthoryear")
-    LiveData<List<MonthlyOrYearlySpending>> getYearlyTotal();
+    @Query("SELECT sum(sp.amount) as amount , strftime('%Y', sp.whendt) as dmyDate FROM spendings as sp where sp.state = 1 group by dmyDate")
+    LiveData<List<DMYSpending>> getYearlyTotal();
+
+    @Query("SELECT sum(sp.amount) as amount , strftime('%d-%m-%Y', sp.whendt) as dmyDate FROM spendings as sp  where sp.state = 1 group by dmyDate")
+    LiveData<List<DMYSpending>> getDailyTotal();
 }
