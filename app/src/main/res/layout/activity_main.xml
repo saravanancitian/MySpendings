@@ -26,6 +26,8 @@
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
         android:hint="@string/lbl_total_spendings"
         android:enabled="false"
         android:layout_below="@+id/txt_title"
@@ -67,15 +69,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/pager"
-        android:layout_alignLeft="@id/pager"
+        android:layout_alignParentRight="@id/pager"
         android:layout_alignEnd="@id/pager"
         android:layout_alignBottom="@id/pager"
-        android:layout_alignParentRight="false"
+        android:layout_alignParentEnd="false"
         android:layout_gravity="end|bottom"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:contentDescription="@string/btnadd"
+        android:contentDescription="@string/fabaddSpending"
+
         android:src="@android:drawable/ic_input_add" />
 </RelativeLayout>

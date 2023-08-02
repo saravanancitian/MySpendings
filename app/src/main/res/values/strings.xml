@@ -9,7 +9,7 @@
     <string name="lbl_Paidto">Paid To:</string>
     <string name="lbl_whendt">When:</string>
     <string name="btn_lbl_save">Save</string>
-    <string name="btnadd">Add</string>
+    <string name="fabaddSpending">Add Spending</string>
     <string name="emtytext">Please Add items using (+) Add button</string>
     <string name="remark_txt">Remark:</string>
     <string name="txt_date">Date</string>
