@@ -20,4 +20,5 @@
     <string name="lbl_total_spendings">Total Spendings</string>
     <string name="snack_txt_deleted">Record Deleted from the list</string>
     <string name="snack_txt_undo">Undo</string>
+    <string name="txt_cancel">Cancel</string>
 </resources>
