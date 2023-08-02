@@ -34,10 +34,10 @@ public class MainActivity extends AppCompatActivity{
         FloatingActionButton fab = findViewById(R.id.fab);
         TextInputEditText txtTotalSpendings = findViewById(R.id.txt_totalspendings);
         TabLayout tabLayout = findViewById(R.id.tablayout);
-        tabLayout.addTab(tabLayout.newTab().setText("All Spendings"));
-        tabLayout.addTab(tabLayout.newTab().setText("Daily"));
-        tabLayout.addTab(tabLayout.newTab().setText("Monthly"));
-        tabLayout.addTab(tabLayout.newTab().setText("Yearls"));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.str_all_spendings));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.str_daily));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.str_monthly));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.str_yearly));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
