@@ -21,31 +21,12 @@ import java.util.List;
 
 public class ReportActivity extends AppCompatActivity {
 
-    private SpendingsViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
-        viewModel = (new ViewModelProvider(this).get(SpendingsViewModel.class));
-        LineChart chart = (LineChart) findViewById(R.id.chart);
 
-        LiveData<List<Spendings>> spendings = viewModel.getDailySpendingsForReport();
-           spendings.observe(this, new Observer<List<Spendings>>() {
-            @Override
-            public void onChanged(@Nullable final List<Spendings> spendings) {
-                // Update the cached copy of the words in the adapter.
-                List<Entry> entries = new ArrayList<Entry>();
-                for(int i = 0 ; i < spendings.size(); i++){
-                    entries.add(new Entry(i, spendings.get(i).amount));
-                }
-
-                LineDataSet dataSet = new LineDataSet(entries,"All Transcations");
-                LineData data = new LineData(dataSet);
-                chart.setData(data);
-                chart.invalidate();
-            }
-        });
 
     }
 }
