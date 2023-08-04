@@ -27,9 +27,12 @@ public class ReportFragment extends Fragment {
 
     private static final String ARG_FRAGMENT_TYPE = "param1";
 
+    public static final int FRAGMENT_REPORT_TYPE_ALL_SPENDINGS = 0;
     public static final int FRAGMENT_REPORT_TYPE_MONTHLY = 1;
     public static final int FRAGMENT_REPORT_TYPE_YEARlY = 2;
     public static final int FRAGMENT_REPORT_TYPE_DATERANGE = 3;
+
+    public static final int FRAGMENT_REPORT_TYPE_COUNT = 4;
 
 
     private int fragmentType;
@@ -52,7 +55,7 @@ public class ReportFragment extends Fragment {
 
         LineChart chart = (LineChart) reportview.findViewById(R.id.chart);
         LiveData<List<Spendings>> spendings = mViewModel.getDailySpendingsForReport();
-        spendings.observe(this, new Observer<List<Spendings>>() {
+        spendings.observe(getViewLifecycleOwner(), new Observer<List<Spendings>>() {
             @Override
             public void onChanged(@Nullable final List<Spendings> spendings) {
                 // Update the cached copy of the words in the adapter.
