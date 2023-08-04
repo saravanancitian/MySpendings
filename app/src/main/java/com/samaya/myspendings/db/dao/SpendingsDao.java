@@ -41,4 +41,9 @@ public interface SpendingsDao {
 
     @Query("SELECT sum(sp.amount) as amount , strftime('%d-%m-%Y', sp.whendt) as dmyDate FROM spendings as sp  where sp.state = 1 group by dmyDate")
     LiveData<List<DMYSpending>> getDailyTotal();
+
+
+    @Query("SELECT * FROM spendings where state = 1 ORDER BY whendt asc ")
+    LiveData<List<Spendings>> getAllSpendingsForReport();
+
 }

@@ -74,4 +74,10 @@ public class SpendingsRepo {
     public LiveData<List<DMYSpending>> getYearlyTotal() { return dao.getYearlyTotal();  }
     public LiveData<List<DMYSpending>> getDailyTotal() { return dao.getDailyTotal();  }
 
+
+    public  LiveData<List<Spendings>> getAllSpendingsFoReport(){
+        return dao.getAllSpendingsForReport();
+    }
+
+
 }
