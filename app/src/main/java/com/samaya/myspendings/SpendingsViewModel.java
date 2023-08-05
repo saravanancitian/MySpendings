@@ -14,26 +14,27 @@ import java.util.Date;
 import java.util.List;
 
 public class SpendingsViewModel  extends AndroidViewModel {
+
     private SpendingsRepo repo;
+
     private LiveData<List<Spendings>> allspendings;
-
-
     private LiveData<Integer> totalSpendings;
     private LiveData<List<DMYSpending>> monthlySpendings;
 
     private LiveData<List<DMYSpending>> yearlySpendings;
     private LiveData<List<DMYSpending>> dailySpendings;
 
-    public SpendingsViewModel(@NonNull Application application) {
+    private LiveData<List<Spendings>> allspendingsForReport;
+
+    public SpendingsViewModel(@NonNull MySpendingsApp application) {
         super(application);
-        repo = new SpendingsRepo(application);
+        repo = application.getRepo();
         allspendings = repo.getAllSpendings();
         totalSpendings = repo.getTotalSpendings();
         monthlySpendings = repo.getMonthlyTotal();
         yearlySpendings = repo.getYearlyTotal();
         dailySpendings = repo.getDailyTotal();
-
-
+        allspendingsForReport = repo.getAllSpendingsFoReport();
     }
 
     public LiveData<List<Spendings>> getAllspendings(){
@@ -49,6 +50,8 @@ public class SpendingsViewModel  extends AndroidViewModel {
     public  LiveData<List<DMYSpending>> getYearlySpendings(){return  yearlySpendings;}
 
     public  LiveData<List<DMYSpending>> getDailySpendings(){return  dailySpendings;}
+
+    public  LiveData<List<Spendings>> getDailySpendingsForReport(){return  allspendingsForReport;}
 
 
     void insert(Spendings spending){
