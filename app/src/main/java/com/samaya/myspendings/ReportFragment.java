@@ -36,7 +36,7 @@ public class ReportFragment extends Fragment {
 
 
     private int fragmentType;
-    private SpendingsViewModel mViewModel;
+    private ReportViewModel mViewModel;
 
     public static ReportFragment newInstance(int fragmenttype) {
 
@@ -81,7 +81,7 @@ public class ReportFragment extends Fragment {
         if (getArguments() != null) {
             fragmentType = getArguments().getInt(ARG_FRAGMENT_TYPE);
         }
-        mViewModel = new ViewModelProvider(this).get(SpendingsViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(ReportViewModel.class);
 
 
         // TODO: Use the ViewModel

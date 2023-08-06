@@ -24,17 +24,16 @@ public class SpendingsViewModel  extends AndroidViewModel {
     private LiveData<List<DMYSpending>> yearlySpendings;
     private LiveData<List<DMYSpending>> dailySpendings;
 
-    private LiveData<List<Spendings>> allspendingsForReport;
 
-    public SpendingsViewModel(@NonNull MySpendingsApp application) {
+    public SpendingsViewModel(@NonNull Application application) {
         super(application);
-        repo = application.getRepo();
+        repo = ((MySpendingsApp)application).getRepo();
         allspendings = repo.getAllSpendings();
         totalSpendings = repo.getTotalSpendings();
         monthlySpendings = repo.getMonthlyTotal();
         yearlySpendings = repo.getYearlyTotal();
         dailySpendings = repo.getDailyTotal();
-        allspendingsForReport = repo.getAllSpendingsFoReport();
+
     }
 
     public LiveData<List<Spendings>> getAllspendings(){
@@ -51,7 +50,6 @@ public class SpendingsViewModel  extends AndroidViewModel {
 
     public  LiveData<List<DMYSpending>> getDailySpendings(){return  dailySpendings;}
 
-    public  LiveData<List<Spendings>> getDailySpendingsForReport(){return  allspendingsForReport;}
 
 
     void insert(Spendings spending){
