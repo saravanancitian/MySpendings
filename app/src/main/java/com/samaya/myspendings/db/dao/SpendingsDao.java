@@ -46,4 +46,20 @@ public interface SpendingsDao {
     @Query("SELECT * FROM spendings where state = 1 ORDER BY whendt asc ")
     LiveData<List<Spendings>> getAllSpendingsForReport();
 
+    @Query("SELECT strftime('%m-%Y', sp.whendt) as dmyDate FROM spendings as sp  where sp.state = 1 group by dmyDate")
+    LiveData<List<String>> getAllMonths();
+
+    @Query("SELECT strftime('%Y', sp.whendt) as dmyDate FROM spendings as sp where sp.state = 1 group by dmyDate")
+    LiveData<List<String>> getAllYears();
+
+
+    //TODO
+    @Query("SELECT sum(sp.amount) as amount , strftime('%d-%m-%Y', sp.whendt) as dmyDate FROM spendings as sp  where sp.state = 1 and strftime('%m-%Y', sp.whendt) = :monthyear  group by dmyDate")
+    LiveData<List<DMYSpending>> getDailyTotalForMonthForReport(String monthyear);
+
+    //TODO
+    @Query("SELECT sum(sp.amount) as amount , strftime('%m-%Y', sp.whendt) as dmyDate FROM spendings as sp  where sp.state = 1 and strftime('%Y', sp.whendt) = :year group by dmyDate")
+    LiveData<List<DMYSpending>> getMonthlyTotalForYearForReport(String year);
+
+
 }

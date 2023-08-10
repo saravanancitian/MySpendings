@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.samaya.myspendings.db.entity.DMYSpending;
 
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -51,10 +52,11 @@ public class DMYSpendingsAdapter extends RecyclerView.Adapter<DMYSpendingsAdapte
                 String monthvalstr[] = spending.dmyDate.split("-");
                 int monthval = Integer.parseInt(monthvalstr[0]);
                 int yearval = Integer.parseInt(monthvalstr[1]);
-                Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.MONTH, monthval -1);
-                cal.set(Calendar.YEAR, yearval);
-                String month = new SimpleDateFormat("MMM").format(cal.getTime());
+//                Calendar cal = Calendar.getInstance();
+//                cal.set(Calendar.MONTH, monthval -1);
+//                cal.set(Calendar.YEAR, yearval);
+//                String month = new SimpleDateFormat("MMM").format(cal.getTime());
+                String month = Utils.getMonth(monthval - 1);
                 holder.itmTxtDate.setText(month+ " "+ monthvalstr[1]);
             } else if(type == TYPE_YEARLY) {
                 holder.itmTxtDate.setText(spending.dmyDate);
