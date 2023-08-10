@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ReportFragment">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:gravity="center_horizontal"
+        >
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reportrecyclerview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:scrollbars="horizontal"
+            android:layout_gravity="bottom"
+            android:layout_weight="0.1"
+            />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</FrameLayout>

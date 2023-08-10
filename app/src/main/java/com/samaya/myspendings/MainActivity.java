@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.color.DynamicColors;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
@@ -27,12 +27,20 @@ public class MainActivity extends AppCompatActivity{
         viewModel = (new ViewModelProvider(this).get(SpendingsViewModel.class));
 
         viewPager = findViewById(R.id.pager);
-        pagerAdapter = new FragmentAdapter(getSupportFragmentManager(), getLifecycle());
+        pagerAdapter = new SpendingsFragmentAdapter(getSupportFragmentManager(), getLifecycle());
         viewPager.setAdapter(pagerAdapter);
         viewPager.setUserInputEnabled(false);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         TextInputEditText txtTotalSpendings = findViewById(R.id.txt_totalspendings);
+
+        MaterialButton btnReport = findViewById(R.id.btn_report);
+        btnReport.setOnClickListener(view->{
+            Intent intent = new Intent(MainActivity.this, ReportActivity.class);
+            startActivity(intent);
+        });
+        MaterialButton btnExport = findViewById(R.id.btn_export);
+
         TabLayout tabLayout = findViewById(R.id.tablayout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.str_all_spendings));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.str_daily));

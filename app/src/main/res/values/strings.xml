@@ -12,6 +12,7 @@
     <string name="str_daily">Daily</string>
     <string name="str_monthly">Monthly</string>
     <string name="str_yearly">Yearly</string>
+    <string name="str_daterange">Range</string>
 
     <string name="lbl_Amount">Amount</string>
     <string name="lbl_Paidto">Paid To:</string>
