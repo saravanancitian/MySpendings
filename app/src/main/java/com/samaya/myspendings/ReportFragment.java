@@ -9,8 +9,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +23,16 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.samaya.myspendings.db.entity.DMYSpending;
 import com.samaya.myspendings.db.entity.Spendings;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class ReportFragment extends Fragment {
 
@@ -55,57 +63,174 @@ public class ReportFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View reportview = inflater.inflate(R.layout.fragment_report, container, false);
-        LineChart chart = (LineChart) reportview.findViewById(R.id.chart);
-        RecyclerView recyclerView = reportview.findViewById(R.id.reportrecyclerview);
-        MaterialButton btnDateRange = reportview.findViewById(R.id.btn_date_range_picker);
-        btnDateRange.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.GONE);
 
-        switch(fragmentType){
+        View reportview = null;
+
+
+
+                switch(fragmentType){
             case FRAGMENT_REPORT_TYPE_ALL_SPENDINGS:{
+                reportview = inflater.inflate(R.layout.fragment_report_all, container, false);
+                LineChart chart = (LineChart) reportview.findViewById(R.id.chart_all);
+
                 LiveData<List<Spendings>> spendings = mViewModel.getDailySpendingsForReport();
 
-                spendings.observe(getViewLifecycleOwner(), new Observer<List<Spendings>>() {
-                    @Override
-                    public void onChanged(@Nullable final List<Spendings> spendings) {
-                        // Update the cached copy of the words in the adapter.
-                        List<Entry> entries = new ArrayList<Entry>();
-                        for(int i = 0 ; i < spendings.size(); i++){
-                            entries.add(new Entry(i, spendings.get(i).amount));
-                        }
-
-                        LineDataSet dataSet = new LineDataSet(entries,"All Transcations");
-                        LineData data = new LineData(dataSet);
-                        chart.setData(data);
-                        chart.invalidate();
+                spendings.observe(getViewLifecycleOwner(), spendings1 -> {
+                    // Update the cached copy of the words in the adapter.
+                    List<Entry> entries = new ArrayList<Entry>();
+                    for(int i = 0; i < spendings1.size(); i++){
+                        entries.add(new Entry(i, spendings1.get(i).amount));
                     }
+
+                    LineDataSet dataSet = new LineDataSet(entries,"All Transcations");
+                    LineData data = new LineData(dataSet);
+                    chart.setData(data);
+                    chart.invalidate();
                 });
 
             }break;
 
             case FRAGMENT_REPORT_TYPE_MONTHLY:{
-                recyclerView.setVisibility(View.VISIBLE);
+                reportview = inflater.inflate(R.layout.fragment_report_date, container, false);
+                LineChart chart = (LineChart) reportview.findViewById(R.id.chart_date);
+                RecyclerView recyclerView = reportview.findViewById(R.id.reportrecyclerview);
+
+                LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+                mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+                recyclerView.setLayoutManager(mLayoutManager);
+                DateListAdapter dateListAdapter = new DateListAdapter(DateListAdapter.DATE_LIST_ADAPTER_TYPE_MONTH_YEAR, getLayoutInflater());
                 LiveData<List<String>> allmonths =  mViewModel.getAllmonths();
-                 allmonths.observe(getViewLifecycleOwner(), new Observer<List<String>>(){
-
-                    @Override
-                    public void onChanged(List<String> strings) {
-                        ReportRVListAdapter adapter = new ReportRVListAdapter((String[]) strings.toArray(), getLayoutInflater());
-
-                    }
+                allmonths.observe(getViewLifecycleOwner(), strings -> {
+                    dateListAdapter.setDates(strings);
+                    recyclerView.setAdapter(dateListAdapter);
                 });
+
+                dateListAdapter.setOnItemClickListener((view, position, str)->{
+                    LiveData<List<DMYSpending>> monthsdata = mViewModel.getDailyTotalForMonth(str);
+                    monthsdata.observe(getViewLifecycleOwner(), datalist->{
+                        List<Entry> entries = new ArrayList<Entry>();
+                        for(int i = 0; i < datalist.size(); i++){
+                            entries.add(new Entry(i, datalist.get(i).amount));
+                        }
+
+                        LineDataSet dataSet = new LineDataSet(entries,"Monthly Spendings");
+                        LineData data = new LineData(dataSet);
+                        chart.setData(data);
+                        chart.invalidate();
+                    });
+                });
+
+                Calendar calendar = Calendar.getInstance();
+
+                LiveData<List<DMYSpending>> monthsdata = mViewModel.getDailyTotalForMonth(Utils.monthyearformat.format(calendar.getTime()));
+                monthsdata.observe(getViewLifecycleOwner(), datalist->{
+                    List<Entry> entries = new ArrayList<Entry>();
+                    for(int i = 0; i < datalist.size(); i++){
+                        entries.add(new Entry(i, datalist.get(i).amount));
+                    }
+
+                    LineDataSet dataSet = new LineDataSet(entries,"Monthly Spendings");
+                    LineData data = new LineData(dataSet);
+                    chart.setData(data);
+                    chart.invalidate();
+                });
+
 
 
             }break;
 
             case FRAGMENT_REPORT_TYPE_YEARlY:{
-                recyclerView.setVisibility(View.VISIBLE);
+                reportview = inflater.inflate(R.layout.fragment_report_date, container, false);
+                LineChart chart = (LineChart) reportview.findViewById(R.id.chart_date);
+                RecyclerView recyclerView = reportview.findViewById(R.id.reportrecyclerview);
+
+                LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+                mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+                recyclerView.setLayoutManager(mLayoutManager);
+                DateListAdapter dateListAdapter = new DateListAdapter(DateListAdapter.DATE_LIST_ADAPTER_TYPE_YEAR, getLayoutInflater());
+                LiveData<List<String>> allyears =  mViewModel.getAllyears();
+                allyears.observe(getViewLifecycleOwner(), strings -> {
+                    dateListAdapter.setDates(strings);
+                    recyclerView.setAdapter(dateListAdapter);
+
+                });
+
+                dateListAdapter.setOnItemClickListener((view, position, str)->{
+                    LiveData<List<DMYSpending>> yeardata = mViewModel.getMonthlyTotalForYearForReport(str);
+                    yeardata.observe(getViewLifecycleOwner(), datalist->{
+                        List<Entry> entries = new ArrayList<Entry>();
+                        for(int i = 0; i < datalist.size(); i++){
+                            entries.add(new Entry(i, datalist.get(i).amount));
+                        }
+
+                        LineDataSet dataSet = new LineDataSet(entries,"Yearly Spendings");
+                        LineData data = new LineData(dataSet);
+                        chart.setData(data);
+                        chart.invalidate();
+                    });
+                });
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                LiveData<List<DMYSpending>> yeardata = mViewModel.getMonthlyTotalForYearForReport(String.valueOf(year));
+                yeardata.observe(getViewLifecycleOwner(), datalist->{
+                    List<Entry> entries = new ArrayList<Entry>();
+                    for(int i = 0; i < datalist.size(); i++){
+                        entries.add(new Entry(i, datalist.get(i).amount));
+                    }
+
+                    LineDataSet dataSet = new LineDataSet(entries,"Yearly Spendings");
+                    LineData data = new LineData(dataSet);
+                    chart.setData(data);
+                    chart.invalidate();
+                });
+
+
 
             }break;
 
             case FRAGMENT_REPORT_TYPE_DATERANGE:{
-                btnDateRange.setVisibility(View.VISIBLE);
+                reportview = inflater.inflate(R.layout.fragment_report_range, container, false);
+                LineChart chart = (LineChart) reportview.findViewById(R.id.chart_range);
+                MaterialButton btnDateRange = reportview.findViewById(R.id.btn_date_range_picker);
+                Calendar calendar = Calendar.getInstance();
+
+                MaterialDatePicker<Pair<Long,Long>> materialDatePicker;
+                MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.dateRangePicker();
+                materialDateBuilder.setTitleText("SELECT A DATE RANGE");
+                materialDatePicker = materialDateBuilder.build();
+                materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long,Long>>() {
+                    @Override
+                    public void onPositiveButtonClick(Pair<Long,Long> selection) {
+                        Date first =  new Date(selection.first);
+                        Date sec = new Date(selection.second);
+                        LiveData<List<Spendings>> rangeSpendings = mViewModel.getAllSpendingsInRangeForReport(first,sec);
+                        rangeSpendings.observe(getViewLifecycleOwner(), new Observer<List<Spendings>>() {
+                            @Override
+                            public void onChanged(List<Spendings> spendings) {
+                                List<Entry> entries = new ArrayList<Entry>();
+                                for(int i = 0; i < spendings.size(); i++){
+                                    entries.add(new Entry(i, spendings.get(i).amount));
+                                }
+
+                                LineDataSet dataSet = new LineDataSet(entries,"Range Transcations");
+                                LineData data = new LineData(dataSet);
+                                chart.setData(data);
+                                chart.invalidate();
+                            }
+                        });
+                    }
+                });
+
+                btnDateRange.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        materialDatePicker.show(getActivity().getSupportFragmentManager(), "SELECT_A_DATE_RANGE");
+                    }
+                });
 
             }break;
         }

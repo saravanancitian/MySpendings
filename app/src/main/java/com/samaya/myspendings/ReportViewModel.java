@@ -11,6 +11,7 @@ import com.samaya.myspendings.db.entity.Spendings;
 import com.samaya.myspendings.db.repo.SpendingsRepo;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ReportViewModel extends AndroidViewModel {
@@ -44,5 +45,10 @@ public class ReportViewModel extends AndroidViewModel {
     public LiveData<List<DMYSpending>> getMonthlyTotalForYearForReport(String year){
         return repo.getMonthlyTotalForYearForReport(year);
     }
+
+    public LiveData<List<Spendings>> getAllSpendingsInRangeForReport(Date start, Date end){
+        return repo.getAllSpendingsInRangeForReport(start, end);
+    }
+
 
 }

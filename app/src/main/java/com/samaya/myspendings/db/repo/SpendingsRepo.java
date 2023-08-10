@@ -12,6 +12,7 @@ import com.samaya.myspendings.db.dao.SpendingsDao;
 import com.samaya.myspendings.db.entity.DMYSpending;
 import com.samaya.myspendings.db.entity.Spendings;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -93,6 +94,10 @@ public class SpendingsRepo {
     }
     public LiveData<List<DMYSpending>> getMonthlyTotalForYearForReport(String year){
         return dao.getMonthlyTotalForYearForReport(year);
+    }
+
+    public LiveData<List<Spendings>> getAllSpendingsInRangeForReport(Date start, Date end){
+        return dao.getAllSpendingsInRangeForReport(start, end);
     }
 
 
