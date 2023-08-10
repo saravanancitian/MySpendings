@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:weightSum="1"
         >
 
         <com.google.android.material.button.MaterialButton
@@ -22,6 +23,7 @@
             android:id="@+id/chart_range"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="0.95"
             />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,5 +1,6 @@
 package com.samaya.myspendings;
 
+import androidx.core.util.Pair;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,15 +14,17 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -77,15 +80,27 @@ public class ReportFragment extends Fragment {
 
                 spendings.observe(getViewLifecycleOwner(), spendings1 -> {
                     // Update the cached copy of the words in the adapter.
+                    List<String> dates = new ArrayList<>();
                     List<Entry> entries = new ArrayList<Entry>();
                     for(int i = 0; i < spendings1.size(); i++){
                         entries.add(new Entry(i, spendings1.get(i).amount));
+                        dates.add(Utils.rdf.format(spendings1.get(i).whendt));
                     }
+
+                    ValueFormatter formatter = new ValueFormatter() {
+                        @Override
+                        public String getAxisLabel(float value, AxisBase axis) {
+                            return dates.get((int)value);
+                        }
+                    };
 
                     LineDataSet dataSet = new LineDataSet(entries,"All Transcations");
                     LineData data = new LineData(dataSet);
                     chart.setData(data);
+                    XAxis axis = chart.getXAxis();
+                    axis.setValueFormatter(formatter);
                     chart.invalidate();
+
                 });
 
             }break;
@@ -94,7 +109,6 @@ public class ReportFragment extends Fragment {
                 reportview = inflater.inflate(R.layout.fragment_report_date, container, false);
                 LineChart chart = (LineChart) reportview.findViewById(R.id.chart_date);
                 RecyclerView recyclerView = reportview.findViewById(R.id.reportrecyclerview);
-
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                 mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -102,6 +116,8 @@ public class ReportFragment extends Fragment {
                 recyclerView.setLayoutManager(mLayoutManager);
                 DateListAdapter dateListAdapter = new DateListAdapter(DateListAdapter.DATE_LIST_ADAPTER_TYPE_MONTH_YEAR, getLayoutInflater());
                 LiveData<List<String>> allmonths =  mViewModel.getAllmonths();
+
+
                 allmonths.observe(getViewLifecycleOwner(), strings -> {
                     dateListAdapter.setDates(strings);
                     recyclerView.setAdapter(dateListAdapter);
@@ -111,13 +127,24 @@ public class ReportFragment extends Fragment {
                     LiveData<List<DMYSpending>> monthsdata = mViewModel.getDailyTotalForMonth(str);
                     monthsdata.observe(getViewLifecycleOwner(), datalist->{
                         List<Entry> entries = new ArrayList<Entry>();
+                        List<String> dates = new ArrayList<>();
                         for(int i = 0; i < datalist.size(); i++){
                             entries.add(new Entry(i, datalist.get(i).amount));
+                            dates.add(datalist.get(i).dmyDate);
                         }
+
+                        ValueFormatter formatter = new ValueFormatter() {
+                            @Override
+                            public String getAxisLabel(float value, AxisBase axis) {
+                                return dates.get((int)value);
+                            }
+                        };
 
                         LineDataSet dataSet = new LineDataSet(entries,"Monthly Spendings");
                         LineData data = new LineData(dataSet);
                         chart.setData(data);
+                        XAxis axis = chart.getXAxis();
+                        axis.setValueFormatter(formatter);
                         chart.invalidate();
                     });
                 });
@@ -127,13 +154,23 @@ public class ReportFragment extends Fragment {
                 LiveData<List<DMYSpending>> monthsdata = mViewModel.getDailyTotalForMonth(Utils.monthyearformat.format(calendar.getTime()));
                 monthsdata.observe(getViewLifecycleOwner(), datalist->{
                     List<Entry> entries = new ArrayList<Entry>();
+                    List<String> dates = new ArrayList<>();
                     for(int i = 0; i < datalist.size(); i++){
                         entries.add(new Entry(i, datalist.get(i).amount));
+                        dates.add(datalist.get(i).dmyDate);
                     }
 
+                    ValueFormatter formatter = new ValueFormatter() {
+                        @Override
+                        public String getAxisLabel(float value, AxisBase axis) {
+                            return dates.get((int)value);
+                        }
+                    };
                     LineDataSet dataSet = new LineDataSet(entries,"Monthly Spendings");
                     LineData data = new LineData(dataSet);
                     chart.setData(data);
+                    XAxis axis = chart.getXAxis();
+                    axis.setValueFormatter(formatter);
                     chart.invalidate();
                 });
 
@@ -212,13 +249,25 @@ public class ReportFragment extends Fragment {
                             @Override
                             public void onChanged(List<Spendings> spendings) {
                                 List<Entry> entries = new ArrayList<Entry>();
+                                List<String> dates = new ArrayList<>();
+
                                 for(int i = 0; i < spendings.size(); i++){
                                     entries.add(new Entry(i, spendings.get(i).amount));
+                                    dates.add(Utils.rdf.format(spendings.get(i).whendt));
                                 }
+
+                                ValueFormatter formatter = new ValueFormatter() {
+                                    @Override
+                                    public String getAxisLabel(float value, AxisBase axis) {
+                                        return dates.get((int)value);
+                                    }
+                                };
 
                                 LineDataSet dataSet = new LineDataSet(entries,"Range Transcations");
                                 LineData data = new LineData(dataSet);
                                 chart.setData(data);
+                                XAxis axis = chart.getXAxis();
+                                axis.setValueFormatter(formatter);
                                 chart.invalidate();
                             }
                         });

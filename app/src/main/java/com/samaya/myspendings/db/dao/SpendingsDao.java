@@ -62,6 +62,6 @@ public interface SpendingsDao {
     @Query("SELECT sum(sp.amount) as amount , strftime('%m-%Y', sp.whendt) as dmyDate FROM spendings as sp  where sp.state = 1 and strftime('%Y', sp.whendt) = :year group by dmyDate")
     LiveData<List<DMYSpending>> getMonthlyTotalForYearForReport(String year);
 
-    @Query("SELECT * FROM spendings where whendt between :start and :end and state = 1 and ORDER BY whendt asc ")
+    @Query("SELECT * FROM spendings where whendt between :start and :end and state = 1 ORDER BY whendt asc ")
     LiveData<List<Spendings>> getAllSpendingsInRangeForReport(Date start, Date end);
 }
