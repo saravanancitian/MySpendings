@@ -1,4 +1,4 @@
-package com.samaya.myspendings;
+package com.samaya.myspendings.fragments;
 
 import androidx.core.util.Pair;
 import androidx.lifecycle.LiveData;
@@ -28,6 +28,9 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.samaya.myspendings.R;
+import com.samaya.myspendings.utils.Utils;
+import com.samaya.myspendings.adapters.DateListAdapter;
 import com.samaya.myspendings.db.entity.DMYSpending;
 import com.samaya.myspendings.db.entity.Spendings;
 
@@ -35,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 public class ReportFragment extends Fragment {
 

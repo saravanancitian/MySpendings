@@ -1,4 +1,4 @@
-package com.samaya.myspendings;
+package com.samaya.myspendings.activities;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,17 +9,15 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.button.MaterialButton;
-import com.samaya.myspendings.db.entity.Spendings;
+import com.samaya.myspendings.R;
+import com.samaya.myspendings.fragments.ReportViewModel;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 public class ExportActivity extends AppCompatActivity {
 

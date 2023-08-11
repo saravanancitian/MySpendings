@@ -1,4 +1,4 @@
-package com.samaya.myspendings;
+package com.samaya.myspendings.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,18 +8,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.samaya.myspendings.R;
+import com.samaya.myspendings.utils.Utils;
 import com.samaya.myspendings.db.entity.DMYSpending;
 
-import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
 public class DMYSpendingsAdapter extends RecyclerView.Adapter<DMYSpendingsAdapter.ViewHolder> {
 
-    final static int TYPE_YEARLY = 1;
-    final static int TYPE_MONTHLY = 2;
-    final static int TYPE_DAILY = 3;
+    public static final int TYPE_YEARLY = 1;
+    public static final int TYPE_MONTHLY = 2;
+    public static final int TYPE_DAILY = 3;
     int type;
 
     private List<DMYSpending> spendingsList;

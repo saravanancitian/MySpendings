@@ -1,4 +1,4 @@
-package com.samaya.myspendings;
+package com.samaya.myspendings.utils;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;

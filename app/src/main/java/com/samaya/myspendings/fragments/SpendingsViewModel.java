@@ -1,4 +1,4 @@
-package com.samaya.myspendings;
+package com.samaya.myspendings.fragments;
 
 import android.app.Application;
 
@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.samaya.myspendings.MySpendingsApp;
 import com.samaya.myspendings.db.entity.DMYSpending;
 import com.samaya.myspendings.db.entity.Spendings;
 import com.samaya.myspendings.db.repo.SpendingsRepo;
@@ -52,35 +53,35 @@ public class SpendingsViewModel  extends AndroidViewModel {
 
 
 
-    void insert(Spendings spending){
+    public void insert(Spendings spending){
         spending.createdDt = new Date(System.currentTimeMillis());
         spending.updatedDt = spending.createdDt;
         spending.state = Spendings.STATE_CREATED;
         repo.insert(spending);
     }
 
-    void setCandelete(Spendings spending){
+    public void setCandelete(Spendings spending){
         spending.updatedDt = new Date(System.currentTimeMillis());
         spending.state = Spendings.STATE_READY_TO_DELETED;
         repo.update(spending);
     }
-    void delete(Spendings spending){
+    public void delete(Spendings spending){
         spending.updatedDt = new Date(System.currentTimeMillis());
         spending.state = Spendings.STATE_DELETED;
         repo.update(spending);
     }
 
-    void undoDelete(Spendings spending){
+    public void undoDelete(Spendings spending){
         spending.updatedDt = new Date(System.currentTimeMillis());
         spending.state = Spendings.STATE_CREATED;
         repo.update(spending);
     }
-    void update(Spendings spending){
+    public void update(Spendings spending){
         spending.updatedDt = new Date(System.currentTimeMillis());
         repo.update(spending);
     }
 
-    void purge(){
+    public void purge(){
         repo.purge();
     }
 }

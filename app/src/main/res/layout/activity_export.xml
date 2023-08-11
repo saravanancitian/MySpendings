@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ExportActivity">
+    tools:context=".activities.ExportActivity">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_export_all"

@@ -1,4 +1,4 @@
-package com.samaya.myspendings;
+package com.samaya.myspendings.fragments;
 
 import android.app.Application;
 
@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.samaya.myspendings.MySpendingsApp;
 import com.samaya.myspendings.db.entity.DMYSpending;
 import com.samaya.myspendings.db.entity.Spendings;
 import com.samaya.myspendings.db.repo.SpendingsRepo;

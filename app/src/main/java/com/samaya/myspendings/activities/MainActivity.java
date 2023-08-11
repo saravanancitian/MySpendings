@@ -1,4 +1,4 @@
-package com.samaya.myspendings;
+package com.samaya.myspendings.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,8 +13,9 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
-
-import java.util.Date;
+import com.samaya.myspendings.R;
+import com.samaya.myspendings.adapters.SpendingsFragmentAdapter;
+import com.samaya.myspendings.fragments.SpendingsViewModel;
 
 public class MainActivity extends AppCompatActivity{
 

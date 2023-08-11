@@ -1,6 +1,6 @@
-package com.samaya.myspendings;
+package com.samaya.myspendings.adapters;
 
-import static com.samaya.myspendings.Utils.sdf;
+import static com.samaya.myspendings.utils.Utils.sdf;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.samaya.myspendings.R;
 import com.samaya.myspendings.db.entity.Spendings;
 
 import java.util.List;

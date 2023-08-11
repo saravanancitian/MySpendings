@@ -1,10 +1,12 @@
-package com.samaya.myspendings;
+package com.samaya.myspendings.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.samaya.myspendings.fragments.SpendingsFragment;
 
 public class SpendingsFragmentAdapter extends FragmentStateAdapter {
     public SpendingsFragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {

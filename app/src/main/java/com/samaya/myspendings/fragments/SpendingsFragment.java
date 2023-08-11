@@ -1,4 +1,4 @@
-package com.samaya.myspendings;
+package com.samaya.myspendings.fragments;
 
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -24,6 +24,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
+import com.samaya.myspendings.R;
+import com.samaya.myspendings.activities.RecordActivity;
+import com.samaya.myspendings.utils.Utils;
+import com.samaya.myspendings.adapters.AllSpendingsAdapter;
+import com.samaya.myspendings.adapters.DMYSpendingsAdapter;
 import com.samaya.myspendings.db.entity.DMYSpending;
 import com.samaya.myspendings.db.entity.Spendings;
 

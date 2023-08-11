@@ -10,9 +10,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.samaya.myspendings.Utils;
+import com.samaya.myspendings.utils.Utils;
 
-import java.io.Serializable;
 import java.util.Date;
 
 @Entity(tableName = "spendings")

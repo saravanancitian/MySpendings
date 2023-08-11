@@ -1,26 +1,15 @@
-package com.samaya.myspendings;
+package com.samaya.myspendings.activities;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
-import android.view.View;
 
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.material.tabs.TabLayout;
-import com.samaya.myspendings.db.entity.Spendings;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.samaya.myspendings.R;
+import com.samaya.myspendings.adapters.ReportFragmentAdapter;
 
 public class ReportActivity extends AppCompatActivity {
 

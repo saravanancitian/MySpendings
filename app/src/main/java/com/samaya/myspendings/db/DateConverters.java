@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.room.TypeConverter;
 
-import com.samaya.myspendings.Utils;
+import com.samaya.myspendings.utils.Utils;
 
 import java.util.Date;
 
