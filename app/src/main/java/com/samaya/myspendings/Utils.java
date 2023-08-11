@@ -11,6 +11,9 @@ public class Utils {
     public static SimpleDateFormat sqldtf
             = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    public static SimpleDateFormat filedtf
+            = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+
     public static SimpleDateFormat stf
             = new SimpleDateFormat("HH:mm");
     public static SimpleDateFormat sdf

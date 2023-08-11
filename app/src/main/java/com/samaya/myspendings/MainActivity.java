@@ -2,6 +2,7 @@ package com.samaya.myspendings;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -12,6 +13,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -40,6 +43,13 @@ public class MainActivity extends AppCompatActivity{
             startActivity(intent);
         });
         MaterialButton btnExport = findViewById(R.id.btn_export);
+        btnExport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ExportActivity.class);
+                startActivity(intent);
+            }
+        });
 
         TabLayout tabLayout = findViewById(R.id.tablayout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.str_all_spendings));

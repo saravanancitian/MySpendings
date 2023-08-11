@@ -71,7 +71,7 @@ public class ReportFragment extends Fragment {
 
 
 
-                switch(fragmentType){
+        switch(fragmentType){
             case FRAGMENT_REPORT_TYPE_ALL_SPENDINGS:{
                 reportview = inflater.inflate(R.layout.fragment_report_all, container, false);
                 LineChart chart = (LineChart) reportview.findViewById(R.id.chart_all);
