@@ -1,10 +1,15 @@
 package com.samaya.myspendings.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -15,19 +20,33 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.samaya.myspendings.R;
 import com.samaya.myspendings.adapters.SpendingsFragmentAdapter;
+import com.samaya.myspendings.db.entity.Spendings;
 import com.samaya.myspendings.fragments.SpendingsViewModel;
+import com.samaya.myspendings.utils.Utils;
 
-public class MainActivity extends AppCompatActivity{
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements ActivityResultCallback<Uri> {
 
     private SpendingsViewModel viewModel;
     private ViewPager2 viewPager;
     private FragmentStateAdapter pagerAdapter;
+
+    ActivityResultLauncher launcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        launcher = registerForActivityResult(new ActivityResultContracts.CreateDocument("text/csv"), this);
+
+
         viewModel = (new ViewModelProvider(this).get(SpendingsViewModel.class));
 
         viewPager = findViewById(R.id.pager);
@@ -47,8 +66,8 @@ public class MainActivity extends AppCompatActivity{
         btnExport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ExportActivity.class);
-                startActivity(intent);
+                String filename = "spending_"+ Utils.rdf.format(new Date()) + ".csv";
+                launcher.launch(filename);
             }
         });
 
@@ -102,4 +121,39 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    @Override
+    public void onActivityResult(Uri result) {
+        viewModel.getAllspendings().observe(this, new Observer<List<Spendings>>() {
+            @Override
+            public void onChanged(List<Spendings> spendings) {
+                if(spendings != null && !spendings.isEmpty()){
+                    StringBuilder builder = new StringBuilder();
+                    for(Spendings spending : spendings){
+                        builder.append(spending.toCsvString());
+                        builder.append('\n');
+                    }
+                    saveFile(result, builder.toString());
+                }
+            }
+        });
+    }
+
+    void saveFile(Uri fileuri, String data){
+        OutputStream os = null;
+
+        try {
+            os = getContentResolver().openOutputStream(fileuri);
+            os.write(data.getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            try {
+                if(os != null)
+                    os.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }
