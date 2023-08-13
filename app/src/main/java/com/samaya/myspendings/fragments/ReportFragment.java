@@ -29,7 +29,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.samaya.myspendings.R;
-import com.samaya.myspendings.utils.Utils;
+import com.samaya.myspendings.utils.DateUtils;
 import com.samaya.myspendings.adapters.DateListAdapter;
 import com.samaya.myspendings.db.entity.DMYSpending;
 import com.samaya.myspendings.db.entity.Spendings;
@@ -86,7 +86,7 @@ public class ReportFragment extends Fragment {
                     List<Entry> entries = new ArrayList<Entry>();
                     for(int i = 0; i < spendings1.size(); i++){
                         entries.add(new Entry(i, spendings1.get(i).amount));
-                        dates.add(Utils.rdf.format(spendings1.get(i).whendt));
+                        dates.add(DateUtils.rdf.format(spendings1.get(i).whendt));
                     }
 
                     ValueFormatter formatter = new ValueFormatter() {
@@ -153,7 +153,7 @@ public class ReportFragment extends Fragment {
 
                 Calendar calendar = Calendar.getInstance();
 
-                LiveData<List<DMYSpending>> monthsdata = mViewModel.getDailyTotalForMonth(Utils.monthyearformat.format(calendar.getTime()));
+                LiveData<List<DMYSpending>> monthsdata = mViewModel.getDailyTotalForMonth(DateUtils.monthyearformat.format(calendar.getTime()));
                 monthsdata.observe(getViewLifecycleOwner(), datalist->{
                     List<Entry> entries = new ArrayList<Entry>();
                     List<String> dates = new ArrayList<>();
@@ -255,7 +255,7 @@ public class ReportFragment extends Fragment {
 
                                 for(int i = 0; i < spendings.size(); i++){
                                     entries.add(new Entry(i, spendings.get(i).amount));
-                                    dates.add(Utils.rdf.format(spendings.get(i).whendt));
+                                    dates.add(DateUtils.rdf.format(spendings.get(i).whendt));
                                 }
 
                                 ValueFormatter formatter = new ValueFormatter() {

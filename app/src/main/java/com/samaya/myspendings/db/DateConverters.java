@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.room.TypeConverter;
 
-import com.samaya.myspendings.utils.Utils;
+import com.samaya.myspendings.utils.DateUtils;
 
 import java.util.Date;
 
@@ -13,7 +13,7 @@ public class DateConverters {
     public static Date stringToDate(String value) {
         Date date = null;
         try{
-            date = Utils.sqldtf.parse(value);
+            date = DateUtils.sqldtf.parse(value);
         }catch (Exception exception){
             Log.e("String to date", exception.getMessage());
         }
@@ -22,6 +22,6 @@ public class DateConverters {
 
     @TypeConverter
     public static String dateToString(Date date) {
-        return Utils.sqldtf.format(date);
+        return DateUtils.sqldtf.format(date);
     }
 }

@@ -26,7 +26,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
 import com.samaya.myspendings.R;
 import com.samaya.myspendings.activities.RecordActivity;
-import com.samaya.myspendings.utils.Utils;
+import com.samaya.myspendings.utils.DateUtils;
 import com.samaya.myspendings.adapters.AllSpendingsAdapter;
 import com.samaya.myspendings.adapters.DMYSpendingsAdapter;
 import com.samaya.myspendings.db.entity.DMYSpending;
@@ -185,7 +185,7 @@ public class SpendingsFragment extends Fragment {
                         tv = dialogview.findViewById(R.id.dia_txt_paidto);
                         tv.setText(spending.paidto);
                         tv = dialogview.findViewById(R.id.dia_txt_date);
-                        tv.setText(Utils.sdtf.format(spending.whendt));
+                        tv.setText(DateUtils.sdtf.format(spending.whendt));
                         tv = dialogview.findViewById(R.id.dia_txt_remark);
                         tv.setText(spending.paidto);
 

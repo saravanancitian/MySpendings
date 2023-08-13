@@ -17,7 +17,7 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.samaya.myspendings.R;
-import com.samaya.myspendings.utils.Utils;
+import com.samaya.myspendings.utils.DateUtils;
 import com.samaya.myspendings.db.entity.Spendings;
 import com.samaya.myspendings.fragments.SpendingsViewModel;
 
@@ -60,8 +60,8 @@ public class RecordActivity extends AppCompatActivity {
         editWhentime =  findViewById(R.id.edit_whentime);
         editRemark =  findViewById(R.id.edit_remark);
 
-        editWhendt.setText(Utils.sdf.format(Calendar.getInstance().getTime()));
-        editWhentime.setText(Utils.stf.format(Calendar.getInstance().getTime()));
+        editWhendt.setText(DateUtils.sdf.format(Calendar.getInstance().getTime()));
+        editWhentime.setText(DateUtils.stf.format(Calendar.getInstance().getTime()));
         btnSave = findViewById(R.id.btn_save);
         btnCancel = findViewById(R.id.btn_cancel);
         btnCancel.setOnClickListener(view->finish());
@@ -80,8 +80,8 @@ public class RecordActivity extends AppCompatActivity {
                 editAmt.setText(String.valueOf(spendingsforupdate.amount));
                 editPaidto.setText(spendingsforupdate.paidto);
                 editRemark.setText(spendingsforupdate.remark);
-                editWhendt.setText(Utils.sdf.format(spendingsforupdate.whendt));
-                editWhentime.setText(Utils.stf.format(spendingsforupdate.whendt));
+                editWhendt.setText(DateUtils.sdf.format(spendingsforupdate.whendt));
+                editWhentime.setText(DateUtils.stf.format(spendingsforupdate.whendt));
             }
         }
 
@@ -124,7 +124,7 @@ public class RecordActivity extends AppCompatActivity {
                     Spendings spending = new Spendings(spendingsforupdate);
                     spending.amount = Float.parseFloat(editAmt.getText().toString());
                     spending.paidto = editPaidto.getText().toString();
-                    spending.whendt = Utils.sdtf.parse(editWhendt.getText().toString() + " "+ editWhentime.getText().toString());
+                    spending.whendt = DateUtils.sdtf.parse(editWhendt.getText().toString() + " "+ editWhentime.getText().toString());
                     spending.remark = editRemark.getText().toString();
                    if(ops.equalsIgnoreCase("update")){
                         if(spendingsforupdate != null) {
@@ -149,7 +149,7 @@ public class RecordActivity extends AppCompatActivity {
         materialDatePicker.addOnPositiveButtonClickListener((MaterialPickerOnPositiveButtonClickListener<Long>) selection -> {
             Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
             calendar.setTimeInMillis(selection);
-            String formattedDate  = Utils.sdf.format(calendar.getTime());
+            String formattedDate  = DateUtils.sdf.format(calendar.getTime());
             editWhendt.setText(formattedDate);
         });
 
@@ -158,7 +158,7 @@ public class RecordActivity extends AppCompatActivity {
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.HOUR_OF_DAY, materialTimePicker.getHour());
             cal.set(Calendar.MINUTE, materialTimePicker.getMinute());
-             editWhentime.setText(Utils.stf.format(cal.getTime()));
+             editWhentime.setText(DateUtils.stf.format(cal.getTime()));
         });
         editWhendt.setOnClickListener(view -> materialDatePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER"));
 

@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.samaya.myspendings.R;
-import com.samaya.myspendings.utils.Utils;
+import com.samaya.myspendings.utils.DateUtils;
 import com.samaya.myspendings.db.entity.DMYSpending;
 
 import java.util.Calendar;
@@ -56,7 +56,7 @@ public class DMYSpendingsAdapter extends RecyclerView.Adapter<DMYSpendingsAdapte
 //                cal.set(Calendar.MONTH, monthval -1);
 //                cal.set(Calendar.YEAR, yearval);
 //                String month = new SimpleDateFormat("MMM").format(cal.getTime());
-                String month = Utils.getMonth(monthval - 1);
+                String month = DateUtils.getMonth(monthval - 1);
                 holder.itmTxtDate.setText(month+ " "+ monthvalstr[1]);
             } else if(type == TYPE_YEARLY) {
                 holder.itmTxtDate.setText(spending.dmyDate);
@@ -69,7 +69,7 @@ public class DMYSpendingsAdapter extends RecyclerView.Adapter<DMYSpendingsAdapte
                 cal.set(Calendar.MONTH, monthval -1);
                 cal.set(Calendar.YEAR, yearval);
                 cal.set(Calendar.DAY_OF_MONTH, dayval);
-                holder.itmTxtDate.setText(Utils.sdf.format(cal.getTime()));
+                holder.itmTxtDate.setText(DateUtils.sdf.format(cal.getTime()));
             }
 
         }

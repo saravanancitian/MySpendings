@@ -1,6 +1,6 @@
 package com.samaya.myspendings.adapters;
 
-import static com.samaya.myspendings.utils.Utils.sdf;
+import static com.samaya.myspendings.utils.DateUtils.sdf;
 
 import android.view.LayoutInflater;
 import android.view.View;

@@ -10,7 +10,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.samaya.myspendings.utils.Utils;
+import com.samaya.myspendings.utils.DateUtils;
 
 import java.util.Date;
 
@@ -78,9 +78,9 @@ public class Spendings  implements Parcelable {
             state = in.readInt();
         }
         try {
-            whendt = Utils.sdtf.parse(in.readString());
-            createdDt = Utils.sqldtf.parse(in.readString());
-            updatedDt = Utils.sqldtf.parse(in.readString());
+            whendt = DateUtils.sdtf.parse(in.readString());
+            createdDt = DateUtils.sqldtf.parse(in.readString());
+            updatedDt = DateUtils.sqldtf.parse(in.readString());
         }catch (Exception exception) {
             Log.e("Spendings", exception.getLocalizedMessage());
         }
@@ -120,9 +120,9 @@ public class Spendings  implements Parcelable {
             parcel.writeByte((byte) 1);
             parcel.writeInt(state);
         }
-        parcel.writeString(Utils.sdtf.format(whendt));
-        parcel.writeString(Utils.sqldtf.format(createdDt));
-        parcel.writeString(Utils.sqldtf.format(updatedDt));
+        parcel.writeString(DateUtils.sdtf.format(whendt));
+        parcel.writeString(DateUtils.sqldtf.format(createdDt));
+        parcel.writeString(DateUtils.sqldtf.format(updatedDt));
     }
 
 
@@ -132,7 +132,7 @@ public class Spendings  implements Parcelable {
         builder.append(',');
         builder.append(this.amount);
         builder.append(',');
-        builder.append(Utils.sqldtf.format(this.whendt));
+        builder.append(DateUtils.sqldtf.format(this.whendt));
         builder.append(',');
         builder.append(this.remark);
         return builder.toString();

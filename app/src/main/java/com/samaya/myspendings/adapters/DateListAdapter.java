@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textview.MaterialTextView;
 import com.samaya.myspendings.R;
-import com.samaya.myspendings.utils.Utils;
+import com.samaya.myspendings.utils.DateUtils;
 
 import java.util.List;
 
@@ -61,7 +61,7 @@ public class DateListAdapter extends RecyclerView.Adapter<DateListAdapter.ViewHo
             String m[] = str.split("-");
             holder.tv_month.setVisibility(View.VISIBLE);
             int month = Integer.parseInt(m[0]);
-            holder.tv_month.setText(Utils.getShortMonths(month -1 ));
+            holder.tv_month.setText(DateUtils.getShortMonths(month -1 ));
             holder.tv_year.setText(m[1]);
 
         } else if(type == DATE_LIST_ADAPTER_TYPE_YEAR){

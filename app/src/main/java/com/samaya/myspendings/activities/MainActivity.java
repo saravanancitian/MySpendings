@@ -22,7 +22,7 @@ import com.samaya.myspendings.R;
 import com.samaya.myspendings.adapters.SpendingsFragmentAdapter;
 import com.samaya.myspendings.db.entity.Spendings;
 import com.samaya.myspendings.fragments.SpendingsViewModel;
-import com.samaya.myspendings.utils.Utils;
+import com.samaya.myspendings.utils.DateUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
         btnExport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String filename = "spending_"+ Utils.rdf.format(new Date()) + ".csv";
+                String filename = "spending_"+ DateUtils.rdf.format(new Date()) + ".csv";
                 launcher.launch(filename);
             }
         });
