@@ -43,6 +43,7 @@ public class ReportFragment extends Fragment {
 
     private static final String ARG_FRAGMENT_TYPE = "param1";
 
+
     public static final int FRAGMENT_REPORT_TYPE_ALL_SPENDINGS = 0;
     public static final int FRAGMENT_REPORT_TYPE_MONTHLY = 1;
     public static final int FRAGMENT_REPORT_TYPE_YEARlY = 2;
@@ -96,12 +97,7 @@ public class ReportFragment extends Fragment {
                         }
                     };
 
-                    LineDataSet dataSet = new LineDataSet(entries,"All Transcations");
-                    LineData data = new LineData(dataSet);
-                    chart.setData(data);
-                    XAxis axis = chart.getXAxis();
-                    axis.setValueFormatter(formatter);
-                    chart.invalidate();
+                    drawChart(chart, entries, formatter, "All Transcations");
 
                 });
 
@@ -142,12 +138,9 @@ public class ReportFragment extends Fragment {
                             }
                         };
 
-                        LineDataSet dataSet = new LineDataSet(entries,"Monthly Spendings");
-                        LineData data = new LineData(dataSet);
-                        chart.setData(data);
-                        XAxis axis = chart.getXAxis();
-                        axis.setValueFormatter(formatter);
-                        chart.invalidate();
+
+                        drawChart(chart, entries, formatter, "Monthly Spendings");
+
                     });
                 });
 
@@ -168,12 +161,8 @@ public class ReportFragment extends Fragment {
                             return dates.get((int)value);
                         }
                     };
-                    LineDataSet dataSet = new LineDataSet(entries,"Monthly Spendings");
-                    LineData data = new LineData(dataSet);
-                    chart.setData(data);
-                    XAxis axis = chart.getXAxis();
-                    axis.setValueFormatter(formatter);
-                    chart.invalidate();
+                    drawChart(chart, entries, formatter, "Monthly Spendings");
+
                 });
 
 
@@ -206,10 +195,7 @@ public class ReportFragment extends Fragment {
                             entries.add(new Entry(i, datalist.get(i).amount));
                         }
 
-                        LineDataSet dataSet = new LineDataSet(entries,"Yearly Spendings");
-                        LineData data = new LineData(dataSet);
-                        chart.setData(data);
-                        chart.invalidate();
+                        drawChart(chart, entries, null, "Yearly Spendings");
                     });
                 });
                 Calendar calendar = Calendar.getInstance();
@@ -221,10 +207,8 @@ public class ReportFragment extends Fragment {
                         entries.add(new Entry(i, datalist.get(i).amount));
                     }
 
-                    LineDataSet dataSet = new LineDataSet(entries,"Yearly Spendings");
-                    LineData data = new LineData(dataSet);
-                    chart.setData(data);
-                    chart.invalidate();
+
+                    drawChart(chart, entries, null, "Yearly Spendings");
                 });
 
 
@@ -265,12 +249,8 @@ public class ReportFragment extends Fragment {
                                     }
                                 };
 
-                                LineDataSet dataSet = new LineDataSet(entries,"Range Transcations");
-                                LineData data = new LineData(dataSet);
-                                chart.setData(data);
-                                XAxis axis = chart.getXAxis();
-                                axis.setValueFormatter(formatter);
-                                chart.invalidate();
+
+                                drawChart(chart, entries, formatter, "Range Transcations");
                             }
                         });
                     }
@@ -291,6 +271,17 @@ public class ReportFragment extends Fragment {
         return reportview;
     }
 
+    void drawChart(LineChart chart , List<Entry> entries , ValueFormatter formatter, String label){
+        LineDataSet dataSet = new LineDataSet(entries,label);
+        LineData data = new LineData(dataSet);
+        chart.setData(data);
+        if(formatter != null) {
+            XAxis axis = chart.getXAxis();
+            axis.setValueFormatter(formatter);
+        }
+        chart.invalidate();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -298,9 +289,6 @@ public class ReportFragment extends Fragment {
             fragmentType = getArguments().getInt(ARG_FRAGMENT_TYPE);
         }
         mViewModel = new ViewModelProvider(this).get(ReportViewModel.class);
-
-
-        // TODO: Use the ViewModel
-    }
+   }
 
 }

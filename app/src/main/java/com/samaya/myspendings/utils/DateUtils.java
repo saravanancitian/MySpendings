@@ -3,7 +3,7 @@ package com.samaya.myspendings.utils;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 
-public class DateUtils {
+public final class DateUtils {
 
     public static SimpleDateFormat rdf = new SimpleDateFormat("MMM-dd");
 

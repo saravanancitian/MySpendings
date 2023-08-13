@@ -125,6 +125,17 @@ public class Spendings  implements Parcelable {
         parcel.writeString(DateUtils.sqldtf.format(updatedDt));
     }
 
+    public static String getHeader(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("Paid To");
+        builder.append(',');
+        builder.append("Amount");
+        builder.append(',');
+        builder.append("When Date");
+        builder.append(',');
+        builder.append("Remark");
+        return builder.toString();
+    }
 
     public String toCsvString(){
         StringBuilder builder = new StringBuilder();

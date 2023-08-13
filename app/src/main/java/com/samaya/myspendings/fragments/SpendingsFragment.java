@@ -33,6 +33,7 @@ import com.samaya.myspendings.db.entity.DMYSpending;
 import com.samaya.myspendings.db.entity.Spendings;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,9 +43,7 @@ import java.util.List;
 public class SpendingsFragment extends Fragment {
 
     public static final int FRAGMENT_TYPE_ALL_SPENDINGS = 1;
-
     public static final int FRAGMENT_TYPE_DAILY = 2;
-
     public static final int FRAGMENT_TYPE_MONTHLY = 3;
     public static final int FRAGMENT_TYPE_YEARlY = 4;
 
@@ -112,7 +111,7 @@ public class SpendingsFragment extends Fragment {
                 });
 
 
-                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
+                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
                     @Override
                     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                         return false;
@@ -161,48 +160,42 @@ public class SpendingsFragment extends Fragment {
                 });
                 itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
-                LiveData<List<Spendings>> spendings = viewModel.getAllspendings();
-                if(spendings.getValue() == null || spendings.getValue().isEmpty()){
+                LiveData<List<Spendings>> spendingsData = viewModel.getAllspendings();
+                if(spendingsData.getValue() == null || spendingsData.getValue().isEmpty()){
                     txtEmpty.setVisibility(View.VISIBLE);
                 }
 
-                spendings.observe(getViewLifecycleOwner(), new Observer<List<Spendings>>() {
-                    @Override
-                    public void onChanged(@Nullable final List<Spendings> spendings) {
-                        // Update the cached copy of the words in the adapter.
-                        allSpendingAdapter.setSpendingsList(spendings);
-                    }
+                spendingsData.observe(getViewLifecycleOwner(), spendings -> {
+                    // Update the cached copy of the words in the adapter.
+                    allSpendingAdapter.setSpendingsList(spendings);
                 });
 
-                allSpendingAdapter.setOnItemClickListener(new AllSpendingsAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position, Spendings spending) {
+                allSpendingAdapter.setOnItemClickListener((view, position, spending) -> {
 
-                        View dialogview = inflater.inflate(R.layout.selected_item, container);
+                    View dialogview = inflater.inflate(R.layout.selected_item, container);
 
-                        MaterialTextView tv = dialogview.findViewById(R.id.dia_txt_amt);
-                        tv.setText(String.valueOf(spending.amount));
-                        tv = dialogview.findViewById(R.id.dia_txt_paidto);
-                        tv.setText(spending.paidto);
-                        tv = dialogview.findViewById(R.id.dia_txt_date);
-                        tv.setText(DateUtils.sdtf.format(spending.whendt));
-                        tv = dialogview.findViewById(R.id.dia_txt_remark);
-                        tv.setText(spending.paidto);
+                    MaterialTextView tv = dialogview.findViewById(R.id.dia_txt_amt);
+                    tv.setText(String.valueOf(spending.amount));
+                    tv = dialogview.findViewById(R.id.dia_txt_paidto);
+                    tv.setText(spending.paidto);
+                    tv = dialogview.findViewById(R.id.dia_txt_date);
+                    tv.setText(DateUtils.sdtf.format(spending.whendt));
+                    tv = dialogview.findViewById(R.id.dia_txt_remark);
+                    tv.setText(spending.paidto);
 
-                        new MaterialAlertDialogBuilder(getActivity())
-                                .setView(dialogview)
-                                .setPositiveButton("Edit", (d, w)->{
-                                    Intent intent = new Intent(getActivity(), RecordActivity.class);
-                                    intent.putExtra("Spending", spending);
-                                    intent.putExtra("ops", "update");
-                                    startActivity(intent);
-                                })
-                                .setNegativeButton("Cancel", (d, w)->{
+                    new MaterialAlertDialogBuilder(getActivity())
+                            .setView(dialogview)
+                            .setPositiveButton("Edit", (d, w)->{
+                                Intent intent = new Intent(getActivity(), RecordActivity.class);
+                                intent.putExtra("Spending", spending);
+                                intent.putExtra("ops", RecordActivity.OPS_UPDATE);
+                                startActivity(intent);
+                            })
+                            .setNegativeButton("Cancel", (d, w)->{
 
-                                })
-                                .create()
-                                .show();
-                    }
+                            })
+                            .create()
+                            .show();
                 });
 
             }break;
@@ -223,17 +216,14 @@ public class SpendingsFragment extends Fragment {
                     }
                 });
 
-                LiveData<List<DMYSpending>> spendings = viewModel.getMonthlySpendings();
-                if(spendings.getValue() == null || spendings.getValue().isEmpty()){
+                LiveData<List<DMYSpending>> spendingsData = viewModel.getMonthlySpendings();
+                if(spendingsData.getValue() == null || spendingsData.getValue().isEmpty()){
                     txtEmpty.setVisibility(View.VISIBLE);
                 }
 
-                spendings.observe(getViewLifecycleOwner(), new Observer<List<DMYSpending>>() {
-                    @Override
-                    public void onChanged(@Nullable final List<DMYSpending> spendings) {
-                        // Update the cached copy of the words in the adapter.
-                        monthlySpendingsAdapter.setMonthlySpendingsList(spendings);
-                    }
+                spendingsData.observe(getViewLifecycleOwner(), spendings -> {
+                    // Update the cached copy of the words in the adapter.
+                    monthlySpendingsAdapter.setMonthlySpendingsList(spendings);
                 });
 
             }break;
@@ -254,17 +244,14 @@ public class SpendingsFragment extends Fragment {
                     }
                 });
 
-                LiveData<List<DMYSpending>> spendings = viewModel.getYearlySpendings();
-                if(spendings.getValue() == null || spendings.getValue().isEmpty()){
+                LiveData<List<DMYSpending>> spendingsData = viewModel.getYearlySpendings();
+                if(spendingsData.getValue() == null || spendingsData.getValue().isEmpty()){
                     txtEmpty.setVisibility(View.VISIBLE);
                 }
 
-                spendings.observe(getViewLifecycleOwner(), new Observer<List<DMYSpending>>() {
-                    @Override
-                    public void onChanged(@Nullable final List<DMYSpending> spendings) {
-                        // Update the cached copy of the words in the adapter.
-                        yearlySpendingsAdapter.setMonthlySpendingsList(spendings);
-                    }
+                spendingsData.observe(getViewLifecycleOwner(), spendings -> {
+                    // Update the cached copy of the words in the adapter.
+                    yearlySpendingsAdapter.setMonthlySpendingsList(spendings);
                 });
 
             }break;
@@ -286,17 +273,14 @@ public class SpendingsFragment extends Fragment {
                     }
                 });
 
-                LiveData<List<DMYSpending>> spendings = viewModel.getDailySpendings();
-                if(spendings.getValue() == null || spendings.getValue().isEmpty()){
+                LiveData<List<DMYSpending>> spendingsData = viewModel.getDailySpendings();
+                if(spendingsData.getValue() == null || spendingsData.getValue().isEmpty()){
                     txtEmpty.setVisibility(View.VISIBLE);
                 }
 
-                spendings.observe(getViewLifecycleOwner(), new Observer<List<DMYSpending>>() {
-                    @Override
-                    public void onChanged(@Nullable final List<DMYSpending> spendings) {
-                        // Update the cached copy of the words in the adapter.
-                        dailySpendingsAdapter.setMonthlySpendingsList(spendings);
-                    }
+                spendingsData.observe(getViewLifecycleOwner(), spendings -> {
+                    // Update the cached copy of the words in the adapter.
+                    dailySpendingsAdapter.setMonthlySpendingsList(spendings);
                 });
 
             }break;

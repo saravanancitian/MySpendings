@@ -3,13 +3,11 @@ package com.samaya.myspendings.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -28,13 +26,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ActivityResultCallback<Uri> {
 
     private SpendingsViewModel viewModel;
+
     private ViewPager2 viewPager;
-    private FragmentStateAdapter pagerAdapter;
 
     ActivityResultLauncher launcher;
 
@@ -44,13 +41,14 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
 
         setContentView(R.layout.activity_main);
 
+
         launcher = registerForActivityResult(new ActivityResultContracts.CreateDocument("text/csv"), this);
 
 
         viewModel = (new ViewModelProvider(this).get(SpendingsViewModel.class));
 
         viewPager = findViewById(R.id.pager);
-        pagerAdapter = new SpendingsFragmentAdapter(getSupportFragmentManager(), getLifecycle());
+        FragmentStateAdapter pagerAdapter = new SpendingsFragmentAdapter(getSupportFragmentManager(), getLifecycle());
         viewPager.setAdapter(pagerAdapter);
         viewPager.setUserInputEnabled(false);
 
@@ -63,12 +61,9 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
             startActivity(intent);
         });
         MaterialButton btnExport = findViewById(R.id.btn_export);
-        btnExport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String filename = "spending_"+ DateUtils.rdf.format(new Date()) + ".csv";
-                launcher.launch(filename);
-            }
+        btnExport.setOnClickListener(view -> {
+            String filename =(new StringBuilder("spending_")).append(DateUtils.filedtf.format(new Date())).append(".csv").toString();
+            launcher.launch(filename);
         });
 
         TabLayout tabLayout = findViewById(R.id.tablayout);
@@ -84,14 +79,10 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabUnselected(TabLayout.Tab tab) { }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabReselected(TabLayout.Tab tab) { }
         });
 
         viewModel.getTotalspendings().observe(this, totalSpendings -> {
@@ -123,19 +114,20 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
 
     @Override
     public void onActivityResult(Uri result) {
-        viewModel.getAllspendings().observe(this, new Observer<List<Spendings>>() {
-            @Override
-            public void onChanged(List<Spendings> spendings) {
-                if(spendings != null && !spendings.isEmpty()){
+        if(result != null) {
+            viewModel.getAllspendings().observe(this, spendings -> {
+                if (spendings != null && !spendings.isEmpty()) {
                     StringBuilder builder = new StringBuilder();
-                    for(Spendings spending : spendings){
+                    builder.append(Spendings.getHeader());
+                    builder.append('\n');
+                    for (Spendings spending : spendings) {
                         builder.append(spending.toCsvString());
                         builder.append('\n');
                     }
                     saveFile(result, builder.toString());
                 }
-            }
-        });
+            });
+        }
     }
 
     void saveFile(Uri fileuri, String data){
