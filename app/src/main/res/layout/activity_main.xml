@@ -30,9 +30,10 @@
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
         android:hint="@string/lbl_total_spendings"
-        android:enabled="false"
+
         android:layout_below="@+id/txt_title"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <!--        android:enabled="false"-->
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txt_totalspendings"
@@ -40,7 +41,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:fontFamily="sans-serif-black"
-            android:inputType="numberDecimal"
+            android:inputType="none"
             android:focusable="false"
             android:layout_weight="1"
             android:textSize="18sp"

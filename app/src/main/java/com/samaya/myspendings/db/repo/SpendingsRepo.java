@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.os.Looper;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Query;
 
 import com.samaya.myspendings.db.AppDatabase;
 import com.samaya.myspendings.db.dao.SpendingsDao;
@@ -22,6 +21,7 @@ public class SpendingsRepo {
     private SpendingsDao dao;
 
     ExecutorService executor = Executors.newSingleThreadExecutor();
+
     Handler handler = new Handler(Looper.getMainLooper());
 
     public SpendingsRepo(Application application){
@@ -30,38 +30,18 @@ public class SpendingsRepo {
     }
 
     public void insert(Spendings spending) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                dao.insertSpending(spending);
-            }
-        });
+        executor.execute(() -> dao.insertSpending(spending));
     }
 
     public void update(Spendings spending) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                dao.updateSpending(spending);
-            }
-        });
+        executor.execute(() -> dao.updateSpending(spending));
     }
 
     public void delete(Spendings spending) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                dao.deleteSpending(spending);
-            }
-        });
+        executor.execute(() -> dao.deleteSpending(spending));
     }
     public void purge(){
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                dao.purge();
-            }
-        });
+        executor.execute(() -> dao.purge());
     }
 
     public  LiveData<List<Spendings>> getAllSpendings(){

@@ -28,6 +28,9 @@ public class RecordActivity extends AppCompatActivity {
 
     private SpendingsViewModel viewModel;
 
+    public static final String OPS_INSERT = "INSERT";
+    public static final String OPS_UPDATE = "UPDATE";
+
     TextInputEditText editAmt;
     TextInputEditText editPaidto;
     TextInputEditText editWhendt;
@@ -35,7 +38,7 @@ public class RecordActivity extends AppCompatActivity {
 
     TextInputEditText editRemark;
 
-    String ops = "insert";
+    String ops = OPS_INSERT;
 
     MaterialButton btnSave, btnCancel;
 
@@ -69,9 +72,9 @@ public class RecordActivity extends AppCompatActivity {
 
         ops = intent.getStringExtra("ops");
         if(ops == null){
-            ops = "insert";
+            ops = OPS_INSERT;
         } else{
-            if(ops.equalsIgnoreCase("update")){
+            if(ops.equalsIgnoreCase(OPS_UPDATE)){
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     spendingsforupdate = intent.getParcelableExtra("Spending", Spendings.class);
                 } else {
