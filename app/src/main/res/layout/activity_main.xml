@@ -5,21 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/txt_title"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutheader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:fontFamily="casual"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:text="@string/str_title"
-        android:textAlignment="center"
-        android:textSize="22sp"
-        android:textStyle="bold|italic"
-        />
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+        <ImageButton
+            android:id="@+id/btn_drawer_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_density_medium_24"
+            />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="casual"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/str_title"
+            android:textAlignment="center"
+            android:textSize="22sp"
+            android:textStyle="bold|italic"
+            android:layout_weight="2"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/ll_total"
@@ -30,10 +46,8 @@
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
         android:hint="@string/lbl_total_spendings"
-
-        android:layout_below="@+id/txt_title"
+        android:layout_below="@id/layoutheader"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <!--        android:enabled="false"-->
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txt_totalspendings"
