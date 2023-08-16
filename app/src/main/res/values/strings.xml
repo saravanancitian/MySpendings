@@ -7,6 +7,9 @@
 
     <string name="str_title">My Spendings</string>
 
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
+
     <!-- Tab titles-->
     <string name="str_all_spendings">All Spendings</string>
     <string name="str_daily">Daily</string>
