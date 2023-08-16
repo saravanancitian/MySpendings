@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MySpendings</string>
+    <string name="app_name">My Spendings</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="record_fragment">Record Fragment</string>

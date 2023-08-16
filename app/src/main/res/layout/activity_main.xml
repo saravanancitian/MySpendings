@@ -8,6 +8,8 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
+
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -16,37 +18,6 @@
         android:fitsSystemWindows="true"
         tools:context=".activities.MainActivity">
 
-
-    <!--    <androidx.appcompat.widget.LinearLayoutCompat-->
-    <!--        android:id="@+id/layoutheader"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:orientation="horizontal"-->
-    <!--        android:gravity="center"-->
-    <!--        >-->
-    <!--        <ImageButton-->
-    <!--            android:id="@+id/btn_drawer_menu"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:src="@drawable/baseline_density_medium_24"-->
-    <!--            />-->
-
-
-    <!--        <com.google.android.material.textview.MaterialTextView-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginTop="10dp"-->
-    <!--            android:layout_marginBottom="10dp"-->
-    <!--            android:fontFamily="casual"-->
-    <!--            android:paddingTop="5dp"-->
-    <!--            android:paddingBottom="5dp"-->
-    <!--            android:text="@string/str_title"-->
-    <!--            android:textAlignment="center"-->
-    <!--            android:textSize="22sp"-->
-    <!--            android:textStyle="bold|italic"-->
-    <!--            android:layout_weight="2"-->
-    <!--            />-->
-    <!--    </androidx.appcompat.widget.LinearLayoutCompat>-->
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -96,10 +67,20 @@
                 android:layout_weight="0.5"
                 />
         </androidx.appcompat.widget.LinearLayoutCompat>
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/ll_report"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-4186022078056115/1841333421">
+        </com.google.android.gms.ads.AdView>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tablayout"
-            android:layout_below="@+id/ll_report"
+            android:layout_below="@id/adView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contentDescription="Tab"
@@ -129,6 +110,7 @@
             android:contentDescription="@string/fabaddSpending"
 
             android:src="@android:drawable/ic_input_add" />
+
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -138,4 +120,6 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:menu="@menu/my_navigation_items" />
+
+
 </androidx.drawerlayout.widget.DrawerLayout>
