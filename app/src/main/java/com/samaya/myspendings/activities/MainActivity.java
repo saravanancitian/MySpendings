@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
 
-    private AdView mAdView;
+    private AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,52 +58,11 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
 
         setContentView(R.layout.activity_main);
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
 
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
 
-                .build();
-        mAdView.loadAd(adRequest);
-
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdClicked() {
-                // Code to be executed when the user clicks on an ad.
-            }
-
-            @Override
-            public void onAdClosed() {
-                // Code to be executed when the user is about to return
-                // to the app after tapping on an ad.
-            }
-
-            @Override
-            public void onAdFailedToLoad(LoadAdError adError) {
-                // Code to be executed when an ad request fails.
-            }
-
-            @Override
-            public void onAdImpression() {
-                // Code to be executed when an impression is recorded
-                // for an ad.
-            }
-
-            @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-            }
-
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
-            }
-        });
+        adView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         // drawer layout instance to toggle the menu icon to open
         // drawer and back button to close drawer
@@ -131,16 +90,26 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if(item.getItemId() == R.id.nav_report){
+                boolean handled = false;
+                if(item.getItemId() == R.id.nav_record){
+                    Intent intent = new Intent(MainActivity.this, RecordActivity.class);
+                    startActivity(intent);
+
+                    handled = true;
+                }else if(item.getItemId() == R.id.nav_report){
                     Intent intent = new Intent(MainActivity.this, ReportActivity.class);
                     startActivity(intent);
-                    return true;
+                    handled = true;
                 } else if(item.getItemId() == R.id.nav_help){
                     Intent intent = new Intent(MainActivity.this, HelpActivity.class);
                     startActivity(intent);
-                    return true;
+                    handled =  true;
                 }
-                return false;
+                if(handled){
+                    drawerLayout.closeDrawers();
+                }
+
+                return handled;
             }
         });
 
@@ -253,5 +222,31 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPause() {
+        if (adView != null) {
+            adView.pause();
+        }
+        super.onPause();
+    }
+
+    /** Called when returning to the activity */
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adView != null) {
+            adView.resume();
+        }
+    }
+
+    /** Called before the activity is destroyed */
+    @Override
+    public void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
     }
 }
