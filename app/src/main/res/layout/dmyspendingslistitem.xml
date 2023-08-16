@@ -25,6 +25,7 @@
             android:id="@+id/itm_txt_month_amt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:textSize="16sp"
             android:layout_weight="0.5"
             android:textStyle="bold"/>

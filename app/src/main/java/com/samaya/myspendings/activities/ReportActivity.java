@@ -57,11 +57,6 @@ public class ReportActivity extends AppCompatActivity {
             }
         });
 
-        MaterialButton backbtn = findViewById(R.id.btn_back);
-        backbtn.setOnClickListener(view->{
-            ReportActivity.this.finish();
-        });
-
     }
 
     @Override

@@ -36,10 +36,6 @@ public class HelpActivity extends AppCompatActivity {
         WebView myWebView = (WebView) findViewById(R.id.webview);
         myWebView.loadUrl("file:///android_asset/help.html");
 
-        MaterialButton backbtn = findViewById(R.id.btn_back);
-        backbtn.setOnClickListener(view->{
-            HelpActivity.this.finish();
-        });
     }
 
 

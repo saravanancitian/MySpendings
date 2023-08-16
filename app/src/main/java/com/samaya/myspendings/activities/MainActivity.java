@@ -100,9 +100,16 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
                     Intent intent = new Intent(MainActivity.this, ReportActivity.class);
                     startActivity(intent);
                     handled = true;
+                } else if(item.getItemId() == R.id.nav_export){
+                    String filename =(new StringBuilder("spending_")).append(DateUtils.filedtf.format(new Date())).append(".csv").toString();
+                    launcher.launch(filename);
+                    handled = true;
                 } else if(item.getItemId() == R.id.nav_help){
                     Intent intent = new Intent(MainActivity.this, HelpActivity.class);
                     startActivity(intent);
+                    handled =  true;
+                } else if(item.getItemId() == R.id.nav_exit){
+                    MainActivity.this.finish();
                     handled =  true;
                 }
                 if(handled){
@@ -116,16 +123,16 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
         FloatingActionButton fab = findViewById(R.id.fab);
         TextInputEditText txtTotalSpendings = findViewById(R.id.txt_totalspendings);
 
-        MaterialButton btnReport = findViewById(R.id.btn_report);
-        btnReport.setOnClickListener(view->{
-            Intent intent = new Intent(MainActivity.this, ReportActivity.class);
-            startActivity(intent);
-        });
-        MaterialButton btnExport = findViewById(R.id.btn_export);
-        btnExport.setOnClickListener(view -> {
-            String filename =(new StringBuilder("spending_")).append(DateUtils.filedtf.format(new Date())).append(".csv").toString();
-            launcher.launch(filename);
-        });
+//        MaterialButton btnReport = findViewById(R.id.btn_report);
+//        btnReport.setOnClickListener(view->{
+//            Intent intent = new Intent(MainActivity.this, ReportActivity.class);
+//            startActivity(intent);
+//        });
+//        MaterialButton btnExport = findViewById(R.id.btn_export);
+//        btnExport.setOnClickListener(view -> {
+//            String filename =(new StringBuilder("spending_")).append(DateUtils.filedtf.format(new Date())).append(".csv").toString();
+//            launcher.launch(filename);
+//        });
 
         TabLayout tabLayout = findViewById(R.id.tablayout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.str_all_spendings));
@@ -163,14 +170,16 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
 
     @Override
     public void onBackPressed() {
-        if (viewPager.getCurrentItem() == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
-            super.onBackPressed();
-        } else {
-            // Otherwise, select the previous step.
-            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
-        }
+//        if (viewPager.getCurrentItem() == 0) {
+//            // If the user is currently looking at the first step, allow the system to handle the
+//            // Back button. This calls finish() on this activity and pops the back stack.
+//            super.onBackPressed();
+//        } else {
+//            // Otherwise, select the previous step.
+//            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+//        }
+
+        super.onBackPressed();
     }
 
     @Override

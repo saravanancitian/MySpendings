@@ -43,7 +43,7 @@ public class AllSpendingsAdapter extends RecyclerView.Adapter<AllSpendingsAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.dailylistitem, parent, false);
+        View itemView = mInflater.inflate(R.layout.allspendingslistitem, parent, false);
         return new ViewHolder(itemView);
     }
 

@@ -2,14 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_record"
-        android:title="Record"
+        android:title="Add New"
         />
     <item
         android:id="@+id/nav_report"
         android:title="Report"
         />
     <item
+        android:id="@+id/nav_export"
+        android:title="Export"
+        />
+    <item
         android:id="@+id/nav_help"
         android:title="Help"
+        />
+
+    <item
+        android:id="@+id/nav_exit"
+        android:title="Exit"
         />
 </menu>

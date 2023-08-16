@@ -39,7 +39,7 @@ public class DMYSpendingsAdapter extends RecyclerView.Adapter<DMYSpendingsAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.monthlyoryearlylistitem, parent, false);
+        View itemView = mInflater.inflate(R.layout.dmyspendingslistitem, parent, false);
         return new ViewHolder(itemView);
     }
 

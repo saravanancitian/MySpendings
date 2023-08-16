@@ -34,13 +34,13 @@ public interface SpendingsDao {
     @Query("SELECT sum(sp.amount) FROM spendings as sp where sp.state = 1")
     LiveData<Integer> getTotalSpendings();
 
-    @Query("SELECT sum(sp.amount) as amount , strftime('%m-%Y', sp.whendt) as dmyDate FROM spendings as sp  where sp.state = 1 group by dmyDate")
+    @Query("SELECT sum(sp.amount) as amount , strftime('%m-%Y', sp.whendt) as dmyDate FROM spendings as sp  where sp.state = 1 group by dmyDate ORDER BY sp.whendt desc")
     LiveData<List<DMYSpending>> getMonthlyTotal();
 
-    @Query("SELECT sum(sp.amount) as amount , strftime('%Y', sp.whendt) as dmyDate FROM spendings as sp where sp.state = 1 group by dmyDate")
+    @Query("SELECT sum(sp.amount) as amount , strftime('%Y', sp.whendt) as dmyDate FROM spendings as sp where sp.state = 1 group by dmyDate ORDER BY sp.whendt desc")
     LiveData<List<DMYSpending>> getYearlyTotal();
 
-    @Query("SELECT sum(sp.amount) as amount , strftime('%d-%m-%Y', sp.whendt) as dmyDate FROM spendings as sp  where sp.state = 1 group by dmyDate")
+    @Query("SELECT sum(sp.amount) as amount , strftime('%d-%m-%Y', sp.whendt) as dmyDate FROM spendings as sp  where sp.state = 1 group by dmyDate ORDER BY sp.whendt desc")
     LiveData<List<DMYSpending>> getDailyTotal();
 
 
