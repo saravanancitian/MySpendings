@@ -1,11 +1,14 @@
 <resources>
-    <string name="app_name">MySpendings</string>
+    <string name="app_name">My Spendings</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="record_fragment">Record Fragment</string>
     <string name="spending_fragment">Spending fragment</string>
 
     <string name="str_title">My Spendings</string>
+
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
 
     <!-- Tab titles-->
     <string name="str_all_spendings">All Spendings</string>
