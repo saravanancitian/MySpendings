@@ -21,6 +21,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.samaya.myspendings.R;
@@ -49,12 +50,15 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
 
     private AdView adView;
 
+    LinearProgressIndicator progressIndicator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
+        progressIndicator = findViewById(R.id.progress_line);
+        progressIndicator.hide();
 
 
         adView = findViewById(R.id.adView);
@@ -179,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
     @Override
     public void onActivityResult(Uri result) {
         if(result != null) {
+            progressIndicator.show();
             viewModel.getAllspendings().observe(this, spendings -> {
                 if (spendings != null && !spendings.isEmpty()) {
                     StringBuilder builder = new StringBuilder();
@@ -189,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
                         builder.append('\n');
                     }
                     saveFile(result, builder.toString());
+                    progressIndicator.hide();
                 }
             });
         }
