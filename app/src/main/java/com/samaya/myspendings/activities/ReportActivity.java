@@ -1,13 +1,13 @@
 package com.samaya.myspendings.activities;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-import android.os.Bundle;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.tabs.TabLayout;
 import com.samaya.myspendings.R;
 import com.samaya.myspendings.adapters.ReportFragmentAdapter;
@@ -15,7 +15,6 @@ import com.samaya.myspendings.adapters.ReportFragmentAdapter;
 public class ReportActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager;
-    private FragmentStateAdapter pagerAdapter;
 
     private AdView adView;
 
@@ -30,7 +29,7 @@ public class ReportActivity extends AppCompatActivity {
         adView.loadAd(adRequest);
 
         viewPager = findViewById(R.id.reportpager);
-        pagerAdapter = new ReportFragmentAdapter(getSupportFragmentManager(), getLifecycle());
+        FragmentStateAdapter pagerAdapter = new ReportFragmentAdapter(getSupportFragmentManager(), getLifecycle());
         viewPager.setAdapter(pagerAdapter);
         viewPager.setUserInputEnabled(false);
 

@@ -49,19 +49,14 @@ public class DMYSpendingsAdapter extends RecyclerView.Adapter<DMYSpendingsAdapte
             DMYSpending spending = spendingsList.get(position);
             holder.itmTxtAmt.setText(String.valueOf(spending.amount));
             if(type == TYPE_MONTHLY){
-                String monthvalstr[] = spending.dmyDate.split("-");
+                String[] monthvalstr = spending.dmyDate.split("-");
                 int monthval = Integer.parseInt(monthvalstr[0]);
-                int yearval = Integer.parseInt(monthvalstr[1]);
-//                Calendar cal = Calendar.getInstance();
-//                cal.set(Calendar.MONTH, monthval -1);
-//                cal.set(Calendar.YEAR, yearval);
-//                String month = new SimpleDateFormat("MMM").format(cal.getTime());
                 String month = DateUtils.getMonth(monthval - 1);
                 holder.itmTxtDate.setText(month+ " "+ monthvalstr[1]);
             } else if(type == TYPE_YEARLY) {
                 holder.itmTxtDate.setText(spending.dmyDate);
             } else if(type == TYPE_DAILY){
-                String monthvalstr[] = spending.dmyDate.split("-");
+                String[] monthvalstr = spending.dmyDate.split("-");
                 int dayval = Integer.parseInt(monthvalstr[0]);
                 int monthval = Integer.parseInt(monthvalstr[1]);
                 int yearval = Integer.parseInt(monthvalstr[2]);

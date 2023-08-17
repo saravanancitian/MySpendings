@@ -14,7 +14,7 @@ import com.samaya.myspendings.utils.DateUtils;
 import java.util.List;
 
 public class DateListAdapter extends RecyclerView.Adapter<DateListAdapter.ViewHolder>{
-
+    private static final String TAG = "DateListAdapter";
     public static interface OnItemClickListener{
 
         public void onItemClick(View view, int position, String datestr);
@@ -26,7 +26,7 @@ public class DateListAdapter extends RecyclerView.Adapter<DateListAdapter.ViewHo
     public static final int DATE_LIST_ADAPTER_TYPE_MONTH_YEAR = 1;
     public static final int DATE_LIST_ADAPTER_TYPE_YEAR = 2;
     int type;
-    private static final String TAG = "ReportRVListAdapter";
+
     OnItemClickListener listener;
 
     private List<String> dates;
@@ -53,12 +53,10 @@ public class DateListAdapter extends RecyclerView.Adapter<DateListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String str = dates.get(position);
-         holder.itemView.setOnClickListener(view->{
-             DateListAdapter.this.listener.onItemClick(view, position, str);
-         });
+         holder.itemView.setOnClickListener(view-> DateListAdapter.this.listener.onItemClick(view, position, str));
         if(type == DATE_LIST_ADAPTER_TYPE_MONTH_YEAR){
 
-            String m[] = str.split("-");
+            String[] m = str.split("-");
             holder.tv_month.setVisibility(View.VISIBLE);
             int month = Integer.parseInt(m[0]);
             holder.tv_month.setText(DateUtils.getShortMonths(month -1 ));
@@ -82,8 +80,8 @@ public class DateListAdapter extends RecyclerView.Adapter<DateListAdapter.ViewHo
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.itemView = itemView;
-            tv_month = (MaterialTextView) itemView.findViewById(R.id.tv_month);
-            tv_year = (MaterialTextView) itemView.findViewById(R.id.tv_year);
+            tv_month = itemView.findViewById(R.id.tv_month);
+            tv_year = itemView.findViewById(R.id.tv_year);
 
         }
     }

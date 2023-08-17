@@ -3,6 +3,7 @@ package com.samaya.myspendings.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -16,14 +17,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -38,8 +33,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements ActivityResultCallback<Uri> {
+    public static final String TAG = "MainActivity";
 
     private SpendingsViewModel viewModel;
 
@@ -75,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
         actionBarDrawerToggle.syncState();
 
         // to make the Navigation drawer icon always appear on the action bar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         launcher = registerForActivityResult(new ActivityResultContracts.CreateDocument("text/csv"), this);
 
 
@@ -86,38 +83,35 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
         viewPager.setAdapter(pagerAdapter);
         viewPager.setUserInputEnabled(false);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                boolean handled = false;
-                if(item.getItemId() == R.id.nav_record){
-                    Intent intent = new Intent(MainActivity.this, RecordActivity.class);
-                    startActivity(intent);
+        NavigationView navigationView = findViewById(R.id.navigation);
+        navigationView.setNavigationItemSelectedListener(item -> {
+            boolean handled = false;
+            if(item.getItemId() == R.id.nav_record){
+                Intent intent = new Intent(MainActivity.this, RecordActivity.class);
+                startActivity(intent);
 
-                    handled = true;
-                }else if(item.getItemId() == R.id.nav_report){
-                    Intent intent = new Intent(MainActivity.this, ReportActivity.class);
-                    startActivity(intent);
-                    handled = true;
-                } else if(item.getItemId() == R.id.nav_export){
-                    String filename =(new StringBuilder("spending_")).append(DateUtils.filedtf.format(new Date())).append(".csv").toString();
-                    launcher.launch(filename);
-                    handled = true;
-                } else if(item.getItemId() == R.id.nav_help){
-                    Intent intent = new Intent(MainActivity.this, HelpActivity.class);
-                    startActivity(intent);
-                    handled =  true;
-                } else if(item.getItemId() == R.id.nav_exit){
-                    MainActivity.this.finish();
-                    handled =  true;
-                }
-                if(handled){
-                    drawerLayout.closeDrawers();
-                }
-
-                return handled;
+                handled = true;
+            }else if(item.getItemId() == R.id.nav_report){
+                Intent intent = new Intent(MainActivity.this, ReportActivity.class);
+                startActivity(intent);
+                handled = true;
+            } else if(item.getItemId() == R.id.nav_export){
+                String filename = "spending_" + DateUtils.filedtf.format(new Date()) + ".csv";
+                launcher.launch(filename);
+                handled = true;
+            } else if(item.getItemId() == R.id.nav_help){
+                Intent intent = new Intent(MainActivity.this, HelpActivity.class);
+                startActivity(intent);
+                handled =  true;
+            } else if(item.getItemId() == R.id.nav_exit){
+                MainActivity.this.finish();
+                handled =  true;
             }
+            if(handled){
+                drawerLayout.closeDrawers();
+            }
+
+            return handled;
         });
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -205,7 +199,9 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
 
         try {
             os = getContentResolver().openOutputStream(fileuri);
-            os.write(data.getBytes(StandardCharsets.UTF_8));
+            if(os != null) {
+                os.write(data.getBytes(StandardCharsets.UTF_8));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -214,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
                 if(os != null)
                     os.close();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                Log.e(TAG, "Error", e);
             }
         }
     }

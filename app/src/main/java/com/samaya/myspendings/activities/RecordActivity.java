@@ -90,11 +90,13 @@ public class RecordActivity extends AppCompatActivity {
                 } else {
                     spendingsforupdate = intent.getParcelableExtra("Spending");
                 }
-                editAmt.setText(String.valueOf(spendingsforupdate.amount));
-                editPaidto.setText(spendingsforupdate.paidto);
-                editRemark.setText(spendingsforupdate.remark);
-                editWhendt.setText(DateUtils.sdf.format(spendingsforupdate.whendt));
-                editWhentime.setText(DateUtils.stf.format(spendingsforupdate.whendt));
+                if(spendingsforupdate != null) {
+                    editAmt.setText(String.valueOf(spendingsforupdate.amount));
+                    editPaidto.setText(spendingsforupdate.paidto);
+                    editRemark.setText(spendingsforupdate.remark);
+                    editWhendt.setText(DateUtils.sdf.format(spendingsforupdate.whendt));
+                    editWhentime.setText(DateUtils.stf.format(spendingsforupdate.whendt));
+                }
             }
         }
 
