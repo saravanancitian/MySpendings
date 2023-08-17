@@ -1,42 +1,34 @@
 package com.samaya.myspendings.fragments;
 
-import androidx.core.util.Pair;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.samaya.myspendings.R;
-import com.samaya.myspendings.utils.DateUtils;
 import com.samaya.myspendings.adapters.DateListAdapter;
 import com.samaya.myspendings.db.entity.DMYSpending;
 import com.samaya.myspendings.db.entity.Spendings;
+import com.samaya.myspendings.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -81,14 +73,14 @@ public class ReportFragment extends Fragment {
         switch(fragmentType){
             case FRAGMENT_REPORT_TYPE_ALL_SPENDINGS:{
                 reportview = inflater.inflate(R.layout.fragment_report_all, container, false);
-                BarChart chart = (BarChart) reportview.findViewById(R.id.chart_all);
+                BarChart chart = reportview.findViewById(R.id.chart_all);
 
                 LiveData<List<Spendings>> spendings = mViewModel.getDailySpendingsForReport();
 
                 spendings.observe(getViewLifecycleOwner(), spendings1 -> {
                     // Update the cached copy of the words in the adapter.
                     List<String> dates = new ArrayList<>();
-                    List<BarEntry> entries = new ArrayList<BarEntry>();
+                    List<BarEntry> entries = new ArrayList<>();
                     for(int i = 0; i < spendings1.size(); i++){
                         entries.add(new BarEntry(i, spendings1.get(i).amount));
                         dates.add(DateUtils.rdf.format(spendings1.get(i).whendt));
@@ -109,7 +101,7 @@ public class ReportFragment extends Fragment {
 
             case FRAGMENT_REPORT_TYPE_MONTHLY:{
                 reportview = inflater.inflate(R.layout.fragment_report_date, container, false);
-                BarChart chart = (BarChart) reportview.findViewById(R.id.chart_date);
+                BarChart chart = reportview.findViewById(R.id.chart_date);
                 RecyclerView recyclerView = reportview.findViewById(R.id.reportrecyclerview);
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                 mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -128,7 +120,7 @@ public class ReportFragment extends Fragment {
                 dateListAdapter.setOnItemClickListener((view, position, str)->{
                     LiveData<List<DMYSpending>> monthsdata = mViewModel.getDailyTotalForMonth(str);
                     monthsdata.observe(getViewLifecycleOwner(), datalist->{
-                        List<BarEntry> entries = new ArrayList<BarEntry>();
+                        List<BarEntry> entries = new ArrayList<>();
                         List<String> dates = new ArrayList<>();
                         for(int i = 0; i < datalist.size(); i++){
                             entries.add(new BarEntry(i, datalist.get(i).amount));
@@ -152,7 +144,7 @@ public class ReportFragment extends Fragment {
 
                 LiveData<List<DMYSpending>> monthsdata = mViewModel.getDailyTotalForMonth(DateUtils.monthyearformat.format(calendar.getTime()));
                 monthsdata.observe(getViewLifecycleOwner(), datalist->{
-                    List<BarEntry> entries = new ArrayList<BarEntry>();
+                    List<BarEntry> entries = new ArrayList<>();
                     List<String> dates = new ArrayList<>();
                     for(int i = 0; i < datalist.size(); i++){
                         entries.add(new BarEntry(i, datalist.get(i).amount));
@@ -175,7 +167,7 @@ public class ReportFragment extends Fragment {
 
             case FRAGMENT_REPORT_TYPE_YEARlY:{
                 reportview = inflater.inflate(R.layout.fragment_report_date, container, false);
-                BarChart chart = (BarChart) reportview.findViewById(R.id.chart_date);
+                BarChart chart = reportview.findViewById(R.id.chart_date);
                 RecyclerView recyclerView = reportview.findViewById(R.id.reportrecyclerview);
 
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -194,7 +186,7 @@ public class ReportFragment extends Fragment {
                 dateListAdapter.setOnItemClickListener((view, position, str)->{
                     LiveData<List<DMYSpending>> yeardata = mViewModel.getMonthlyTotalForYearForReport(str);
                     yeardata.observe(getViewLifecycleOwner(), datalist->{
-                        List<BarEntry> entries = new ArrayList<BarEntry>();
+                        List<BarEntry> entries = new ArrayList<>();
                         for(int i = 0; i < datalist.size(); i++){
                             entries.add(new BarEntry(i, datalist.get(i).amount));
                         }
@@ -206,7 +198,7 @@ public class ReportFragment extends Fragment {
                 int year = calendar.get(Calendar.YEAR);
                 LiveData<List<DMYSpending>> yeardata = mViewModel.getMonthlyTotalForYearForReport(String.valueOf(year));
                 yeardata.observe(getViewLifecycleOwner(), datalist->{
-                    List<BarEntry> entries = new ArrayList<BarEntry>();
+                    List<BarEntry> entries = new ArrayList<>();
                     for(int i = 0; i < datalist.size(); i++){
                         entries.add(new BarEntry(i, datalist.get(i).amount));
                     }
@@ -221,56 +213,42 @@ public class ReportFragment extends Fragment {
 
             case FRAGMENT_REPORT_TYPE_DATERANGE:{
                 reportview = inflater.inflate(R.layout.fragment_report_range, container, false);
-                BarChart chart = (BarChart) reportview.findViewById(R.id.chart_range);
+                BarChart chart = reportview.findViewById(R.id.chart_range);
                 MaterialButton btnDateRange = reportview.findViewById(R.id.btn_date_range_picker);
-                Calendar calendar = Calendar.getInstance();
 
                 MaterialDatePicker<Pair<Long,Long>> materialDatePicker;
-                MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.dateRangePicker();
+                MaterialDatePicker.Builder<Pair<Long, Long>> materialDateBuilder = MaterialDatePicker.Builder.dateRangePicker();
                 materialDateBuilder.setTitleText("SELECT A DATE RANGE");
                 materialDatePicker = materialDateBuilder.build();
-                materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long,Long>>() {
-                    @Override
-                    public void onPositiveButtonClick(Pair<Long,Long> selection) {
-                        Date first =  new Date(selection.first);
-                        Date sec = new Date(selection.second);
-                        LiveData<List<Spendings>> rangeSpendings = mViewModel.getAllSpendingsInRangeForReport(first,sec);
-                        rangeSpendings.observe(getViewLifecycleOwner(), new Observer<List<Spendings>>() {
+                materialDatePicker.addOnPositiveButtonClickListener(selection -> {
+                    Date first =  new Date(selection.first);
+                    Date sec = new Date(selection.second);
+                    LiveData<List<Spendings>> rangeSpendings = mViewModel.getAllSpendingsInRangeForReport(first,sec);
+                    rangeSpendings.observe(getViewLifecycleOwner(), spendings -> {
+                        List<BarEntry> entries = new ArrayList<>();
+                        List<String> dates = new ArrayList<>();
+
+                        for(int i = 0; i < spendings.size(); i++){
+                            entries.add(new BarEntry(i, spendings.get(i).amount));
+                            dates.add(DateUtils.rdf.format(spendings.get(i).whendt));
+                        }
+
+                        ValueFormatter formatter = new ValueFormatter() {
                             @Override
-                            public void onChanged(List<Spendings> spendings) {
-                                List<BarEntry> entries = new ArrayList<BarEntry>();
-                                List<String> dates = new ArrayList<>();
-
-                                for(int i = 0; i < spendings.size(); i++){
-                                    entries.add(new BarEntry(i, spendings.get(i).amount));
-                                    dates.add(DateUtils.rdf.format(spendings.get(i).whendt));
-                                }
-
-                                ValueFormatter formatter = new ValueFormatter() {
-                                    @Override
-                                    public String getAxisLabel(float value, AxisBase axis) {
-                                        return dates.get((int)value);
-                                    }
-                                };
-
-
-                                drawChart(chart, entries, formatter, "Range Transcations");
+                            public String getAxisLabel(float value, AxisBase axis) {
+                                return dates.get((int)value);
                             }
-                        });
-                    }
+                        };
+
+
+                        drawChart(chart, entries, formatter, "Range Transcations");
+                    });
                 });
 
-                btnDateRange.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        materialDatePicker.show(getActivity().getSupportFragmentManager(), "SELECT_A_DATE_RANGE");
-                    }
-                });
+                btnDateRange.setOnClickListener(view -> materialDatePicker.show(requireActivity().getSupportFragmentManager(), "SELECT_A_DATE_RANGE"));
 
             }break;
         }
-
-
 
         return reportview;
     }
