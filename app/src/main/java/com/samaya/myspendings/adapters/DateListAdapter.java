@@ -31,6 +31,7 @@ public class DateListAdapter extends RecyclerView.Adapter<DateListAdapter.ViewHo
 
     private List<String> dates;
 
+
     public void setDates(List<String> dates) {
         this.dates = dates;
     }

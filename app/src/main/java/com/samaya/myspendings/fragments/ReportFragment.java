@@ -124,7 +124,10 @@ public class ReportFragment extends Fragment {
                         List<String> dates = new ArrayList<>();
                         for(int i = 0; i < datalist.size(); i++){
                             entries.add(new BarEntry(i, datalist.get(i).amount));
-                            dates.add(datalist.get(i).dmyDate);
+                            String date[] = datalist.get(i).dmyDate.split("-");
+                            int num = Integer.parseInt(date[1]);
+
+                            dates.add(date[0]+"-"+DateUtils.getShortMonths(num));
                         }
 
                         ValueFormatter formatter = new ValueFormatter() {
@@ -148,7 +151,9 @@ public class ReportFragment extends Fragment {
                     List<String> dates = new ArrayList<>();
                     for(int i = 0; i < datalist.size(); i++){
                         entries.add(new BarEntry(i, datalist.get(i).amount));
-                        dates.add(datalist.get(i).dmyDate);
+                        String date[] = datalist.get(i).dmyDate.split("-");
+                        int num = Integer.parseInt(date[1]);
+                        dates.add(date[0]+"-"+DateUtils.getShortMonths(num));
                     }
 
                     ValueFormatter formatter = new ValueFormatter() {
@@ -187,11 +192,22 @@ public class ReportFragment extends Fragment {
                     LiveData<List<DMYSpending>> yeardata = mViewModel.getMonthlyTotalForYearForReport(str);
                     yeardata.observe(getViewLifecycleOwner(), datalist->{
                         List<BarEntry> entries = new ArrayList<>();
+                        List<String> months = new ArrayList<>();
+
                         for(int i = 0; i < datalist.size(); i++){
                             entries.add(new BarEntry(i, datalist.get(i).amount));
-                        }
+                            String monthyear[] = datalist.get(i).dmyDate.split("-");
+                            int num = Integer.parseInt(monthyear[0]);
+                            months.add(DateUtils.getShortMonths(num));
 
-                        drawChart(chart, entries, null, "Yearly Spendings");
+                        }
+                        ValueFormatter formatter = new ValueFormatter() {
+                            @Override
+                            public String getAxisLabel(float value, AxisBase axis) {
+                                return months.get((int)value);
+                            }
+                        };
+                        drawChart(chart, entries, formatter, "Yearly Spendings");
                     });
                 });
                 Calendar calendar = Calendar.getInstance();
@@ -199,12 +215,21 @@ public class ReportFragment extends Fragment {
                 LiveData<List<DMYSpending>> yeardata = mViewModel.getMonthlyTotalForYearForReport(String.valueOf(year));
                 yeardata.observe(getViewLifecycleOwner(), datalist->{
                     List<BarEntry> entries = new ArrayList<>();
+                    List<String> months = new ArrayList<>();
                     for(int i = 0; i < datalist.size(); i++){
                         entries.add(new BarEntry(i, datalist.get(i).amount));
+                        String monthyear[] = datalist.get(i).dmyDate.split("-");
+                        int num = Integer.parseInt(monthyear[0]);
+                        months.add(DateUtils.getShortMonths(num));
                     }
+                    ValueFormatter formatter = new ValueFormatter() {
+                        @Override
+                        public String getAxisLabel(float value, AxisBase axis) {
+                            return months.get((int)value);
+                        }
+                    };
 
-
-                    drawChart(chart, entries, null, "Yearly Spendings");
+                    drawChart(chart, entries, formatter, "Yearly Spendings");
                 });
 
 
@@ -258,6 +283,7 @@ public class ReportFragment extends Fragment {
         BarDataSet dataSet = new BarDataSet(entries,label);
         BarData data = new BarData(dataSet);
         chart.setData(data);
+        chart.setVisibleXRangeMaximum(10);
         if(formatter != null) {
             XAxis axis = chart.getXAxis();
             axis.setValueFormatter(formatter);
