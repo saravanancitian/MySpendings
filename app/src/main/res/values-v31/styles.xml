@@ -2,6 +2,6 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.MySpendings">
-        <item name="android:windowSplashScreenBackground">@color/PrimaryColorLight</item>
+
     </style>
 </resources>

@@ -16,11 +16,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -73,16 +77,16 @@ public class ReportFragment extends Fragment {
         switch(fragmentType){
             case FRAGMENT_REPORT_TYPE_ALL_SPENDINGS:{
                 reportview = inflater.inflate(R.layout.fragment_report_all, container, false);
-                BarChart chart = reportview.findViewById(R.id.chart_all);
+                LineChart chart = reportview.findViewById(R.id.chart_all);
 
                 LiveData<List<Spendings>> spendings = mViewModel.getDailySpendingsForReport();
 
                 spendings.observe(getViewLifecycleOwner(), spendings1 -> {
                     // Update the cached copy of the words in the adapter.
                     List<String> dates = new ArrayList<>();
-                    List<BarEntry> entries = new ArrayList<>();
+                    List<Entry> entries = new ArrayList<>();
                     for(int i = 0; i < spendings1.size(); i++){
-                        entries.add(new BarEntry(i, spendings1.get(i).amount));
+                        entries.add(new Entry(i, spendings1.get(i).amount));
                         dates.add(DateUtils.rdf.format(spendings1.get(i).whendt));
                     }
 
@@ -101,7 +105,7 @@ public class ReportFragment extends Fragment {
 
             case FRAGMENT_REPORT_TYPE_MONTHLY:{
                 reportview = inflater.inflate(R.layout.fragment_report_date, container, false);
-                BarChart chart = reportview.findViewById(R.id.chart_date);
+                LineChart chart = reportview.findViewById(R.id.chart_date);
                 RecyclerView recyclerView = reportview.findViewById(R.id.reportrecyclerview);
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                 mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -120,10 +124,10 @@ public class ReportFragment extends Fragment {
                 dateListAdapter.setOnItemClickListener((view, position, str)->{
                     LiveData<List<DMYSpending>> monthsdata = mViewModel.getDailyTotalForMonth(str);
                     monthsdata.observe(getViewLifecycleOwner(), datalist->{
-                        List<BarEntry> entries = new ArrayList<>();
+                        List<Entry> entries = new ArrayList<>();
                         List<String> dates = new ArrayList<>();
                         for(int i = 0; i < datalist.size(); i++){
-                            entries.add(new BarEntry(i, datalist.get(i).amount));
+                            entries.add(new Entry(i, datalist.get(i).amount));
                             String date[] = datalist.get(i).dmyDate.split("-");
                             int num = Integer.parseInt(date[1]);
 
@@ -147,10 +151,10 @@ public class ReportFragment extends Fragment {
 
                 LiveData<List<DMYSpending>> monthsdata = mViewModel.getDailyTotalForMonth(DateUtils.monthyearformat.format(calendar.getTime()));
                 monthsdata.observe(getViewLifecycleOwner(), datalist->{
-                    List<BarEntry> entries = new ArrayList<>();
+                    List<Entry> entries = new ArrayList<>();
                     List<String> dates = new ArrayList<>();
                     for(int i = 0; i < datalist.size(); i++){
-                        entries.add(new BarEntry(i, datalist.get(i).amount));
+                        entries.add(new Entry(i, datalist.get(i).amount));
                         String date[] = datalist.get(i).dmyDate.split("-");
                         int num = Integer.parseInt(date[1]);
                         dates.add(date[0]+"-"+DateUtils.getShortMonths(num));
@@ -172,7 +176,7 @@ public class ReportFragment extends Fragment {
 
             case FRAGMENT_REPORT_TYPE_YEARlY:{
                 reportview = inflater.inflate(R.layout.fragment_report_date, container, false);
-                BarChart chart = reportview.findViewById(R.id.chart_date);
+                LineChart chart = reportview.findViewById(R.id.chart_date);
                 RecyclerView recyclerView = reportview.findViewById(R.id.reportrecyclerview);
 
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -191,11 +195,11 @@ public class ReportFragment extends Fragment {
                 dateListAdapter.setOnItemClickListener((view, position, str)->{
                     LiveData<List<DMYSpending>> yeardata = mViewModel.getMonthlyTotalForYearForReport(str);
                     yeardata.observe(getViewLifecycleOwner(), datalist->{
-                        List<BarEntry> entries = new ArrayList<>();
+                        List<Entry> entries = new ArrayList<>();
                         List<String> months = new ArrayList<>();
 
                         for(int i = 0; i < datalist.size(); i++){
-                            entries.add(new BarEntry(i, datalist.get(i).amount));
+                            entries.add(new Entry(i, datalist.get(i).amount));
                             String monthyear[] = datalist.get(i).dmyDate.split("-");
                             int num = Integer.parseInt(monthyear[0]);
                             months.add(DateUtils.getShortMonths(num));
@@ -214,10 +218,10 @@ public class ReportFragment extends Fragment {
                 int year = calendar.get(Calendar.YEAR);
                 LiveData<List<DMYSpending>> yeardata = mViewModel.getMonthlyTotalForYearForReport(String.valueOf(year));
                 yeardata.observe(getViewLifecycleOwner(), datalist->{
-                    List<BarEntry> entries = new ArrayList<>();
+                    List<Entry> entries = new ArrayList<>();
                     List<String> months = new ArrayList<>();
                     for(int i = 0; i < datalist.size(); i++){
-                        entries.add(new BarEntry(i, datalist.get(i).amount));
+                        entries.add(new Entry(i, datalist.get(i).amount));
                         String monthyear[] = datalist.get(i).dmyDate.split("-");
                         int num = Integer.parseInt(monthyear[0]);
                         months.add(DateUtils.getShortMonths(num));
@@ -238,7 +242,7 @@ public class ReportFragment extends Fragment {
 
             case FRAGMENT_REPORT_TYPE_DATERANGE:{
                 reportview = inflater.inflate(R.layout.fragment_report_range, container, false);
-                BarChart chart = reportview.findViewById(R.id.chart_range);
+                LineChart chart = reportview.findViewById(R.id.chart_range);
                 MaterialButton btnDateRange = reportview.findViewById(R.id.btn_date_range_picker);
 
                 MaterialDatePicker<Pair<Long,Long>> materialDatePicker;
@@ -250,11 +254,11 @@ public class ReportFragment extends Fragment {
                     Date sec = new Date(selection.second);
                     LiveData<List<Spendings>> rangeSpendings = mViewModel.getAllSpendingsInRangeForReport(first,sec);
                     rangeSpendings.observe(getViewLifecycleOwner(), spendings -> {
-                        List<BarEntry> entries = new ArrayList<>();
+                        List<Entry> entries = new ArrayList<>();
                         List<String> dates = new ArrayList<>();
 
                         for(int i = 0; i < spendings.size(); i++){
-                            entries.add(new BarEntry(i, spendings.get(i).amount));
+                            entries.add(new Entry(i, spendings.get(i).amount));
                             dates.add(DateUtils.rdf.format(spendings.get(i).whendt));
                         }
 
@@ -279,9 +283,13 @@ public class ReportFragment extends Fragment {
     }
 
 
-    void drawChart(BarChart chart , List<BarEntry> entries , ValueFormatter formatter, String label){
-        BarDataSet dataSet = new BarDataSet(entries,label);
-        BarData data = new BarData(dataSet);
+    void drawChart(LineChart chart , List<Entry> entries , ValueFormatter formatter, String label){
+        LineDataSet dataSet = new LineDataSet(entries,label);
+        dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        dataSet.setFillColor(0xff0000);
+        dataSet.setDrawFilled(true);
+
+        LineData data = new LineData(dataSet);
         chart.setData(data);
         chart.setVisibleXRangeMaximum(10);
         if(formatter != null) {
