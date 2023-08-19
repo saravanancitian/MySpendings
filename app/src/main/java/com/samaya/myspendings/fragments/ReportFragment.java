@@ -286,6 +286,8 @@ public class ReportFragment extends Fragment {
     void drawChart(LineChart chart , List<Entry> entries , ValueFormatter formatter, String label){
         LineDataSet dataSet = new LineDataSet(entries,label);
         dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        dataSet.setFillColor(0xff0000);
+        dataSet.setDrawFilled(true);
 
         LineData data = new LineData(dataSet);
         chart.setData(data);

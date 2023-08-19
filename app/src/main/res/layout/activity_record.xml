@@ -139,6 +139,7 @@
             android:lines="10"
             android:minLines="4"
             android:maxLines="15"
+            android:imeOptions="actionDone"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
