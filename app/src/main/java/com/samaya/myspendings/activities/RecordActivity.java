@@ -6,8 +6,13 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -52,6 +57,8 @@ public class RecordActivity extends AppCompatActivity {
 
     private AdView adView;
 
+    ActivityResultLauncher activityResultLauncher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +72,18 @@ public class RecordActivity extends AppCompatActivity {
 
         viewModel = (new ViewModelProvider(this).get(SpendingsViewModel.class));
 
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
 
+            }
+        });
+
+        Intent receptintent = new Intent(RecordActivity.this, ScanReciptActivity.class);
+        MaterialButton btnscanRecipt = findViewById(R.id.btnScanRecipt);
+        btnscanRecipt.setOnClickListener(view -> {
+            activityResultLauncher.launch(receptintent);
+        });
 
         editAmt = findViewById(R.id.edit_amt);
         editPaidto = findViewById(R.id.edit_Paidto);

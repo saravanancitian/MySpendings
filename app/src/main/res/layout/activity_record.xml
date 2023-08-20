@@ -34,6 +34,13 @@
 <!--        android:textSize="22sp"-->
 <!--        android:textStyle="bold|italic" />-->
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnScanRecipt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/baseline_receipt_24"
+        android:text="Scan Recepit"
+        />
 
 
     <com.google.android.material.textfield.TextInputLayout
