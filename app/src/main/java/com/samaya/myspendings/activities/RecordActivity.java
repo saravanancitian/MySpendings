@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.widget.ImageButton;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -24,9 +24,9 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.samaya.myspendings.R;
-import com.samaya.myspendings.utils.DateUtils;
 import com.samaya.myspendings.db.entity.Spendings;
 import com.samaya.myspendings.fragments.SpendingsViewModel;
+import com.samaya.myspendings.utils.DateUtils;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -75,7 +75,10 @@ public class RecordActivity extends AppCompatActivity {
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
-
+                if(result.getResultCode() == RESULT_OK){
+                    Intent resultData = result.getData();
+                    Log.d("Record resute", resultData.getStringExtra("scandata"));
+                }
             }
         });
 

@@ -9,6 +9,8 @@ import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.Preview;
+import androidx.camera.core.resolutionselector.ResolutionSelector;
+import androidx.camera.core.resolutionselector.ResolutionStrategy;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.mlkit.vision.MlKitAnalyzer;
 import androidx.camera.view.PreviewView;
@@ -18,9 +20,11 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.core.util.Consumer;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Size;
 import android.widget.Toast;
 
 import com.google.common.util.concurrent.ListenableFuture;
@@ -112,10 +116,29 @@ public class ScanReciptActivity extends AppCompatActivity {
             @Override
             public void accept(MlKitAnalyzer.Result result) {
                 Text visiontext = result.getValue(textRecognizer);
-                Log.d("Test ", visiontext.getText());
+                String visiontextstr = visiontext.getText();
+                if(visiontextstr.toUpperCase().contains("TOTAL")){
+                    Intent intent = new Intent();
+                    intent.putExtra("scandata", visiontextstr);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
             }
         });
+
+       ResolutionSelector selector =  (new ResolutionSelector.Builder())
+               .setResolutionStrategy(new ResolutionStrategy(new Size(1280, 720), ResolutionStrategy.FALLBACK_RULE_NONE))
+               .build();
+
+        ImageAnalysis imageAnalysis =  new ImageAnalysis.Builder()
+                // enable the following line if RGBA output is needed.
+                //.setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
+                .setResolutionSelector(selector)
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .build();
+        imageAnalysis.setAnalyzer( ContextCompat.getMainExecutor(this), analyzer);
+
         cameraProvider.unbindAll();
-        Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview);
+        Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector,  imageAnalysis, preview);
     }
 }
