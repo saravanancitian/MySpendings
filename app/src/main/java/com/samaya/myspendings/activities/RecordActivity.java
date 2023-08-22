@@ -77,7 +77,23 @@ public class RecordActivity extends AppCompatActivity {
             public void onActivityResult(ActivityResult result) {
                 if(result.getResultCode() == RESULT_OK){
                     Intent resultData = result.getData();
-                    Log.d("Record resute", resultData.getStringExtra("scandata"));
+                    String scandata = resultData.getStringExtra("scandata");
+                    scandata = scandata.toUpperCase();
+                    String scandatasplit[] = scandata.split("\n");
+                    if(scandatasplit[0].contains("TOTAL")){
+
+                    } else {
+                        editPaidto.setText(scandatasplit[0]);
+                        editRemark.setText(scandata);
+                        for(String str: scandatasplit){
+                            if(str.contains("TOTAL")){
+
+                            }
+                        }
+                    }
+
+                    Log.d("Record resute", scandata);
+
                 }
             }
         });
