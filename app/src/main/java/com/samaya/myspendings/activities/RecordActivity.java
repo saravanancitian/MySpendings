@@ -42,7 +42,7 @@ public class RecordActivity extends AppCompatActivity {
 
     String ops = OPS_INSERT;
 
-    MaterialButton btnSave, btnCancel;
+    MaterialButton btnSave, btnCancel, btnClear;
 
     MaterialDatePicker materialDatePicker;
     MaterialTimePicker materialTimePicker;
@@ -78,6 +78,16 @@ public class RecordActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btn_save);
         btnCancel = findViewById(R.id.btn_cancel);
         btnCancel.setOnClickListener(view->finish());
+
+        btnClear = findViewById(R.id.btn_clear);
+        btnClear.setOnClickListener(view -> {
+            editAmt.setText("");
+            editPaidto.setText("");
+            editRemark.setText("");
+            editWhendt.setText(DateUtils.sdf.format(Calendar.getInstance().getTime()));
+            editWhentime.setText(DateUtils.stf.format(Calendar.getInstance().getTime()));
+
+        });
 
 
         ops = intent.getStringExtra("ops");
