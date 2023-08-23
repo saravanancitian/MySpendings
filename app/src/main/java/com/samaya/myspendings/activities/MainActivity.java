@@ -1,5 +1,7 @@
 package com.samaya.myspendings.activities;
 
+
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,6 +38,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Objects;
 
+import androidx.core.splashscreen.SplashScreen;
 public class MainActivity extends AppCompatActivity implements ActivityResultCallback<Uri> {
     public static final String TAG = "MainActivity";
 
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        SplashScreen.installSplashScreen(this);
         setContentView(R.layout.activity_main);
         progressIndicator = findViewById(R.id.progress_line);
         progressIndicator.hide();

@@ -2,10 +2,13 @@ package com.samaya.myspendings.fragments;
 
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -52,7 +55,8 @@ public class SpendingsFragment extends Fragment {
     private int fragmentType;
     private SpendingsViewModel viewModel;
 
-
+    private Drawable deleteicon;
+    private ColorDrawable background;
 
 
     public SpendingsFragment() {
@@ -94,6 +98,9 @@ public class SpendingsFragment extends Fragment {
         switch (fragmentType){
             case FRAGMENT_TYPE_ALL_SPENDINGS:{
 
+                deleteicon = ContextCompat.getDrawable(getContext(),
+                        android.R.drawable.ic_menu_delete);
+//                background = new ColorDrawable(getResources().getColor(R.color.BackgroundColorDark, getActivity().getTheme()));
                 AllSpendingsAdapter allSpendingAdapter = new AllSpendingsAdapter(inflater);
                 mRecyclerView.setAdapter(allSpendingAdapter);
                 allSpendingAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -149,12 +156,14 @@ public class SpendingsFragment extends Fragment {
 
                     @Override
                     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-//                View itemView = viewHolder.itemView;
-//                int itemHeight = itemView.getBottom() - itemView.getTop();
-//                Drawable background  = new ColorDrawable();
-//                ((ColorDrawable) background).setColor(Color.RED);
-//                background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
-//                background.draw(c);
+                        View itemView = viewHolder.itemView;
+                        int iconMargin = (itemView.getHeight() - deleteicon.getIntrinsicHeight()) / 2;
+                        int iconTop = itemView.getTop() + (itemView.getHeight() - deleteicon.getIntrinsicHeight()) / 2;
+                        int iconBottom = iconTop + deleteicon.getIntrinsicHeight();
+                        int iconLeft = itemView.getRight() - iconMargin - deleteicon.getIntrinsicWidth();
+                        int iconRight = itemView.getRight() - iconMargin;
+                        deleteicon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+                        deleteicon.draw(c);
                         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                     }
                 });

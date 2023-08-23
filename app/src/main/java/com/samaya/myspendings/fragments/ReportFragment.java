@@ -90,14 +90,8 @@ public class ReportFragment extends Fragment {
                         dates.add(DateUtils.rdf.format(spendings1.get(i).whendt));
                     }
 
-                    ValueFormatter formatter = new ValueFormatter() {
-                        @Override
-                        public String getAxisLabel(float value, AxisBase axis) {
-                            return dates.get((int)value);
-                        }
-                    };
 
-                    drawChart(chart, entries, formatter, "All Transcations");
+                    drawChart(chart, entries, new DateValueFormatter(dates), "All Transcations");
 
                 });
 
@@ -134,15 +128,8 @@ public class ReportFragment extends Fragment {
                             dates.add(date[0]+"-"+DateUtils.getShortMonths(num));
                         }
 
-                        ValueFormatter formatter = new ValueFormatter() {
-                            @Override
-                            public String getAxisLabel(float value, AxisBase axis) {
-                                return dates.get((int)value);
-                            }
-                        };
 
-
-                        drawChart(chart, entries, formatter, "Monthly Spendings");
+                        drawChart(chart, entries, new DateValueFormatter(dates), "Monthly Spendings");
 
                     });
                 });
@@ -160,13 +147,7 @@ public class ReportFragment extends Fragment {
                         dates.add(date[0]+"-"+DateUtils.getShortMonths(num));
                     }
 
-                    ValueFormatter formatter = new ValueFormatter() {
-                        @Override
-                        public String getAxisLabel(float value, AxisBase axis) {
-                            return dates.get((int)value);
-                        }
-                    };
-                    drawChart(chart, entries, formatter, "Monthly Spendings");
+                    drawChart(chart, entries, new DateValueFormatter(dates), "Monthly Spendings");
 
                 });
 
@@ -205,13 +186,7 @@ public class ReportFragment extends Fragment {
                             months.add(DateUtils.getShortMonths(num));
 
                         }
-                        ValueFormatter formatter = new ValueFormatter() {
-                            @Override
-                            public String getAxisLabel(float value, AxisBase axis) {
-                                return months.get((int)value);
-                            }
-                        };
-                        drawChart(chart, entries, formatter, "Yearly Spendings");
+                        drawChart(chart, entries, new DateValueFormatter(months), "Yearly Spendings");
                     });
                 });
                 Calendar calendar = Calendar.getInstance();
@@ -226,14 +201,8 @@ public class ReportFragment extends Fragment {
                         int num = Integer.parseInt(monthyear[0]);
                         months.add(DateUtils.getShortMonths(num));
                     }
-                    ValueFormatter formatter = new ValueFormatter() {
-                        @Override
-                        public String getAxisLabel(float value, AxisBase axis) {
-                            return months.get((int)value);
-                        }
-                    };
 
-                    drawChart(chart, entries, formatter, "Yearly Spendings");
+                    drawChart(chart, entries, new DateValueFormatter(months), "Yearly Spendings");
                 });
 
 
@@ -262,15 +231,7 @@ public class ReportFragment extends Fragment {
                             dates.add(DateUtils.rdf.format(spendings.get(i).whendt));
                         }
 
-                        ValueFormatter formatter = new ValueFormatter() {
-                            @Override
-                            public String getAxisLabel(float value, AxisBase axis) {
-                                return dates.get((int)value);
-                            }
-                        };
-
-
-                        drawChart(chart, entries, formatter, "Range Transcations");
+                        drawChart(chart, entries, new DateValueFormatter(dates), "Range Transcations");
                     });
                 });
 
@@ -306,6 +267,26 @@ public class ReportFragment extends Fragment {
             fragmentType = getArguments().getInt(ARG_FRAGMENT_TYPE);
         }
         mViewModel = new ViewModelProvider(this).get(ReportViewModel.class);
+   }
+
+
+   private static class DateValueFormatter extends ValueFormatter {
+
+       List<String> datevalues;
+
+
+       public DateValueFormatter(List<String> datevalues){
+         this.datevalues = datevalues;
+     }
+
+       @Override
+       public String getAxisLabel(float value, AxisBase axis) {
+           int idx = (int)value;
+           if(idx < datevalues.size())
+                return datevalues.get((int)value);
+           else
+               return super.getAxisLabel(value, axis);
+       }
    }
 
 }
