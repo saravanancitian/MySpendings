@@ -15,6 +15,7 @@ import java.util.List;
 
 public class DateListAdapter extends RecyclerView.Adapter<DateListAdapter.ViewHolder>{
     private static final String TAG = "DateListAdapter";
+
     public static interface OnItemClickListener{
 
         public void onItemClick(View view, int position, String datestr);
@@ -54,7 +55,11 @@ public class DateListAdapter extends RecyclerView.Adapter<DateListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String str = dates.get(position);
-         holder.itemView.setOnClickListener(view-> DateListAdapter.this.listener.onItemClick(view, position, str));
+         holder.itemView.setOnClickListener(view-> {
+
+             DateListAdapter.this.listener.onItemClick(view, position, str);
+
+         });
         if(type == DATE_LIST_ADAPTER_TYPE_MONTH_YEAR){
 
             String[] m = str.split("-");

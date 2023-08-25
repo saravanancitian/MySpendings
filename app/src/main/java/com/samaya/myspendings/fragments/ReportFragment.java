@@ -1,6 +1,8 @@
 package com.samaya.myspendings.fragments;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -28,6 +31,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.textview.MaterialTextView;
 import com.samaya.myspendings.R;
 import com.samaya.myspendings.adapters.DateListAdapter;
 import com.samaya.myspendings.db.entity.DMYSpending;
@@ -99,6 +103,7 @@ public class ReportFragment extends Fragment {
 
             case FRAGMENT_REPORT_TYPE_MONTHLY:{
                 reportview = inflater.inflate(R.layout.fragment_report_date, container, false);
+                MaterialTextView selTxt = reportview.findViewById(R.id.sel_txt);
                 LineChart chart = reportview.findViewById(R.id.chart_date);
                 RecyclerView recyclerView = reportview.findViewById(R.id.reportrecyclerview);
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -116,6 +121,9 @@ public class ReportFragment extends Fragment {
                 });
 
                 dateListAdapter.setOnItemClickListener((view, position, str)->{
+                    String cal[] = str.split("-");
+                    int m = Integer.parseInt(cal[0]);
+                    selTxt.setText(DateUtils.getShortMonths(m - 1) +"-"+ cal[1]);
                     LiveData<List<DMYSpending>> monthsdata = mViewModel.getDailyTotalForMonth(str);
                     monthsdata.observe(getViewLifecycleOwner(), datalist->{
                         List<Entry> entries = new ArrayList<>();
@@ -135,8 +143,12 @@ public class ReportFragment extends Fragment {
                 });
 
                 Calendar calendar = Calendar.getInstance();
+                String calstr = DateUtils.monthyearformat.format(calendar.getTime());
+                String cal[] = calstr.split("-");
+                int m = Integer.parseInt(cal[0]);
+                selTxt.setText(DateUtils.getShortMonths(m-1) +"-"+ cal[1]);
 
-                LiveData<List<DMYSpending>> monthsdata = mViewModel.getDailyTotalForMonth(DateUtils.monthyearformat.format(calendar.getTime()));
+                LiveData<List<DMYSpending>> monthsdata = mViewModel.getDailyTotalForMonth(calstr);
                 monthsdata.observe(getViewLifecycleOwner(), datalist->{
                     List<Entry> entries = new ArrayList<>();
                     List<String> dates = new ArrayList<>();
@@ -157,6 +169,8 @@ public class ReportFragment extends Fragment {
 
             case FRAGMENT_REPORT_TYPE_YEARlY:{
                 reportview = inflater.inflate(R.layout.fragment_report_date, container, false);
+                MaterialTextView selTxt = reportview.findViewById(R.id.sel_txt);
+
                 LineChart chart = reportview.findViewById(R.id.chart_date);
                 RecyclerView recyclerView = reportview.findViewById(R.id.reportrecyclerview);
 
@@ -174,6 +188,7 @@ public class ReportFragment extends Fragment {
                 });
 
                 dateListAdapter.setOnItemClickListener((view, position, str)->{
+                    selTxt.setText(str);
                     LiveData<List<DMYSpending>> yeardata = mViewModel.getMonthlyTotalForYearForReport(str);
                     yeardata.observe(getViewLifecycleOwner(), datalist->{
                         List<Entry> entries = new ArrayList<>();
@@ -191,7 +206,9 @@ public class ReportFragment extends Fragment {
                 });
                 Calendar calendar = Calendar.getInstance();
                 int year = calendar.get(Calendar.YEAR);
-                LiveData<List<DMYSpending>> yeardata = mViewModel.getMonthlyTotalForYearForReport(String.valueOf(year));
+                String calstr =String.valueOf(year);
+                selTxt.setText(calstr);
+                LiveData<List<DMYSpending>> yeardata = mViewModel.getMonthlyTotalForYearForReport(calstr);
                 yeardata.observe(getViewLifecycleOwner(), datalist->{
                     List<Entry> entries = new ArrayList<>();
                     List<String> months = new ArrayList<>();
@@ -257,6 +274,23 @@ public class ReportFragment extends Fragment {
             XAxis axis = chart.getXAxis();
             axis.setValueFormatter(formatter);
         }
+        XAxis xaxis = chart.getXAxis();
+        YAxis yaxisR = chart.getAxisRight();
+        YAxis yaxisL = chart.getAxisLeft();
+
+        boolean isDarkThemeOn = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)  == Configuration.UI_MODE_NIGHT_YES;
+        if(isDarkThemeOn){
+            int color = getContext().getTheme().getResources().getColor(R.color.OnPrimaryColorLight);
+            xaxis.setTextColor(color);
+            yaxisR.setTextColor(color);
+            yaxisL.setTextColor(color);
+        } else {
+            int color =  getContext().getTheme().getResources().getColor(R.color.OnPrimaryColorDark);
+            xaxis.setTextColor(color);
+            yaxisR.setTextColor(color);
+            yaxisL.setTextColor(color);
+        }
+
         chart.invalidate();
     }
 

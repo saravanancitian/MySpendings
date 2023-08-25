@@ -34,10 +34,10 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+            ads:adUnitId="ca-app-pub-4186022078056115/1841333421"
+            >
         </com.google.android.gms.ads.AdView>
-        <!-- ads:adUnitId="ca-app-pub-4186022078056115/1841333421" -->
-
+<!-- test:   ads:adUnitId="ca-app-pub-3940256099942544/6300978111"-->
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -68,28 +68,7 @@
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
-<!--        <androidx.appcompat.widget.LinearLayoutCompat-->
-<!--            android:layout_below="@+id/ll_total"-->
-<!--            android:id="@+id/ll_report"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:weightSum="1">-->
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/btn_report"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Report"-->
-<!--                android:layout_weight="0.5"-->
-<!--                />-->
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/btn_export"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Export"-->
-<!--                android:layout_weight="0.5"-->
-<!--                />-->
-<!--        </androidx.appcompat.widget.LinearLayoutCompat>-->
+
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tablayout"

@@ -124,16 +124,6 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
         FloatingActionButton fab = findViewById(R.id.fab);
         TextInputEditText txtTotalSpendings = findViewById(R.id.txt_totalspendings);
 
-//        MaterialButton btnReport = findViewById(R.id.btn_report);
-//        btnReport.setOnClickListener(view->{
-//            Intent intent = new Intent(MainActivity.this, ReportActivity.class);
-//            startActivity(intent);
-//        });
-//        MaterialButton btnExport = findViewById(R.id.btn_export);
-//        btnExport.setOnClickListener(view -> {
-//            String filename =(new StringBuilder("spending_")).append(DateUtils.filedtf.format(new Date())).append(".csv").toString();
-//            launcher.launch(filename);
-//        });
 
         TabLayout tabLayout = findViewById(R.id.tablayout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.str_all_spendings));
@@ -235,6 +225,7 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
             startActivity(intent);
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 

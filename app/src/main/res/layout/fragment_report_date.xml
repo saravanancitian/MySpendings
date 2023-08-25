@@ -11,6 +11,14 @@
         android:weightSum="1"
         android:gravity="center_horizontal"
         >
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/sel_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            />
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart_date"
             android:layout_width="match_parent"
