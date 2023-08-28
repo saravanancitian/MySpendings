@@ -87,14 +87,24 @@ public class ScanReciptActivity extends AppCompatActivity {
             public void accept(MlKitAnalyzer.Result result) {
                 Text visiontext = result.getValue(textRecognizer);
                 if(visiontext != null) {
-
-                    String visiontextstr = visiontext.getText();
-                    if (visiontextstr.toUpperCase().contains("TOTAL")) {
-                        Intent intent = new Intent();
-                        intent.putExtra("scandata", visiontextstr);
-                        setResult(RESULT_OK, intent);
-                        finish();
+                    StringBuilder builder = new StringBuilder();
+                   List<Text.TextBlock> textblocks = visiontext.getTextBlocks();
+                    for(Text.TextBlock block : textblocks){
+                        List<Text.Line> lines = block.getLines();
+                        for(Text.Line line : lines){
+                            String text = line.getText();
+                            builder.append(text);
+                            builder.append("\n");
+                            Log.d("ScanRecipt", text);
+                            if(text.toUpperCase().contains("TOTAL")) {
+                                Intent intent = new Intent();
+                                intent.putExtra("scandata", builder.toString());
+                                setResult(RESULT_OK, intent);
+                                finish();
+                            }
+                        }
                     }
+
                 } else {
                     Log.d("Mlkit analyer", "visiontext is null");
                 }
