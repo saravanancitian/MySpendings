@@ -20,6 +20,7 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.timepicker.MaterialTimePicker;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.samaya.myspendings.R;
 import com.samaya.myspendings.utils.DateUtils;
 import com.samaya.myspendings.db.entity.Spendings;
@@ -54,11 +55,21 @@ public class RecordActivity extends AppCompatActivity {
 
     private AdView adView;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         setContentView(R.layout.activity_record);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "RecordActivity");
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "RecordActivity");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
+
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){

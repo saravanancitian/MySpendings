@@ -11,6 +11,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.samaya.myspendings.R;
 import com.samaya.myspendings.adapters.ReportFragmentAdapter;
 
@@ -20,10 +21,21 @@ public class ReportActivity extends AppCompatActivity {
 
     private AdView adView;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "ReportActivity");
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportActivity");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
+
+
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);

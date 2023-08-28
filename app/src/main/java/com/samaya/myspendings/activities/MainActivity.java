@@ -26,6 +26,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.samaya.myspendings.R;
 import com.samaya.myspendings.adapters.SpendingsFragmentAdapter;
 import com.samaya.myspendings.db.entity.Spendings;
@@ -55,9 +56,17 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
 
     LinearProgressIndicator progressIndicator;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "MainActivity");
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "MainActivity");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
+
         SplashScreen.installSplashScreen(this);
         setContentView(R.layout.activity_main);
         progressIndicator = findViewById(R.id.progress_line);

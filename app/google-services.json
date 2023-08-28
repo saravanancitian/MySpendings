@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "700175091846",
+    "project_id": "my-spendings-2c02a",
+    "storage_bucket": "my-spendings-2c02a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:700175091846:android:de9f7fc381d994656ba907",
+        "android_client_info": {
+          "package_name": "com.samaya.myspendings"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "700175091846-cobls5i31qft8ebacno2br8ugss364qn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4Xn4fQIP58pivca88zIwnx4-8abjPiTA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "700175091846-cobls5i31qft8ebacno2br8ugss364qn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
