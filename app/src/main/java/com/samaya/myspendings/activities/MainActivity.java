@@ -62,10 +62,7 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "MainActivity");
-        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "MainActivity");
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
+
 
         SplashScreen.installSplashScreen(this);
         setContentView(R.layout.activity_main);
@@ -170,14 +167,6 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
 
     @Override
     public void onBackPressed() {
-//        if (viewPager.getCurrentItem() == 0) {
-//            // If the user is currently looking at the first step, allow the system to handle the
-//            // Back button. This calls finish() on this activity and pops the back stack.
-//            super.onBackPressed();
-//        } else {
-//            // Otherwise, select the previous step.
-//            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
-//        }
 
         super.onBackPressed();
     }
@@ -253,6 +242,10 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
         if (adView != null) {
             adView.resume();
         }
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "MainActivity");
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "MainActivity");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
     }
 
     /** Called before the activity is destroyed */

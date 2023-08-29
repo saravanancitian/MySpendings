@@ -30,10 +30,7 @@ public class ReportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_report);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "ReportActivity");
-        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportActivity");
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
+
 
 
         ActionBar actionBar = getSupportActionBar();
@@ -77,10 +74,9 @@ public class ReportActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
+        if(item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -101,6 +97,10 @@ public class ReportActivity extends AppCompatActivity {
         if (adView != null) {
             adView.resume();
         }
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "ReportActivity");
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportActivity");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
     }
 
     /** Called before the activity is destroyed */
