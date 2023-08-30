@@ -65,10 +65,13 @@ public class HelpActivity extends AppCompatActivity {
         if (adView != null) {
             adView.resume();
         }
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "HelpActivity");
-        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "HelpActivity");
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
+
+        if(mFirebaseAnalytics != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "HelpActivity");
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "HelpActivity");
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
+        }
     }
 
     /** Called before the activity is destroyed */

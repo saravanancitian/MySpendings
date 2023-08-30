@@ -97,10 +97,13 @@ public class ReportActivity extends AppCompatActivity {
         if (adView != null) {
             adView.resume();
         }
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "ReportActivity");
-        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportActivity");
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
+
+        if(mFirebaseAnalytics != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "ReportActivity");
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportActivity");
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
+        }
     }
 
     /** Called before the activity is destroyed */

@@ -242,10 +242,13 @@ public class MainActivity extends AppCompatActivity implements ActivityResultCal
         if (adView != null) {
             adView.resume();
         }
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "MainActivity");
-        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "MainActivity");
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
+
+        if(mFirebaseAnalytics != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "MainActivity");
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "MainActivity");
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
+        }
     }
 
     /** Called before the activity is destroyed */

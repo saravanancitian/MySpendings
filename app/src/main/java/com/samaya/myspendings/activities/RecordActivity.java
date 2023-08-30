@@ -92,7 +92,15 @@ public class RecordActivity extends AppCompatActivity {
         editWhentime.setText(DateUtils.stf.format(Calendar.getInstance().getTime()));
         btnSave = findViewById(R.id.btn_save);
         btnCancel = findViewById(R.id.btn_cancel);
-        btnCancel.setOnClickListener(view->finish());
+        btnCancel.setOnClickListener(view->{
+            if(mFirebaseAnalytics != null) {
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Button");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "CANCEL");
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+            }
+            finish()
+            ;});
 
         btnClear = findViewById(R.id.btn_clear);
         btnClear.setOnClickListener(view -> {
@@ -160,6 +168,12 @@ public class RecordActivity extends AppCompatActivity {
             || editRemark.getText() == null || TextUtils.isEmpty(editRemark.getText().toString())){
                 Toast.makeText(getBaseContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
             } else {
+                if(mFirebaseAnalytics != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Button");
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "SAVE");
+                    mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+                }
                 try {
                     Spendings spending = new Spendings(spendingsforupdate);
                     spending.amount = Float.parseFloat(editAmt.getText().toString());
@@ -235,11 +249,12 @@ public class RecordActivity extends AppCompatActivity {
             adView.resume();
         }
 
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "RecordActivity");
-        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "RecordActivity");
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
-
+        if(mFirebaseAnalytics != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "RecordActivity");
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "RecordActivity");
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
+        }
     }
 
     /** Called before the activity is destroyed */
