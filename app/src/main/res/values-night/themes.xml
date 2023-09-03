@@ -1,16 +1,38 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.MySpendings" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.MySpendings" parent="Theme.Material3.Dark">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/PrimaryColorDark</item>
+        <item name="colorOnPrimary">@color/OnPrimaryColorDark</item>
+        <item name="colorPrimaryContainer">@color/PrimaryContainerColorDark</item>
+        <item name="colorOnPrimaryContainer">@color/OnPrimaryContainerColorDark</item>
+
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="colorSecondary">@color/SecondaryColorDark</item>
+        <item name="colorOnSecondary">@color/OnSecondaryColorDark</item>
+        <item name="colorSecondaryContainer">@color/SecondaryContainerColorDark</item>
+        <item name="colorOnSecondaryContainer">@color/OnSecondaryContainerColorDark</item>
+
+        <!-- Tertiary brand color. -->
+        <item name="colorTertiary">@color/TertiaryColorDark</item>
+        <item name="colorOnTertiary">@color/OnTertiaryColorDark</item>
+        <item name="colorTertiaryContainer">@color/TertiaryContainerColorDark</item>
+        <item name="colorOnTertiaryContainer">@color/OnTertiaryContainerColorDark</item>
+
+        <!-- Error brand color. -->
+        <item name="colorError">@color/ErrorColorDark</item>
+        <item name="colorOnError">@color/OnErrorColorDark</item>
+        <item name="colorErrorContainer">@color/ErrorContainerColorDark</item>
+        <item name="colorOnErrorContainer">@color/OnErrorContainerColorDark</item>
+
+        <!-- Error brand color. -->
+        <item name="android:colorBackground">@color/BackgroundColorDark</item>
+        <item name="colorOnBackground">@color/OnBackgroundColorDark</item>
+        <item name="colorSurface">@color/SurfaceColorDark</item>
+        <item name="colorOnSurface">@color/OnSurfaceColorDark</item>
+
+        <item name="colorOutline">@color/OutlineColorDark</item>
+        <item name="colorSurfaceVariant">@color/SurfaceVariantColorDark</item>
+        <item name="colorOnSurfaceVariant">@color/OnSurfaceVariantColorDark</item>
     </style>
 </resources>

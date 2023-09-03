@@ -1,13 +1,35 @@
 <resources>
-    <string name="app_name">MySpendings</string>
+    <string name="app_name">My Spendings</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="record_fragment">Record Fragment</string>
     <string name="spending_fragment">Spending fragment</string>
-    <string name="title">My Spendings</string>
+
+    <string name="str_title">My Spendings</string>
+
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
+
+    <!-- Tab titles-->
+    <string name="str_all_spendings">All Spendings</string>
+    <string name="str_daily">Daily</string>
+    <string name="str_monthly">Monthly</string>
+    <string name="str_yearly">Yearly</string>
+    <string name="str_daterange">Range</string>
+
     <string name="lbl_Amount">Amount</string>
     <string name="lbl_Paidto">Paid To:</string>
     <string name="lbl_whendt">When:</string>
     <string name="btn_lbl_save">Save</string>
-    <string name="btnadd">Add</string>
+    <string name="fabaddSpending">Add Spending</string>
+    <string name="emtytext">Please Add items using (+) Add button</string>
+    <string name="remark_txt">Remark:</string>
+    <string name="txt_date">Date</string>
+    <string name="txt_time">Time</string>
+    <string name="lbl_total_spendings">Total Spendings</string>
+    <string name="snack_txt_deleted">Record Deleted from the list</string>
+    <string name="snack_txt_undo">Undo</string>
+    <string name="txt_cancel">Cancel</string>
+    <string name="str_monthly_spendings">Monthly Spendings</string>
+    <string name="str_clear">Clear</string>
 </resources>

@@ -1,6 +1,6 @@
-package com.samaya.myspendings;
+package com.samaya.myspendings.adapters;
 
-import static com.samaya.myspendings.Utils.sdf;
+import static com.samaya.myspendings.utils.DateUtils.sdf;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +10,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.samaya.myspendings.R;
 import com.samaya.myspendings.db.entity.Spendings;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class SpendingsAdapter extends RecyclerView.Adapter<SpendingsAdapter.ViewHolder> {
+public class AllSpendingsAdapter extends RecyclerView.Adapter<AllSpendingsAdapter.ViewHolder> {
 
+    public static interface OnItemClickListener{
 
+        public void onItemClick(View view, int position, Spendings spending);
+    }
 
-
+    OnItemClickListener listener;
     private List<Spendings> spendingsList;
 
     public void setSpendingsList(List<Spendings> spendingsList) {
@@ -27,16 +30,20 @@ public class SpendingsAdapter extends RecyclerView.Adapter<SpendingsAdapter.View
         notifyDataSetChanged();
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
+    }
+
     private final LayoutInflater mInflater;
 
-    public SpendingsAdapter(LayoutInflater mInflater) {
+    public AllSpendingsAdapter(LayoutInflater mInflater) {
         this.mInflater = mInflater;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.listitem, parent, false);
+        View itemView = mInflater.inflate(R.layout.allspendingslistitem, parent, false);
         return new ViewHolder(itemView);
     }
 
@@ -45,9 +52,22 @@ public class SpendingsAdapter extends RecyclerView.Adapter<SpendingsAdapter.View
         if(spendingsList != null){
             Spendings spending = spendingsList.get(position);
             holder.itmTxtAmt.setText(String.valueOf(spending.amount));
-            holder.itmTxtDate.setText(sdf.format(spending.whenDt));
+            holder.itmTxtDate.setText(sdf.format(spending.whendt));
             holder.itmTxtPaidto.setText(spending.paidto);
+            holder.itemView.setOnClickListener(view -> AllSpendingsAdapter.this.listener.onItemClick(view, position, spending));
         }
+    }
+    public void removeItem(int position){
+        spendingsList.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public void undoRemove(int position, Spendings spending){
+        spendingsList.add(position, spending);
+        notifyDataSetChanged();
+    }
+    public Spendings getItem(int position){
+        return spendingsList.get(position);
     }
 
     @Override
@@ -57,6 +77,7 @@ public class SpendingsAdapter extends RecyclerView.Adapter<SpendingsAdapter.View
         }
         return 0;
     }
+
 
     public static class ViewHolder extends  RecyclerView.ViewHolder{
         private final TextView itmTxtAmt;
